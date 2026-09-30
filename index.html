@@ -3,12 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#070a16">
+<meta name="theme-color" content="#070713">
 <title>SHALAW</title>
 
 <style>
 *{
   box-sizing:border-box;
+}
+
+:root{
+  --bg:#05050d;
+  --card:rgba(16,17,35,.72);
+  --card2:rgba(22,23,48,.65);
+  --line:rgba(255,255,255,.09);
+  --purple:#8b5cff;
+  --cyan:#19d9ff;
+  --pink:#ff55c8;
+  --green:#25e69a;
+  --red:#ff5278;
+  --text:#fff;
+  --muted:#9198b7;
 }
 
 html{
@@ -18,13 +32,50 @@ html{
 body{
   margin:0;
   min-height:100vh;
-  color:#fff;
+  color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Arial,sans-serif;
-
   background:
-    radial-gradient(circle at 15% 0%,#6948ff30,transparent 30%),
-    radial-gradient(circle at 100% 10%,#00d9ff20,transparent 28%),
-    linear-gradient(145deg,#050711,#090d1c 50%,#040610);
+    radial-gradient(circle at 10% 0%,rgba(139,92,255,.22),transparent 28%),
+    radial-gradient(circle at 95% 8%,rgba(25,217,255,.15),transparent 25%),
+    radial-gradient(circle at 50% 100%,rgba(255,85,200,.08),transparent 30%),
+    linear-gradient(145deg,#03030a,#08091a 48%,#04040c);
+  overflow-x:hidden;
+}
+
+body:before,
+body:after{
+  content:"";
+  position:fixed;
+  z-index:-1;
+  border-radius:50%;
+  filter:blur(80px);
+  pointer-events:none;
+}
+
+body:before{
+  width:260px;
+  height:260px;
+  top:15%;
+  left:-100px;
+  background:#7448ff25;
+  animation:float1 9s ease-in-out infinite;
+}
+
+body:after{
+  width:230px;
+  height:230px;
+  right:-90px;
+  top:55%;
+  background:#00d9ff18;
+  animation:float2 11s ease-in-out infinite;
+}
+
+@keyframes float1{
+  50%{transform:translate(60px,80px)}
+}
+
+@keyframes float2{
+  50%{transform:translate(-50px,-70px)}
 }
 
 button,input,textarea{
@@ -41,49 +92,51 @@ button:active{
   transform:scale(.97);
 }
 
+.hidden{
+  display:none!important;
+}
+
 .wrap{
-  width:min(1050px,100%);
+  width:min(1100px,100%);
   margin:auto;
-  padding:15px 14px 70px;
+  padding:14px 14px 70px;
 }
 
 /* =========================
-   LOGO
+ HEADER
 ========================= */
 
 .top{
   position:sticky;
-  top:8px;
-  z-index:50;
+  top:10px;
+  z-index:100;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  padding:12px 15px;
-  margin-bottom:20px;
+  padding:10px 13px;
+  margin-bottom:24px;
 
+  border:1px solid var(--line);
   border-radius:22px;
-  border:1px solid #ffffff12;
 
-  background:#0c1121d9;
-  backdrop-filter:blur(20px);
+  background:rgba(8,9,22,.76);
+  backdrop-filter:blur(24px);
 
-  box-shadow:0 18px 50px #0006;
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.45);
 }
 
-.shalaw-logo{
+.logo{
   display:flex;
   align-items:center;
-  gap:11px;
-
-  width:max-content;
-
+  gap:10px;
+  color:white;
   text-decoration:none;
-  color:#fff;
 }
 
-.logo-mark{
+.logoMark{
   width:44px;
   height:44px;
 
@@ -97,265 +150,277 @@ button:active{
   font-weight:1000;
 
   background:
-    linear-gradient(135deg,#7857ff,#16dcff);
+    linear-gradient(135deg,var(--purple),var(--cyan));
 
   box-shadow:
-    0 0 0 1px #ffffff20,
-    0 0 30px #7657ff66;
+    0 0 30px rgba(139,92,255,.45);
 
   transform:rotate(-5deg);
-
   transition:.25s;
 }
 
-.logo-text{
-  font-size:28px;
+.logo:hover .logoMark{
+  transform:rotate(0) scale(1.08);
+}
+
+.logoText{
+  font-size:26px;
   font-weight:1000;
   letter-spacing:2px;
 
   background:
-    linear-gradient(
-      90deg,
-      #fff,
-      #a38cff,
-      #20ddff
-    );
+    linear-gradient(90deg,#fff,#aa91ff,#24ddff);
 
   -webkit-background-clip:text;
   background-clip:text;
-
   color:transparent;
-
-  text-shadow:0 0 25px #7657ff33;
 }
 
-.shalaw-logo:hover .logo-mark{
-  transform:rotate(0deg) scale(1.07);
-}
-
-.shalaw-logo:hover .logo-text{
-  filter:brightness(1.2);
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.mainBtn{
-  padding:12px 18px;
-  border-radius:15px;
-
-  background:
-    linear-gradient(135deg,#7657ff,#ad4cff);
-
-  font-weight:900;
-
-  box-shadow:
-    0 10px 30px #7657ff44;
-}
-
-.secondaryBtn{
-  padding:11px 15px;
-
+.logout{
+  padding:10px 15px;
   border-radius:14px;
 
-  background:#ffffff0a;
-  border:1px solid #ffffff12;
-}
+  color:#ff9eb3;
+  background:#ff527812;
+  border:1px solid #ff52782c;
 
-.logoutBtn{
-  padding:10px 14px;
-
-  border-radius:13px;
-
-  color:#ff9aac;
-
-  background:#ff426512;
-  border:1px solid #ff42652b;
+  font-weight:800;
 }
 
 /* =========================
-   CARD
+ AUTH
 ========================= */
+
+.auth{
+  max-width:530px;
+  margin:80px auto 0;
+  padding:38px 28px;
+
+  text-align:center;
+}
 
 .card{
   position:relative;
   overflow:hidden;
 
-  margin:15px 0;
-  padding:20px;
-
-  border-radius:25px;
-  border:1px solid #ffffff12;
+  border:1px solid var(--line);
+  border-radius:28px;
 
   background:
-    linear-gradient(145deg,#151b30e8,#0b1020e8);
+    linear-gradient(
+      145deg,
+      rgba(22,23,48,.82),
+      rgba(8,10,22,.78)
+    );
 
-  box-shadow:0 20px 60px #0005;
+  box-shadow:
+    0 25px 90px rgba(0,0,0,.42);
 
-  backdrop-filter:blur(18px);
+  backdrop-filter:blur(22px);
 }
 
 .card:before{
   content:"";
-
   position:absolute;
 
-  width:200px;
-  height:200px;
+  width:220px;
+  height:220px;
 
-  top:-120px;
-  right:-70px;
+  top:-130px;
+  right:-80px;
 
-  background:#7657ff25;
+  background:#8b5cff20;
   filter:blur(70px);
 
   pointer-events:none;
 }
 
-/* =========================
-   AUTH
-========================= */
-
-.auth{
-  max-width:520px;
-  margin:70px auto 0;
-
-  text-align:center;
-
-  padding:35px 25px;
-}
-
 .authLogo{
-  width:90px;
-  height:90px;
+  width:92px;
+  height:92px;
+
+  margin:auto;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  margin:auto;
+  border-radius:30px;
 
-  border-radius:28px;
-
-  font-size:43px;
+  font-size:44px;
   font-weight:1000;
 
   background:
-    linear-gradient(135deg,#7657ff,#16dcff);
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--cyan)
+    );
 
   box-shadow:
-    0 0 50px #7657ff66;
+    0 0 60px #8b5cff66;
 }
 
 .auth h1{
-  font-size:34px;
-  margin:20px 0 8px;
+  margin:22px 0 8px;
+  font-size:35px;
+}
+
+.gradient{
+  background:
+    linear-gradient(
+      90deg,
+      #a68dff,
+      #1ddfff,
+      #ff63d2
+    );
+
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
 
 .auth p{
-  color:#9ba7c7;
+  color:var(--muted);
   line-height:1.9;
+}
+
+.auth input{
+  margin-top:9px;
 }
 
 input,
 textarea{
   width:100%;
 
-  margin:7px 0;
-  padding:15px;
+  padding:15px 16px;
 
-  color:#fff;
+  color:white;
 
-  background:#080d1c;
+  background:rgba(3,5,14,.78);
 
-  border:1px solid #293452;
-  border-radius:16px;
+  border:1px solid #29304c;
+  border-radius:17px;
 
   outline:none;
+
+  transition:.2s;
 }
 
 input:focus,
 textarea:focus{
-  border-color:#7657ff;
-
+  border-color:var(--purple);
   box-shadow:
-    0 0 0 3px #7657ff18;
+    0 0 0 4px #8b5cff14,
+    0 0 25px #8b5cff12;
 }
 
 textarea{
-  min-height:120px;
+  min-height:125px;
   resize:vertical;
 }
 
+.primary{
+  padding:13px 19px;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #8056ff,
+      #a64cff
+    );
+
+  font-weight:900;
+
+  box-shadow:
+    0 13px 35px #8056ff38;
+
+  transition:.2s;
+}
+
+.primary:hover{
+  filter:brightness(1.12);
+  transform:translateY(-2px);
+}
+
+.secondary{
+  padding:11px 15px;
+
+  border-radius:14px;
+
+  background:#ffffff08;
+  border:1px solid var(--line);
+}
+
 /* =========================
-   HERO
+ HERO
 ========================= */
 
 .hero{
   display:grid;
-  grid-template-columns:1.4fr .7fr;
+  grid-template-columns:1.5fr .75fr;
   gap:15px;
 }
 
 .heroMain{
-  min-height:240px;
+  min-height:285px;
+  padding:32px;
 
   display:flex;
   flex-direction:column;
   justify-content:center;
 
-  padding:30px;
-
-  border-radius:28px;
-
-  border:1px solid #ffffff12;
+  border:1px solid var(--line);
+  border-radius:30px;
 
   background:
-    radial-gradient(circle at 80% 10%,#7657ff42,transparent 35%),
-    linear-gradient(135deg,#121a32,#090e1e);
+    radial-gradient(
+      circle at 85% 10%,
+      #8b5cff38,
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #14142c,
+      #080a18
+    );
+
+  box-shadow:
+    0 30px 80px #0005;
 }
 
-.heroTag{
+.tag{
   width:max-content;
 
-  padding:7px 12px;
+  padding:7px 13px;
 
   border-radius:30px;
 
-  color:#bcaeff;
+  color:#c8b9ff;
 
-  background:#7657ff18;
-  border:1px solid #7657ff33;
+  background:#8b5cff14;
+  border:1px solid #8b5cff2c;
 
   font-size:12px;
   font-weight:900;
 }
 
 .heroMain h1{
-  margin:15px 0 7px;
-
-  font-size:43px;
+  margin:17px 0 9px;
+  font-size:47px;
   line-height:1.15;
 }
 
-.gradient{
-  background:
-    linear-gradient(90deg,#a18aff,#19dcff,#ff62d6);
-
-  -webkit-background-clip:text;
-  background-clip:text;
-
-  color:transparent;
-}
-
 .heroMain p{
-  color:#9ba7c3;
-  line-height:1.8;
+  max-width:650px;
+  color:#969dbb;
+  line-height:1.9;
 }
 
 .heroSide{
-  min-height:240px;
+  min-height:285px;
 
   display:flex;
   flex-direction:column;
@@ -364,61 +429,81 @@ textarea{
 
   text-align:center;
 
-  border-radius:28px;
-
-  border:1px solid #ffffff12;
+  border:1px solid var(--line);
+  border-radius:30px;
 
   background:
-    linear-gradient(145deg,#151b32,#0b1020);
+    linear-gradient(
+      145deg,
+      #151632,
+      #090a18
+    );
 }
 
-.heroSide .big{
-  font-size:65px;
+.brain{
+  font-size:78px;
 
   filter:
-    drop-shadow(0 0 20px #7657ff);
+    drop-shadow(0 0 28px #8b5cff);
+
+  animation:brain 3s ease-in-out infinite;
+}
+
+@keyframes brain{
+  50%{
+    transform:translateY(-9px) rotate(2deg);
+  }
 }
 
 .heroSide b{
   margin-top:10px;
-  font-size:21px;
+  font-size:20px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
 }
 
 /* =========================
-   PROFILE
+ PROFILE
 ========================= */
 
 .profile{
+  margin-top:16px;
   padding:24px;
 }
 
 .profileHead{
   display:flex;
   align-items:center;
-  gap:17px;
+  gap:16px;
 }
 
 .avatar{
   width:82px;
   height:82px;
-
   flex:none;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  border-radius:25px;
+  border-radius:26px;
 
   font-size:35px;
   font-weight:1000;
 
   background:
-    linear-gradient(135deg,#7657ff,#16dcff);
+    linear-gradient(
+      135deg,
+      var(--purple),
+      var(--cyan)
+    );
 
   box-shadow:
-    0 0 0 6px #7657ff12,
-    0 0 40px #7657ff55;
+    0 0 0 6px #8b5cff12,
+    0 0 45px #8b5cff45;
 }
 
 .profileName{
@@ -434,16 +519,11 @@ textarea{
 
   border-radius:20px;
 
-  color:#bcaeff;
-  background:#7657ff18;
+  color:#c6b6ff;
+  background:#8b5cff16;
 
   font-size:12px;
   font-weight:900;
-}
-
-.muted{
-  color:#929dbb;
-  font-size:13px;
 }
 
 .xpBox{
@@ -454,7 +534,7 @@ textarea{
   display:flex;
   justify-content:space-between;
 
-  color:#aeb8d4;
+  color:#adb5d0;
   font-size:13px;
 }
 
@@ -467,7 +547,7 @@ textarea{
 
   border-radius:20px;
 
-  background:#050914;
+  background:#050611;
 }
 
 .xpFill{
@@ -476,46 +556,56 @@ textarea{
   border-radius:20px;
 
   background:
-    linear-gradient(90deg,#7657ff,#20ddff);
+    linear-gradient(
+      90deg,
+      #8056ff,
+      #1cddff
+    );
 
   box-shadow:
-    0 0 20px #20ddff66;
+    0 0 22px #1cddff55;
 
-  transition:.5s;
+  transition:.6s;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-
   gap:10px;
 
   margin-top:20px;
 }
 
 .stat{
-  padding:15px 7px;
+  padding:16px 8px;
 
   text-align:center;
 
-  border-radius:18px;
+  border-radius:19px;
 
   background:#ffffff06;
-  border:1px solid #ffffff0d;
+  border:1px solid #ffffff0b;
+
+  transition:.2s;
+}
+
+.stat:hover{
+  transform:translateY(-3px);
+  border-color:#8b5cff33;
 }
 
 .stat b{
   display:block;
-  font-size:23px;
+  font-size:24px;
 }
 
 .stat span{
-  color:#8994b1;
+  color:#858eaa;
   font-size:11px;
 }
 
 /* =========================
-   SECTIONS
+ TITLES
 ========================= */
 
 .sectionTitle{
@@ -523,56 +613,59 @@ textarea{
   align-items:center;
   gap:8px;
 
-  margin:27px 4px 12px;
+  margin:30px 4px 13px;
 
   font-size:20px;
   font-weight:1000;
 }
 
 /* =========================
-   FEATURES
+ FEATURES
 ========================= */
 
 .features{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-
-  gap:14px;
+  gap:15px;
 }
 
 .feature{
-  min-height:175px;
+  min-height:190px;
+  padding:23px;
 
-  padding:22px;
+  border-radius:25px;
 
-  border-radius:24px;
-
-  border:1px solid #ffffff10;
+  border:1px solid var(--line);
 
   background:
-    linear-gradient(145deg,#151d36,#0c1222);
+    linear-gradient(
+      145deg,
+      rgba(20,22,45,.85),
+      rgba(9,10,23,.85)
+    );
 
   transition:.25s;
 }
 
 .feature:hover{
-  transform:translateY(-3px);
-  border-color:#7657ff55;
+  transform:translateY(-4px);
+  border-color:#8b5cff4c;
+  box-shadow:0 18px 50px #0005;
 }
 
 .featureIcon{
-  width:52px;
-  height:52px;
+  width:55px;
+  height:55px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  border-radius:16px;
+  border-radius:17px;
 
-  font-size:26px;
+  font-size:28px;
 
-  background:#7657ff18;
+  background:#8b5cff16;
 }
 
 .feature h3{
@@ -580,63 +673,90 @@ textarea{
 }
 
 .feature p{
-  margin:0 0 15px;
+  margin:0 0 16px;
 
-  color:#8995b3;
+  color:#8f97b3;
 
   font-size:13px;
-  line-height:1.7;
+  line-height:1.8;
 }
 
 /* =========================
-   BADGES
+ BADGES
 ========================= */
 
 .badges{
   display:flex;
-  gap:10px;
+  gap:11px;
 
   overflow-x:auto;
 
-  padding:3px 1px 10px;
+  padding:3px 2px 10px;
+
+  scrollbar-width:none;
+}
+
+.badges::-webkit-scrollbar{
+  display:none;
 }
 
 .badge{
-  min-width:125px;
-
-  padding:16px 12px;
+  min-width:130px;
+  padding:17px 12px;
 
   text-align:center;
 
-  border-radius:20px;
+  border:1px solid var(--line);
+  border-radius:21px;
 
-  background:#11182c;
-  border:1px solid #ffffff10;
+  background:
+    linear-gradient(
+      145deg,
+      #13162b,
+      #0b0d1b
+    );
 }
 
 .badgeIcon{
   display:block;
-
-  margin-bottom:7px;
-
-  font-size:31px;
+  margin-bottom:8px;
+  font-size:32px;
 }
 
 .badge span:last-child{
-  color:#a7b1cb;
+  color:#a6aec7;
   font-size:11px;
 }
 
 /* =========================
-   PHYSICS
+ PHYSICS
 ========================= */
 
 .physics{
-  border-color:#7657ff35;
+  margin-top:15px;
+}
+
+.physicsBox{
+  padding:22px;
+
+  border-color:#8b5cff3b;
 
   background:
-    radial-gradient(circle at 80% 0%,#7657ff22,transparent 30%),
-    linear-gradient(145deg,#17152f,#0c1020);
+    radial-gradient(
+      circle at 85% 0%,
+      #8b5cff28,
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 10% 100%,
+      #00d9ff12,
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #17152f,
+      #090b19
+    );
 }
 
 .physicsHeader{
@@ -646,9 +766,15 @@ textarea{
   gap:10px;
 }
 
+.physicsTitle{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
 .physicsIcon{
-  width:55px;
-  height:55px;
+  width:56px;
+  height:56px;
 
   display:flex;
   align-items:center;
@@ -659,21 +785,25 @@ textarea{
   font-size:30px;
 
   background:
-    linear-gradient(135deg,#7657ff,#00d9ff);
+    linear-gradient(
+      135deg,
+      #8056ff,
+      #00d9ff
+    );
 
   box-shadow:
-    0 0 30px #7657ff44;
+    0 0 35px #8056ff44;
 }
 
 .timer{
   padding:9px 13px;
 
+  color:#ff9bae;
+
   border-radius:14px;
 
-  color:#ff9aad;
-
-  background:#ff4c7112;
-  border:1px solid #ff4c7133;
+  background:#ff527812;
+  border:1px solid #ff52782c;
 
   font-weight:900;
 }
@@ -684,7 +814,7 @@ textarea{
 
   margin-top:20px;
 
-  color:#9da8c4;
+  color:#9da5c0;
 
   font-size:13px;
 }
@@ -693,26 +823,30 @@ textarea{
   margin:22px 0;
 
   font-size:23px;
-  line-height:1.8;
+  line-height:1.9;
 }
 
 .options{
   display:grid;
   grid-template-columns:1fr 1fr;
-
   gap:10px;
 }
 
 .option{
-  padding:16px;
+  padding:17px;
 
   text-align:right;
 
-  border-radius:17px;
+  border-radius:18px;
 
   color:#fff;
 
-  background:#151d34;
+  background:
+    linear-gradient(
+      145deg,
+      #171d36,
+      #10152a
+    );
 
   border:1px solid #293452;
 
@@ -720,62 +854,85 @@ textarea{
 }
 
 .option:hover{
-  border-color:#7657ff;
-  background:#1d2744;
+  transform:translateY(-2px);
+  border-color:#8b5cff;
+  background:#1c2543;
 }
 
 .option.correct{
-  background:#19c37d18;
-  border-color:#19c37d;
+  background:#25e69a15;
+  border-color:#25e69a;
 }
 
 .option.wrong{
-  background:#ff426518;
-  border-color:#ff4265;
+  background:#ff527815;
+  border-color:#ff5278;
+}
+
+.option:disabled{
+  cursor:default;
+  opacity:.9;
 }
 
 .result{
   margin-top:15px;
   padding:14px;
 
-  border-radius:16px;
+  border-radius:17px;
 
-  line-height:1.8;
+  line-height:1.9;
 }
 
 .correctResult{
-  color:#70efba;
-
-  background:#19c37d12;
-  border:1px solid #19c37d33;
+  color:#72f1bd;
+  background:#25e69a12;
+  border:1px solid #25e69a30;
 }
 
 .wrongResult{
-  color:#ff9aad;
-
-  background:#ff426512;
-  border:1px solid #ff426533;
+  color:#ff9eb0;
+  background:#ff527812;
+  border:1px solid #ff527830;
 }
 
 /* =========================
-   QUESTIONS
+ COMMUNITY
 ========================= */
 
+.askCard{
+  padding:23px;
+}
+
+.askCard h2{
+  margin-top:0;
+}
+
 .questionCard{
-  padding:18px;
   margin:13px 0;
+  padding:19px;
 
-  border-radius:22px;
+  border-radius:23px;
 
-  background:#10172a;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17,22,42,.9),
+      rgba(9,12,24,.9)
+    );
 
-  border:1px solid #ffffff0d;
+  border:1px solid #ffffff0c;
+
+  transition:.2s;
+}
+
+.questionCard:hover{
+  border-color:#8b5cff2d;
 }
 
 .questionText{
   font-size:16px;
   font-weight:800;
-  line-height:1.8;
+  line-height:1.9;
 }
 
 .actions{
@@ -792,37 +949,76 @@ textarea{
   border-radius:13px;
 
   background:#202943;
+  border:1px solid #ffffff08;
+
+  transition:.2s;
+}
+
+.actions button:hover{
+  background:#293455;
 }
 
 .ans{
   margin-top:12px;
-  padding-top:11px;
+  padding:12px 10px 0;
 
   border-top:1px solid #293452;
 
-  line-height:1.8;
+  line-height:1.9;
 }
 
 /* =========================
-   FOOTER
+ TOAST
+========================= */
+
+.toast{
+  position:fixed;
+  z-index:999;
+
+  left:50%;
+  bottom:25px;
+
+  transform:translateX(-50%) translateY(100px);
+
+  padding:13px 18px;
+
+  border-radius:16px;
+
+  background:#11152aee;
+  border:1px solid #ffffff16;
+
+  box-shadow:0 20px 50px #0008;
+
+  opacity:0;
+
+  transition:.3s;
+
+  pointer-events:none;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* =========================
+ FOOTER
 ========================= */
 
 .footer{
-  margin-top:35px;
+  margin-top:38px;
 
   text-align:center;
 
-  color:#68738e;
+  color:#68728e;
 
   font-size:12px;
-}
 
-.hidden{
-  display:none!important;
+  line-height:1.9;
 }
 
 /* =========================
-   MOBILE
+ MOBILE
 ========================= */
 
 @media(max-width:700px){
@@ -831,8 +1027,17 @@ textarea{
     grid-template-columns:1fr;
   }
 
+  .heroMain{
+    min-height:245px;
+    padding:25px;
+  }
+
   .heroMain h1{
-    font-size:34px;
+    font-size:36px;
+  }
+
+  .heroSide{
+    min-height:180px;
   }
 
   .stats{
@@ -852,17 +1057,27 @@ textarea{
 @media(max-width:430px){
 
   .wrap{
-    padding-left:10px;
-    padding-right:10px;
+    padding-left:9px;
+    padding-right:9px;
   }
 
-  .logo-text{
-    font-size:23px;
+  .logoText{
+    font-size:22px;
   }
 
-  .logo-mark{
+  .logoMark{
     width:39px;
     height:39px;
+  }
+
+  .logout{
+    padding:9px 11px;
+    font-size:12px;
+  }
+
+  .auth{
+    margin-top:50px;
+    padding:30px 18px;
   }
 
   .auth h1{
@@ -873,6 +1088,15 @@ textarea{
     font-size:21px;
   }
 
+  .avatar{
+    width:70px;
+    height:70px;
+  }
+
+  .quizQuestion{
+    font-size:20px;
+  }
+
 }
 </style>
 </head>
@@ -881,1921 +1105,1370 @@ textarea{
 
 <div class="wrap">
 
-  <!-- TOP -->
-  <div class="top">
+<header class="top">
 
-    <a class="shalaw-logo" href="/">
+<a class="logo" href="/">
+  <span class="logoMark">S</span>
+  <span class="logoText">SHALAW</span>
+</a>
 
-      <span class="logo-mark">
-        S
-      </span>
+<button class="logout" onclick="logout()">
+  دەرچوون
+</button>
 
-      <span class="logo-text">
-        SHALAW
-      </span>
+</header>
 
-    </a>
+<!-- AUTH -->
 
-    <button
-      class="logoutBtn"
-      onclick="logout()">
-      دەرچوون
-    </button>
+<section id="auth" class="card auth">
 
-  </div>
+<div class="authLogo">S</div>
 
+<h1>
+بەخێربێیت بۆ
+<span class="gradient">SHALAW</span>
+</h1>
 
-  <!-- AUTH -->
-  <section
-    id="auth"
-    class="card auth">
+<p>
+پرسیار بکە، وەڵام بدە، فێربە و XP بەدەست بهێنە 🚀
+</p>
 
-    <div class="authLogo">
-      S
-    </div>
+<input id="name" placeholder="ناوت بنووسە">
 
-    <h1>
-      بەخێربێیت بۆ
-      <span class="gradient">
-        SHALAW
-      </span>
-    </h1>
+<input
+id="email"
+type="email"
+placeholder="ئیمەیڵ"
+>
 
-    <p>
-      پرسیار بکە، وەڵام بدە،
-      فێربە و XP بەدەست بهێنە 🚀
-    </p>
+<input
+id="password"
+type="password"
+placeholder="وشەی نهێنی"
+>
 
-    <input
-      id="name"
-      placeholder="ناوت بنووسە">
+<button
+class="primary"
+style="width:100%;margin-top:8px"
+onclick="signup()">
+دروستکردنی هەژمار ✨
+</button>
 
-    <input
-      id="email"
-      type="email"
-      placeholder="ئیمەیڵ">
+<button
+class="secondary"
+style="width:100%;margin-top:9px"
+onclick="login()">
+چوونەژوورەوە 🔐
+</button>
 
-    <button
-      class="mainBtn"
-      onclick="signup()">
-      دروستکردنی هەژمار ✨
-    </button>
+</section>
 
-  </section>
+<!-- APP -->
 
+<section id="app" class="hidden">
 
-  <!-- APP -->
-  <section
-    id="app"
-    class="hidden">
+<div class="hero">
 
+<div class="heroMain">
 
-    <!-- HERO -->
-    <div class="hero">
+<span class="tag">
+⚡ SHALAW COMMUNITY
+</span>
 
-      <div class="heroMain">
+<h1>
+زانیاری
+<span class="gradient">بەهێز بکە.</span>
+</h1>
 
-        <span class="heroTag">
-          ⚡ SHALAW
-        </span>
-
-        <h1>
-          زانیاری
-          <span class="gradient">
-            بەهێز بکە.
-          </span>
-        </h1>
-
-        <p>
-          پرسیار بکە، وەڵام بدە،
-          Quiz بکە و Level ـەکەت بەرز بکەرەوە.
-        </p>
-
-      </div>
-
-      <div class="heroSide">
-
-        <div class="big">
-          🧠
-        </div>
-
-        <b>
-          Learn • Answer • Grow
-        </b>
-
-        <span class="muted">
-          بەردەوام بە 🚀
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- PROFILE -->
-    <div class="card profile">
-
-      <div class="profileHead">
-
-        <div
-          id="avatar"
-          class="avatar">
-          S
-        </div>
-
-        <div>
-
-          <div
-            id="profileName"
-            class="profileName">
-            SHALAW
-          </div>
-
-          <div
-            id="rank"
-            class="rank">
-            🌱 Newbie
-          </div>
-
-          <div
-            class="muted"
-            style="margin-top:6px">
-            بەردەوام بە!
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="xpBox">
-
-        <div class="xpTop">
-
-          <span>
-            ⭐ Level
-            <b id="level">1</b>
-          </span>
-
-          <span id="xpText">
-            0 / 100 XP
-          </span>
-
-        </div>
-
-        <div class="xpBar">
-
-          <div
-            id="xpFill"
-            class="xpFill"
-            style="width:0%">
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="stats">
-
-        <div class="stat">
-          <b id="questionCount">0</b>
-          <span>❓ پرسیار</span>
-        </div>
-
-        <div class="stat">
-          <b id="answerCount">0</b>
-          <span>💬 وەڵام</span>
-        </div>
-
-        <div class="stat">
-          <b id="likeCount">0</b>
-          <span>❤️ Like</span>
-        </div>
-
-        <div class="stat">
-          <b id="physicsCount">0</b>
-          <span>⚡ فیزیا</span>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- FEATURES -->
-    <div class="sectionTitle">
-      ✨ بەشەکان
-    </div>
-
-    <div class="features">
-
-      <div class="feature physics">
-
-        <div class="featureIcon">
-          ⚡
-        </div>
-
-        <h3>
-          Physics Challenge
-        </h3>
-
-        <p>
-          زانیاری فیزیای خۆت تاقی بکەرەوە
-          و XP بەدەست بهێنە.
-        </p>
-
-        <button
-          class="mainBtn"
-          onclick="startPhysics()">
-          دەستپێکردن 🚀
-        </button>
-
-      </div>
-
-
-      <div class="feature">
-
-        <div class="featureIcon">
-          ❓
-        </div>
-
-        <h3>
-          پرسیار بکە
-        </h3>
-
-        <p>
-          پرسیارەکەت لەگەڵ بەکارهێنەرانی
-          SHALAW هاوبەش بکە.
-        </p>
-
-        <button
-          class="secondaryBtn"
-          onclick="document.getElementById('q').focus()">
-          نووسینی پرسیار ✍️
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- BADGES -->
-    <div class="sectionTitle">
-      🏆 Badge ـەکانت
-    </div>
-
-    <div class="badges">
-
-      <div class="badge">
-        <span class="badgeIcon">🌱</span>
-        <span>یەکەم هەنگاو</span>
-      </div>
-
-      <div class="badge">
-        <span class="badgeIcon">🔥</span>
-        <span>Active User</span>
-      </div>
-
-      <div class="badge">
-        <span class="badgeIcon">💡</span>
-        <span>Question Master</span>
-      </div>
-
-      <div class="badge">
-        <span class="badgeIcon">⚡</span>
-        <span>Physics</span>
-      </div>
-
-      <div class="badge">
-        <span class="badgeIcon">👑</span>
-        <span>Legend</span>
-      </div>
-
-    </div>
-
-
-    <!-- PHYSICS -->
-    <div
-      id="physicsBox"
-      class="card physics hidden">
-
-      <div class="physicsHeader">
-
-        <div style="display:flex;align-items:center;gap:12px">
-
-          <div class="physicsIcon">
-            ⚡
-          </div>
-
-          <div>
-
-            <b style="font-size:20px">
-              Physics Challenge
-            </b>
-
-            <div class="muted">
-              تاقیکردنەوەی فیزیا
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="timer">
-          ⏱️
-          <span id="physicsTime">
-            30
-          </span>
-        </div>
-
-      </div>
-
-
-      <div class="quizInfo">
-
-        <span id="physicsNumber">
-          پرسیار 1
-        </span>
-
-        <span>
-          ⭐ نمرە:
-          <b id="physicsScore">
-            0
-          </b>
-        </span>
-
-      </div>
-
-
-      <div
-        class="xpBar"
-        style="margin-top:10px">
-
-        <div
-          id="physicsProgress"
-          class="xpFill"
-          style="width:0%">
-        </div>
-
-      </div>
-
-
-      <div
-        id="physicsQuestion"
-        class="quizQuestion">
-      </div>
-
-
-      <div
-        id="physicsOptions"
-        class="options">
-      </div>
-
-
-      <div
-        id="physicsResult"
-        class="result hidden">
-      </div>
-
-
-      <div
-        style="display:flex;gap:8px;margin-top:15px">
-
-        <button
-          id="physicsNext"
-          class="mainBtn hidden"
-          onclick="nextPhysics()">
-          پرسیاری داهاتوو →
-        </button>
-
-        <button
-          class="secondaryBtn"
-          onclick="closePhysics()">
-          داخستن
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- ASK -->
-    <div class="sectionTitle">
-      💬 کۆمەڵگا
-    </div>
-
-    <div class="card">
-
-      <h2 style="margin-top:0">
-        پرسیارێکت هەیە؟ 🤔
-      </h2>
-
-      <p class="muted">
-        پرسیارەکەت لەگەڵ کۆمەڵگای SHALAW هاوبەش بکە.
-      </p>
-
-      <textarea
-        id="q"
-        placeholder="پرسیارەکەت بنووسە...">
-      </textarea>
-
-      <button
-        class="mainBtn"
-        onclick="ask()">
-        بڵاوی بکەرەوە 🚀
-      </button>
-
-    </div>
-
-
-    <!-- QUESTIONS -->
-    <div class="sectionTitle">
-      🔥 نوێترین پرسیارەکان
-    </div>
-
-    <div id="list"></div>
-
-
-    <div class="footer">
-      SHALAW © 2026
-      <br>
-      Learn • Answer • Grow 🚀
-    </div>
-
-  </section>
+<p>
+پرسیار بکە، وەڵام بدە، فێربە،
+Physics Challenge بکە و Level ـەکەت بەرز بکەرەوە.
+</p>
 
 </div>
 
+<div class="heroSide">
+
+<div class="brain">🧠</div>
+
+<b>
+Learn • Answer • Grow
+</b>
+
+<span class="muted">
+بەردەوام بە 🚀
+</span>
+
+</div>
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="card profile">
+
+<div class="profileHead">
+
+<div id="avatar" class="avatar">
+S
+</div>
+
+<div>
+
+<div id="profileName" class="profileName">
+SHALAW
+</div>
+
+<div id="rank" class="rank">
+🌱 Newbie
+</div>
+
+<div class="muted" style="margin-top:6px">
+بەردەوام بە!
+</div>
+
+</div>
+
+</div>
+
+<div class="xpBox">
+
+<div class="xpTop">
+
+<span>
+⭐ Level <b id="level">1</b>
+</span>
+
+<span id="xpText">
+0 / 100 XP
+</span>
+
+</div>
+
+<div class="xpBar">
+<div id="xpFill" class="xpFill" style="width:0%"></div>
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<b id="questionCount">0</b>
+<span>❓ پرسیار</span>
+</div>
+
+<div class="stat">
+<b id="answerCount">0</b>
+<span>💬 وەڵام</span>
+</div>
+
+<div class="stat">
+<b id="likeCount">0</b>
+<span>❤️ Like</span>
+</div>
+
+<div class="stat">
+<b id="physicsCount">0</b>
+<span>⚡ فیزیا</span>
+</div>
+
+</div>
+
+</div>
+
+<!-- FEATURES -->
+
+<div class="sectionTitle">
+✨ بەشەکان
+</div>
+
+<div class="features">
+
+<div class="feature">
+
+<div class="featureIcon">⚡</div>
+
+<h3>
+Physics Challenge
+</h3>
+
+<p>
+توانای فیزیای خۆت تاقی بکەرەوە و XP کۆبکەرەوە.
+</p>
+
+<button
+class="primary"
+onclick="startPhysics()">
+دەستپێکردن 🚀
+</button>
+
+</div>
+
+<div class="feature">
+
+<div class="featureIcon">❓</div>
+
+<h3>
+پرسیار بکە
+</h3>
+
+<p>
+پرسیارەکەت لەگەڵ کۆمەڵگای SHALAW هاوبەش بکە.
+</p>
+
+<button
+class="secondary"
+onclick="document.getElementById('q').focus()">
+نووسینی پرسیار ✍️
+</button>
+
+</div>
+
+</div>
+
+<!-- BADGES -->
+
+<div class="sectionTitle">
+🏆 Badge ـەکانت
+</div>
+
+<div class="badges">
+
+<div class="badge">
+<span class="badgeIcon">🌱</span>
+<span>یەکەم هەنگاو</span>
+</div>
+
+<div class="badge">
+<span class="badgeIcon">🔥</span>
+<span>Active User</span>
+</div>
+
+<div class="badge">
+<span class="badgeIcon">💡</span>
+<span>Question Master</span>
+</div>
+
+<div class="badge">
+<span class="badgeIcon">⚡</span>
+<span>Physics</span>
+</div>
+
+<div class="badge">
+<span class="badgeIcon">👑</span>
+<span>Legend</span>
+</div>
+
+</div>
+
+<!-- PHYSICS -->
+
+<div
+id="physicsBox"
+class="card physicsBox hidden">
+
+<div class="physicsHeader">
+
+<div class="physicsTitle">
+
+<div class="physicsIcon">
+⚡
+</div>
+
+<div>
+<b style="font-size:20px">
+Physics Challenge
+</b>
+
+<div class="muted">
+تاقیکردنەوەی فیزیا
+</div>
+</div>
+
+</div>
+
+<div class="timer">
+⏱️ <span id="physicsTime">30</span>
+</div>
+
+</div>
+
+<div class="quizInfo">
+
+<span id="physicsNumber">
+پرسیار 1
+</span>
+
+<span>
+⭐ نمرە:
+<b id="physicsScore">0</b>
+</span>
+
+</div>
+
+<div class="xpBar">
+<div
+id="physicsProgress"
+class="xpFill"
+style="width:0%">
+</div>
+</div>
+
+<div
+id="physicsQuestion"
+class="quizQuestion">
+</div>
+
+<div
+id="physicsOptions"
+class="options">
+</div>
+
+<div
+id="physicsResult"
+class="result hidden">
+</div>
+
+<div style="display:flex;gap:8px;margin-top:15px">
+
+<button
+id="physicsNext"
+class="primary hidden"
+onclick="nextPhysics()">
+پرسیاری داهاتوو →
+</button>
+
+<button
+class="secondary"
+onclick="closePhysics()">
+داخستن
+</button>
+
+</div>
+
+</div>
+
+<!-- COMMUNITY -->
+
+<div class="sectionTitle">
+💬 کۆمەڵگا
+</div>
+
+<div class="card askCard">
+
+<h2>
+پرسیارێکت هەیە؟ 🤔
+</h2>
+
+<p class="muted">
+پرسیارەکەت لەگەڵ کۆمەڵگای SHALAW هاوبەش بکە.
+</p>
+
+<textarea
+id="q"
+placeholder="پرسیارەکەت بنووسە...">
+</textarea>
+
+<button
+class="primary"
+onclick="ask()">
+بڵاوی بکەرەوە 🚀
+</button>
+
+</div>
+
+<div class="sectionTitle">
+🔥 نوێترین پرسیارەکان
+</div>
+
+<div id="list"></div>
+
+<footer class="footer">
+SHALAW © 2026
+<br>
+Learn • Answer • Grow 🚀
+</footer>
+
+</section>
+
+</div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 
-/* =========================
-   USER
-========================= */
-
 let me = null;
+let token = localStorage.getItem("token") || "";
+
+const $ = id => document.getElementById(id);
 
 try{
-
-  me = JSON.parse(
-    localStorage.getItem('me') || 'null'
-  );
-
-}catch(e){
-
+  me = JSON.parse(localStorage.getItem("me") || "null");
+}catch{
   me = null;
-
 }
 
-const $ = id =>
-  document.getElementById(id);
+function toast(message){
 
+  const box = $("toast");
 
-/* =========================
-   ESCAPE
-========================= */
+  box.textContent = message;
+  box.classList.add("show");
+
+  setTimeout(()=>{
+    box.classList.remove("show");
+  },2500);
+}
 
 function esc(s){
 
-  return String(s).replace(
+  return String(s ?? "").replace(
     /[&<>"']/g,
-
     m => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#039;'
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
     }[m])
   );
-
 }
 
+async function api(url, options={}){
+
+  options.headers = {
+    ...(options.headers || {}),
+    ...(token
+      ? {"Authorization":"Bearer " + token}
+      : {})
+  };
+
+  const r = await fetch(url,options);
+
+  if(r.status === 401){
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("me");
+
+    token="";
+    me=null;
+
+    boot();
+
+    throw new Error("UNAUTHORIZED");
+  }
+
+  return r;
+}
 
 /* =========================
-   SIGN UP
+ AUTH
 ========================= */
 
 async function signup(){
 
-  const name =
-    $('name').value.trim();
+  const name = $("name").value.trim();
+  const email = $("email").value.trim();
+  const password = $("password").value;
 
-  const email =
-    $('email').value.trim();
+  if(!name || !email || !password){
+    return toast("تکایە ناو، ئیمەیڵ و وشەی نهێنی بنووسە");
+  }
 
-  if(!name || !email){
-
-    return alert(
-      'تکایە ناو و ئیمەیڵ بنووسە'
-    );
-
+  if(password.length < 6){
+    return toast("وشەی نهێنی دەبێت لانیکەم ٦ پیت بێت");
   }
 
   try{
 
-    const r =
-      await fetch('/api/signup',{
-        method:'POST',
+    const r = await fetch("/api/signup",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        name,
+        email,
+        password
+      })
+    });
 
-        headers:{
-          'Content-Type':
-            'application/json'
-        },
-
-        body:JSON.stringify({
-          name,
-          email
-        })
-      });
-
-    const x =
-      await r.json();
+    const x = await r.json();
 
     if(!r.ok){
-
-      return alert(
-        x.error ||
-        'هەڵەیەک ڕوویدا'
-      );
-
+      return toast(x.error || "هەڵەیەک ڕوویدا");
     }
 
-    localStorage.setItem(
-      'me',
-      JSON.stringify(x)
-    );
+    token = x.token;
+    me = x.user;
 
-    me = x;
+    localStorage.setItem("token",token);
+    localStorage.setItem("me",JSON.stringify(me));
+
+    toast("هەژمارەکەت بە سەرکەوتوویی دروستکرا 🎉");
 
     boot();
 
   }catch(e){
 
-    alert(
-      'کێشە لە پەیوەندی بە سێرڤەر هەیە'
-    );
+    toast("کێشە لە پەیوەندی بە سێرڤەر هەیە");
 
   }
-
 }
 
+async function login(){
 
-/* =========================
-   LOGOUT
-========================= */
+  const email = $("email").value.trim();
+  const password = $("password").value;
 
-function logout(){
-
-  localStorage.removeItem('me');
-
-  me = null;
-
-  if($('physicsBox')){
-    $('physicsBox')
-      .classList.add('hidden');
-  }
-
-  boot();
-
-}
-
-
-/* =========================
-   BOOT
-========================= */
-
-function boot(){
-
-  $('auth')
-    .classList.toggle(
-      'hidden',
-      !!me
-    );
-
-  $('app')
-    .classList.toggle(
-      'hidden',
-      !me
-    );
-
-  if(me){
-
-    $('profileName').textContent =
-      me.name || 'SHALAW';
-
-    $('avatar').textContent =
-      (me.name || 'S')
-      .charAt(0)
-      .toUpperCase();
-
-    load();
-
-  }
-
-}
-
-
-/* =========================
-   ASK QUESTION
-========================= */
-
-async function ask(){
-
-  if(!me){
-
-    return alert(
-      'سەرەتا هەژمار دروست بکە'
-    );
-
-  }
-
-  const text =
-    $('q').value.trim();
-
-  if(!text){
-
-    return alert(
-      'پرسیارەکەت بنووسە'
-    );
-
+  if(!email || !password){
+    return toast("ئیمەیڵ و وشەی نهێنی بنووسە");
   }
 
   try{
 
-    const r =
-      await fetch('/api/questions',{
-        method:'POST',
+    const r = await fetch("/api/login",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        email,
+        password
+      })
+    });
 
-        headers:{
-          'Content-Type':
-            'application/json'
-        },
-
-        body:JSON.stringify({
-          userId:me.id,
-          text
-        })
-      });
+    const x = await r.json();
 
     if(!r.ok){
-
-      throw new Error(
-        'question failed'
-      );
-
+      return toast(x.error || "ئیمەیڵ یان وشەی نهێنی هەڵەیە");
     }
 
-    $('q').value='';
+    token = x.token;
+    me = x.user;
+
+    localStorage.setItem("token",token);
+    localStorage.setItem("me",JSON.stringify(me));
+
+    toast("بەخێربێیتەوە 👋");
+
+    boot();
+
+  }catch(e){
+
+    toast("کێشە لە پەیوەندی بە سێرڤەر هەیە");
+
+  }
+}
+
+async function logout(){
+
+  try{
+    if(token){
+      await fetch("/api/logout",{
+        method:"POST",
+        headers:{
+          "Authorization":"Bearer " + token
+        }
+      });
+    }
+  }catch{}
+
+  localStorage.removeItem("token");
+  localStorage.removeItem("me");
+
+  token="";
+  me=null;
+
+  closePhysics();
+  boot();
+
+  toast("بە سەرکەوتوویی دەرچوویت 👋");
+}
+
+/* =========================
+ BOOT
+========================= */
+
+function boot(){
+
+  $("auth").classList.toggle("hidden",!!me && !!token);
+  $("app").classList.toggle("hidden",!me || !token);
+
+  if(me && token){
+
+    $("profileName").textContent =
+      me.name || "SHALAW";
+
+    $("avatar").textContent =
+      (me.name || "S").charAt(0).toUpperCase();
+
+    load();
+  }
+}
+
+/* =========================
+ ASK
+========================= */
+
+async function ask(){
+
+  if(!me || !token){
+    return toast("سەرەتا بچۆ ژوورەوە");
+  }
+
+  const text = $("q").value.trim();
+
+  if(!text){
+    return toast("پرسیارەکەت بنووسە");
+  }
+
+  try{
+
+    const r = await api("/api/questions",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({text})
+    });
+
+    const x = await r.json();
+
+    if(!r.ok){
+      return toast(x.error || "نەتوانرا پرسیار بکرێت");
+    }
+
+    $("q").value="";
+
+    toast("پرسیارەکەت بڵاوکرایەوە 🚀");
 
     load();
 
   }catch(e){
 
-    alert(
-      'نەتوانرا پرسیارەکە بڵاو بکرێتەوە'
-    );
+    if(e.message !== "UNAUTHORIZED"){
+      toast("نەتوانرا پرسیارەکە بڵاو بکرێت");
+    }
 
   }
-
 }
 
-
 /* =========================
-   LIKE
+ LIKE
 ========================= */
 
 async function like(id){
 
   try{
 
-    await fetch(
-      '/api/questions/' +
-      id +
-      '/like',
-      {
-        method:'POST'
-      }
+    const r = await api(
+      "/api/questions/" + id + "/like",
+      {method:"POST"}
     );
+
+    if(!r.ok){
+      const x = await r.json();
+      return toast(x.error || "هەڵەیەک ڕوویدا");
+    }
 
     load();
 
   }catch(e){
 
-    alert(
-      'کێشەیەک ڕوویدا'
-    );
+    if(e.message !== "UNAUTHORIZED"){
+      toast("هەڵەیەک ڕوویدا");
+    }
 
   }
-
 }
 
-
 /* =========================
-   ANSWER
+ ANSWER
 ========================= */
 
 async function answer(id){
 
-  const t =
-    prompt(
-      'وەڵامەکەت بنووسە'
-    );
+  const text = prompt("وەڵامەکەت بنووسە");
 
-  if(!t || !t.trim()){
+  if(!text || !text.trim()){
     return;
   }
 
   try{
 
-    await fetch(
-      '/api/questions/' +
-      id +
-      '/answers',
+    const r = await api(
+      "/api/questions/" + id + "/answers",
       {
-        method:'POST',
-
+        method:"POST",
         headers:{
-          'Content-Type':
-            'application/json'
+          "Content-Type":"application/json"
         },
-
         body:JSON.stringify({
-          userId:me.id,
-          text:t.trim()
+          text:text.trim()
         })
       }
     );
+
+    const x = await r.json();
+
+    if(!r.ok){
+      return toast(x.error || "نەتوانرا وەڵام زیاد بکرێت");
+    }
+
+    toast("وەڵامەکەت زیادکرا 💬");
 
     load();
 
   }catch(e){
 
-    alert(
-      'نەتوانرا وەڵامەکە زیاد بکرێت'
-    );
+    if(e.message !== "UNAUTHORIZED"){
+      toast("نەتوانرا وەڵام زیاد بکرێت");
+    }
 
   }
-
 }
 
-
 /* =========================
-   PHYSICS QUESTIONS
+ PHYSICS
 ========================= */
 
 const physicsQuestions = [
 
-  {
-    id:'p01',
-    q:'یەکەی هێز لە سیستەمی SI چییە؟',
-    options:[
-      'Joule',
-      'Newton',
-      'Watt',
-      'Pascal'
-    ],
-    answer:1,
-    explanation:'یەکەی هێز Newton ـە.'
-  },
+{
+q:"یەکەی هێز لە سیستەمی SI چییە؟",
+options:["Joule","Newton","Watt","Pascal"],
+answer:1,
+explanation:"یەکەی هێز Newton ـە."
+},
 
-  {
-    id:'p02',
-    q:'یەکەی وزە چییە؟',
-    options:[
-      'Joule',
-      'Newton',
-      'Ampere',
-      'Hertz'
-    ],
-    answer:0,
-    explanation:'یەکەی وزە Joule ـە.'
-  },
+{
+q:"یەکەی وزە چییە؟",
+options:["Joule","Newton","Ampere","Hertz"],
+answer:0,
+explanation:"یەکەی وزە Joule ـە."
+},
 
-  {
-    id:'p03',
-    q:'یەکەی توان چییە؟',
-    options:[
-      'Volt',
-      'Watt',
-      'Ohm',
-      'Newton'
-    ],
-    answer:1,
-    explanation:'یەکەی توان Watt ـە.'
-  },
+{
+q:"یەکەی توان چییە؟",
+options:["Volt","Watt","Ohm","Newton"],
+answer:1,
+explanation:"یەکەی توان Watt ـە."
+},
 
-  {
-    id:'p04',
-    q:'یەکەی کارەبای بەردەوام چییە؟',
-    options:[
-      'Ampere',
-      'Joule',
-      'Watt',
-      'Pascal'
-    ],
-    answer:0,
-    explanation:'یەکەی جریانی کارەبا Ampere ـە.'
-  },
+{
+q:"یەکەی جریانی کارەبا چییە؟",
+options:["Ampere","Joule","Watt","Pascal"],
+answer:0,
+explanation:"یەکەی جریانی کارەبا Ampere ـە."
+},
 
-  {
-    id:'p05',
-    q:'یەکەی بەرگری کارەبایی چییە؟',
-    options:[
-      'Volt',
-      'Ohm',
-      'Ampere',
-      'Watt'
-    ],
-    answer:1,
-    explanation:'یەکەی بەرگری کارەبایی Ohm ـە.'
-  },
+{
+q:"یەکەی بەرگری کارەبایی چییە؟",
+options:["Volt","Ohm","Ampere","Watt"],
+answer:1,
+explanation:"یەکەی بەرگری کارەبایی Ohm ـە."
+},
 
-  {
-    id:'p06',
-    q:'ئەگەر ئۆتۆمبێلێک 100m لە 20 چرکەدا بڕوات، خێراییەکەی چەندە؟',
-    options:[
-      '2 m/s',
-      '5 m/s',
-      '10 m/s',
-      '20 m/s'
-    ],
-    answer:1,
-    explanation:'خێرایی = دووری ÷ کات = 100 ÷ 20 = 5 m/s.'
-  },
+{
+q:"ئۆتۆمبێلێک 100m لە 20s دەبڕێت. خێرایی چەندە؟",
+options:["2 m/s","5 m/s","10 m/s","20 m/s"],
+answer:1,
+explanation:"v = d/t = 100/20 = 5 m/s."
+},
 
-  {
-    id:'p07',
-    q:'بەپێی F = ma، ئەگەر mass = 2kg و acceleration = 3m/s² بێت، هێز چەندە؟',
-    options:[
-      '5 N',
-      '6 N',
-      '8 N',
-      '9 N'
-    ],
-    answer:1,
-    explanation:'F = 2 × 3 = 6 N.'
-  },
+{
+q:"ئەگەر m=2kg و a=3m/s² بێت، F چەندە؟",
+options:["5N","6N","8N","9N"],
+answer:1,
+explanation:"F = ma = 2×3 = 6N."
+},
 
-  {
-    id:'p08',
-    q:'کێشی جەستەیەکی 5kg لەسەر زەوی نزیکەی چەندە؟ g = 10m/s²',
-    options:[
-      '5 N',
-      '10 N',
-      '50 N',
-      '100 N'
-    ],
-    answer:2,
-    explanation:'Weight = mg = 5 × 10 = 50 N.'
-  },
+{
+q:"کێشی جەستەیەکی 5kg لە g=10m/s² چەندە؟",
+options:["5N","10N","50N","100N"],
+answer:2,
+explanation:"W = mg = 5×10 = 50N."
+},
 
-  {
-    id:'p09',
-    q:'چڕی جەستەیەک 200g ـە و قەبارەکەی 100cm³ ـە. چڕی چەندە؟',
-    options:[
-      '1 g/cm³',
-      '2 g/cm³',
-      '3 g/cm³',
-      '4 g/cm³'
-    ],
-    answer:1,
-    explanation:'Density = mass ÷ volume = 200 ÷ 100 = 2.'
-  },
+{
+q:"200g لە قەبارەی 100cm³ ـدا چڕی چەندە؟",
+options:["1","2","3","4 g/cm³"],
+answer:1,
+explanation:"Density = 200/100 = 2 g/cm³."
+},
 
-  {
-    id:'p10',
-    q:'ئەگەر 100N هێز لەسەر 5m² کاریگەری بکات، فشار چەندە؟',
-    options:[
-      '10 Pa',
-      '20 Pa',
-      '50 Pa',
-      '100 Pa'
-    ],
-    answer:1,
-    explanation:'Pressure = Force ÷ Area = 100 ÷ 5 = 20 Pa.'
-  },
+{
+q:"100N لەسەر 5m² فشارێکی چەند دروست دەکات؟",
+options:["10Pa","20Pa","50Pa","100Pa"],
+answer:1,
+explanation:"P = F/A = 100/5 = 20Pa."
+},
 
-  {
-    id:'p11',
-    q:'ئەگەر 10N هێز جەستەیەک 3m بجوڵێنێت، کار چەندە؟',
-    options:[
-      '13 J',
-      '20 J',
-      '30 J',
-      '40 J'
-    ],
-    answer:2,
-    explanation:'Work = Force × Distance = 10 × 3 = 30 J.'
-  },
+{
+q:"10N جەستەیەک 3m دەجوڵێنێت. کار چەندە؟",
+options:["13J","20J","30J","40J"],
+answer:2,
+explanation:"W = Fd = 10×3 = 30J."
+},
 
-  {
-    id:'p12',
-    q:'ئەگەر 100J کار لە 20s ـدا ئەنجام بدرێت، توان چەندە؟',
-    options:[
-      '2 W',
-      '5 W',
-      '10 W',
-      '20 W'
-    ],
-    answer:1,
-    explanation:'Power = Work ÷ Time = 100 ÷ 20 = 5 W.'
-  },
+{
+q:"100J کار لە 20s ـدا. توان چەندە؟",
+options:["2W","5W","10W","20W"],
+answer:1,
+explanation:"P = W/t = 100/20 = 5W."
+},
 
-  {
-    id:'p13',
-    q:'کام یەکە بۆ وزەی جوڵەیی بەکاردێت؟',
-    options:[
-      'Joule',
-      'Newton',
-      'Watt',
-      'Volt'
-    ],
-    answer:0,
-    explanation:'Kinetic energy ـەکە بە Joule پێوانە دەکرێت.'
-  },
+{
+q:"وزەی جوڵەیی بە چ یەکەیەک پێوانە دەکرێت؟",
+options:["Joule","Newton","Watt","Volt"],
+answer:0,
+explanation:"وزە بە Joule پێوانە دەکرێت."
+},
 
-  {
-    id:'p14',
-    q:'فۆرمولەی وزەی جوڵەیی کامەیە؟',
-    options:[
-      'mgh',
-      'F = ma',
-      '½mv²',
-      'V = IR'
-    ],
-    answer:2,
-    explanation:'Kinetic Energy = ½mv².'
-  },
+{
+q:"فۆرمولەی وزەی جوڵەیی کامەیە؟",
+options:["mgh","F=ma","½mv²","V=IR"],
+answer:2,
+explanation:"Kinetic Energy = ½mv²."
+},
 
-  {
-    id:'p15',
-    q:'فۆرمولەی وزەی پۆتانسیەلی گرانشی کامەیە؟',
-    options:[
-      'mgh',
-      'ma',
-      'IR',
-      'Pt'
-    ],
-    answer:0,
-    explanation:'Gravitational potential energy = mgh.'
-  },
+{
+q:"فۆرمولەی وزەی پۆتانسیەلی گرانشی؟",
+options:["mgh","ma","IR","Pt"],
+answer:0,
+explanation:"Gravitational Potential Energy = mgh."
+},
 
-  {
-    id:'p16',
-    q:'ئەگەر 12V و 4Ω هەبێت، بەپێی یاسای Ohm جریانی کارەبا چەندە؟',
-    options:[
-      '2 A',
-      '3 A',
-      '4 A',
-      '8 A'
-    ],
-    answer:1,
-    explanation:'I = V ÷ R = 12 ÷ 4 = 3A.'
-  },
+{
+q:"V=12V و R=4Ω. I چەندە؟",
+options:["2A","3A","4A","8A"],
+answer:1,
+explanation:"I=V/R=12/4=3A."
+},
 
-  {
-    id:'p17',
-    q:'یاسای Ohm چی دەڵێت؟',
-    options:[
-      'V = IR',
-      'F = ma',
-      'P = W/t',
-      'E = mc²'
-    ],
-    answer:0,
-    explanation:'لە یاسای Ohm ـدا V = IR.'
-  },
+{
+q:"یاسای Ohm چییە؟",
+options:["V=IR","F=ma","P=W/t","E=mc²"],
+answer:0,
+explanation:"یاسای Ohm: V=IR."
+},
 
-  {
-    id:'p18',
-    q:'ئەگەر V = 12V و I = 2A بێت، توان چەندە؟',
-    options:[
-      '6 W',
-      '14 W',
-      '24 W',
-      '36 W'
-    ],
-    answer:2,
-    explanation:'P = VI = 12 × 2 = 24W.'
-  },
+{
+q:"V=12V و I=2A. توان چەندە؟",
+options:["6W","14W","24W","36W"],
+answer:2,
+explanation:"P=VI=12×2=24W."
+},
 
-  {
-    id:'p19',
-    q:'ئەگەر جریانی 3A بۆ 4s بەردەوام بێت، charge چەندە؟',
-    options:[
-      '7 C',
-      '12 C',
-      '16 C',
-      '20 C'
-    ],
-    answer:1,
-    explanation:'Q = It = 3 × 4 = 12C.'
-  },
+{
+q:"I=3A بۆ 4s. Charge چەندە؟",
+options:["7C","12C","16C","20C"],
+answer:1,
+explanation:"Q=It=3×4=12C."
+},
 
-  {
-    id:'p20',
-    q:'یەکەی frequency چییە؟',
-    options:[
-      'Meter',
-      'Hertz',
-      'Joule',
-      'Newton'
-    ],
-    answer:1,
-    explanation:'Frequency بە Hertz (Hz) پێوانە دەکرێت.'
-  },
+{
+q:"یەکەی Frequency چییە؟",
+options:["Meter","Hertz","Joule","Newton"],
+answer:1,
+explanation:"Frequency بە Hertz پێوانە دەکرێت."
+},
 
-  {
-    id:'p21',
-    q:'ئەگەر frequency = 5Hz و wavelength = 2m بێت، خێرایی موج چەندە؟',
-    options:[
-      '5 m/s',
-      '7 m/s',
-      '10 m/s',
-      '20 m/s'
-    ],
-    answer:2,
-    explanation:'v = fλ = 5 × 2 = 10m/s.'
-  },
+{
+q:"f=5Hz و λ=2m. خێرایی موج؟",
+options:["5m/s","7m/s","10m/s","20m/s"],
+answer:2,
+explanation:"v=fλ=5×2=10m/s."
+},
 
-  {
-    id:'p22',
-    q:'خێرایی ڕووناکی لە vacuum نزیکەی چەندە؟',
-    options:[
-      '3 × 10⁶ m/s',
-      '3 × 10⁷ m/s',
-      '3 × 10⁸ m/s',
-      '3 × 10⁹ m/s'
-    ],
-    answer:2,
-    explanation:'خێرایی ڕووناکی نزیکەی 3 × 10⁸ m/s ـە.'
-  },
+{
+q:"خێرایی ڕووناکی لە vacuum نزیکەی چەندە؟",
+options:["3×10⁶","3×10⁷","3×10⁸","3×10⁹ m/s"],
+answer:2,
+explanation:"خێرایی ڕووناکی نزیکەی 3×10⁸m/s ـە."
+},
 
-  {
-    id:'p23',
-    q:'دەنگ لە کام مادەیەدا بەخێراتر دەگوازرێتەوە؟',
-    options:[
-      'Vacuum',
-      'هەوا',
-      'ئاڤ',
-      'جەستەی ڕەق'
-    ],
-    answer:3,
-    explanation:'بە گشتی دەنگ لە جەستەی ڕەق بەخێراتر دەگوازرێتەوە.'
-  },
+{
+q:"دەنگ بە گشتی لە کامدا خێراترە؟",
+options:["Vacuum","هەوا","ئاڤ","جەستەی ڕەق"],
+answer:3,
+explanation:"دەنگ لە جەستەی ڕەق بەخێراتر دەگوازرێتەوە."
+},
 
-  {
-    id:'p24',
-    q:'یەکەی acceleration چییە؟',
-    options:[
-      'm/s',
-      'm/s²',
-      'kg/s',
-      'N/m'
-    ],
-    answer:1,
-    explanation:'Acceleration بە m/s² پێوانە دەکرێت.'
-  },
+{
+q:"یەکەی acceleration چییە؟",
+options:["m/s","m/s²","kg/s","N/m"],
+answer:1,
+explanation:"Acceleration بە m/s² پێوانە دەکرێت."
+},
 
-  {
-    id:'p25',
-    q:'ئەگەر mass = 4kg و speed = 5m/s بێت، momentum چەندە؟',
-    options:[
-      '9 kg·m/s',
-      '20 kg·m/s',
-      '25 kg·m/s',
-      '40 kg·m/s'
-    ],
-    answer:1,
-    explanation:'p = mv = 4 × 5 = 20 kg·m/s.'
-  },
+{
+q:"m=4kg و v=5m/s. Momentum چەندە؟",
+options:["9","20","25","40 kg·m/s"],
+answer:1,
+explanation:"p=mv=4×5=20kg·m/s."
+},
 
-  {
-    id:'p26',
-    q:'یاسای سێیەمی Newton چییە؟',
-    options:[
-      'هێز = mass × acceleration',
-      'هەر کردارێک وەڵامێکی هاوشێوەی هەیە',
-      'وزە نابێت لەناوبچێت',
-      'فشار = هێز ÷ ڕووبەر'
-    ],
-    answer:1,
-    explanation:'هەر کردارێک وەڵامێکی هاوشێوە و پێچەوانەی هەیە.'
-  },
+{
+q:"یاسای سێیەمی Newton چییە؟",
+options:[
+"F=ma",
+"هەر کردارێک وەڵامێکی هاوشێوەی هەیە",
+"وزە نابێت لەناوبچێت",
+"P=F/A"
+],
+answer:1,
+explanation:"هەر کردارێک وەڵامێکی هاوشێوە و پێچەوانەی هەیە."
+},
 
-  {
-    id:'p27',
-    q:'Friction زۆرجار چی دەکات؟',
-    options:[
-      'جوڵە زیاد دەکات',
-      'دژایەتی جوڵە دەکات',
-      'mass زیاد دەکات',
-      'وزە دروست دەکات'
-    ],
-    answer:1,
-    explanation:'Friction زۆرجار دژایەتی جوڵە دەکات.'
-  },
+{
+q:"Friction زۆرجار چی دەکات؟",
+options:[
+"جوڵە زیاد دەکات",
+"دژایەتی جوڵە دەکات",
+"mass زیاد دەکات",
+"وزە دروست دەکات"
+],
+answer:1,
+explanation:"Friction زۆرجار دژایەتی جوڵە دەکات."
+},
 
-  {
-    id:'p28',
-    q:'Acceleration ـی گرانشی زەوی نزیکەی چەندە؟',
-    options:[
-      '1.8 m/s²',
-      '5.5 m/s²',
-      '9.8 m/s²',
-      '20 m/s²'
-    ],
-    answer:2,
-    explanation:'g لەسەر زەوی نزیکەی 9.8m/s² ـە.'
-  },
+{
+q:"g لەسەر زەوی نزیکەی چەندە؟",
+options:["1.8","5.5","9.8","20 m/s²"],
+answer:2,
+explanation:"g نزیکەی 9.8m/s² ـە."
+},
 
-  {
-    id:'p29',
-    q:'لە فشاری ئاسایی، ئاڤ لە چەند °C ـدا دەکوڵێت؟',
-    options:[
-      '0°C',
-      '50°C',
-      '100°C',
-      '150°C'
-    ],
-    answer:2,
-    explanation:'لە فشاری ئاسایی ئاڤ لە 100°C دەکوڵێت.'
-  },
+{
+q:"لە فشاری ئاسایی ئاڤ لە چەند °C دەکوڵێت؟",
+options:["0°C","50°C","100°C","150°C"],
+answer:2,
+explanation:"لە فشاری ئاسایی ئاڤ لە 100°C دەکوڵێت."
+},
 
-  {
-    id:'p30',
-    q:'لە زنجیرەیەکی کارەبایی Series، جریانی کارەبا چۆنە؟',
-    options:[
-      'لە هەر بەشێکدا هەمانە',
-      'هەموو شوێنێک جیاوازە',
-      'تەنها لە یەک بەشدا هەیە',
-      'هیچ جۆرێکی نییە'
-    ],
-    answer:0,
-    explanation:'لە Series ـدا current لە هەموو بەشەکاندا یەکسانە.'
-  }
+{
+q:"لە Series ـدا current چۆنە؟",
+options:[
+"لە هەموو بەشەکاندا یەکسانە",
+"هەموو شوێنێک جیاوازە",
+"تەنها یەک بەش",
+"هیچ جۆرێکی نییە"
+],
+answer:0,
+explanation:"لە Series ـدا current لە هەموو بەشەکاندا یەکسانە."
+}
 
 ];
 
+let physicsDeck=[];
+let physicsIndex=0;
+let physicsScore=0;
+let physicsTime=30;
+let physicsTimer=null;
+let physicsAnswered=false;
 
-/* =========================
-   PHYSICS VARIABLES
-========================= */
+function shuffle(a){
 
-let physicsDeck = [];
-let physicsIndex = 0;
-let physicsScore = 0;
-let physicsTime = 30;
-let physicsTimer = null;
-let physicsAnswered = false;
+  const x=[...a];
 
+  for(let i=x.length-1;i>0;i--){
 
-/* =========================
-   SHUFFLE
-========================= */
+    const j=Math.floor(Math.random()*(i+1));
 
-function shuffle(array){
-
-  const a =
-    [...array];
-
-  for(
-    let i=a.length-1;
-    i>0;
-    i--
-  ){
-
-    const j =
-      Math.floor(
-        Math.random()*(i+1)
-      );
-
-    [
-      a[i],
-      a[j]
-    ]=[
-      a[j],
-      a[i]
-    ];
-
+    [x[i],x[j]]=[x[j],x[i]];
   }
 
-  return a;
-
+  return x;
 }
-
-
-/* =========================
-   PHYSICS STORAGE KEY
-========================= */
 
 function physicsKey(){
 
-  return 'physicsRemaining_' +
-    (me ? me.id : 'guest');
-
+  return "physicsRemaining_" + me.id;
 }
-
-
-/* =========================
-   START PHYSICS
-========================= */
 
 function startPhysics(){
 
   if(!me){
-
-    return alert(
-      'سەرەتا هەژمار دروست بکە'
-    );
-
+    return toast("سەرەتا بچۆ ژوورەوە");
   }
 
-  let remaining = [];
+  let remaining=[];
 
   try{
-
-    remaining =
-      JSON.parse(
-        localStorage.getItem(
-          physicsKey()
-        ) || '[]'
-      );
-
-  }catch(e){
-
+    remaining=JSON.parse(
+      localStorage.getItem(physicsKey()) || "[]"
+    );
+  }catch{
     remaining=[];
-
   }
-
-
-  /*
-    ئەگەر هەموو پرسیارەکان
-    بەکار هێنراون، خشتەکە
-    لە نوێوە دەست پێدەکات.
-  */
 
   if(
     !Array.isArray(remaining) ||
     remaining.length===0
   ){
-
-    remaining =
-      physicsQuestions.map(
-        q=>q.id
-      );
-
+    remaining=physicsQuestions.map((_,i)=>i);
   }
 
+  remaining=shuffle(remaining);
 
-  remaining =
-    shuffle(remaining);
+  const count=Math.min(10,remaining.length);
 
-
-  /*
-    لەم session ـەدا
-    هیچ پرسیارێک دووبارە نابێتەوە.
-  */
-
-  const count =
-    Math.min(
-      10,
-      remaining.length
-    );
-
-
-  const selected =
-    remaining.splice(
-      0,
-      count
-    );
-
+  const selected=remaining.splice(0,count);
 
   localStorage.setItem(
     physicsKey(),
     JSON.stringify(remaining)
   );
 
-
-  physicsDeck =
-    selected
-      .map(
-        id =>
-          physicsQuestions.find(
-            q=>q.id===id
-          )
-      )
-      .filter(Boolean);
-
+  physicsDeck=selected.map(i=>physicsQuestions[i]);
 
   physicsIndex=0;
   physicsScore=0;
 
-  $('physicsBox')
-    .classList.remove('hidden');
+  $("physicsBox").classList.remove("hidden");
 
-  $('physicsScore')
-    .textContent='0';
+  $("physicsScore").textContent="0";
 
   showPhysicsQuestion();
 
-  $('physicsBox')
-    .scrollIntoView({
-      behavior:'smooth',
-      block:'start'
-    });
-
+  $("physicsBox").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
 }
-
-
-/* =========================
-   SHOW QUESTION
-========================= */
 
 function showPhysicsQuestion(){
 
-  clearInterval(
-    physicsTimer
-  );
+  clearInterval(physicsTimer);
 
   physicsAnswered=false;
 
-  const q =
-    physicsDeck[
-      physicsIndex
-    ];
+  const q=physicsDeck[physicsIndex];
 
   if(!q){
-
     finishPhysics();
-
     return;
-
   }
 
+  $("physicsNumber").textContent =
+    "پرسیار " +
+    (physicsIndex+1) +
+    " لە " +
+    physicsDeck.length;
 
-  $('physicsNumber')
-    .textContent =
-      'پرسیار ' +
-      (physicsIndex+1) +
-      ' لە ' +
-      physicsDeck.length;
+  $("physicsScore").textContent=physicsScore;
 
+  $("physicsProgress").style.width =
+    ((physicsIndex/physicsDeck.length)*100)+"%";
 
-  $('physicsScore')
-    .textContent =
-      physicsScore;
+  $("physicsQuestion").textContent=q.q;
 
+  $("physicsResult").className="result hidden";
+  $("physicsResult").textContent="";
 
-  const progress =
-    (
-      physicsIndex /
-      physicsDeck.length
-    ) * 100;
+  $("physicsNext").classList.add("hidden");
 
+  const box=$("physicsOptions");
+  box.innerHTML="";
 
-  $('physicsProgress')
-    .style.width =
-      progress + '%';
+  q.options.forEach((text,index)=>{
 
+    const btn=document.createElement("button");
 
-  $('physicsQuestion')
-    .textContent =
-      q.q;
+    btn.className="option";
+    btn.textContent=text;
 
+    btn.onclick=()=>{
+      answerPhysics(index,btn);
+    };
 
-  $('physicsResult')
-    .className =
-      'result hidden';
-
-
-  $('physicsResult')
-    .textContent='';
-
-
-  $('physicsNext')
-    .classList.add(
-      'hidden'
-    );
-
-
-  const box =
-    $('physicsOptions');
-
-
-  box.innerHTML='';
-
-
-  q.options.forEach(
-    (option,index)=>{
-
-      const btn =
-        document.createElement(
-          'button'
-        );
-
-      btn.className='option';
-
-      btn.textContent =
-        option;
-
-      btn.onclick=()=>{
-        answerPhysics(
-          index,
-          btn
-        );
-      };
-
-      box.appendChild(btn);
-
-    }
-  );
-
+    box.appendChild(btn);
+  });
 
   physicsTime=30;
 
-  $('physicsTime')
-    .textContent=
-      physicsTime;
+  $("physicsTime").textContent=physicsTime;
 
+  physicsTimer=setInterval(()=>{
 
-  physicsTimer =
-    setInterval(
-      ()=>{
-        physicsTime--;
+    physicsTime--;
 
-        $('physicsTime')
-          .textContent=
-            physicsTime;
+    $("physicsTime").textContent=physicsTime;
 
-        if(
-          physicsTime<=0
-        ){
+    if(physicsTime<=0){
 
-          clearInterval(
-            physicsTimer
-          );
+      clearInterval(physicsTimer);
 
-          answerPhysics(
-            -1,
-            null
-          );
+      answerPhysics(-1,null);
+    }
 
-        }
-
-      },
-      1000
-    );
-
+  },1000);
 }
 
+function answerPhysics(selected,clicked){
 
-/* =========================
-   ANSWER PHYSICS
-========================= */
-
-function answerPhysics(
-  selected,
-  clickedButton
-){
-
-  if(
-    physicsAnswered
-  ){
-    return;
-  }
+  if(physicsAnswered) return;
 
   physicsAnswered=true;
 
-  clearInterval(
-    physicsTimer
-  );
+  clearInterval(physicsTimer);
 
-  const q =
-    physicsDeck[
-      physicsIndex
-    ];
+  const q=physicsDeck[physicsIndex];
 
-
-  const buttons =
+  const buttons=
     document.querySelectorAll(
-      '#physicsOptions .option'
+      "#physicsOptions .option"
     );
 
+  buttons.forEach((btn,i)=>{
 
-  buttons.forEach(
-    (btn,i)=>{
+    btn.disabled=true;
 
-      btn.disabled=true;
-
-      if(
-        i===q.answer
-      ){
-
-        btn.classList.add(
-          'correct'
-        );
-
-      }
-
+    if(i===q.answer){
+      btn.classList.add("correct");
     }
-  );
+  });
 
+  const result=$("physicsResult");
 
-  const result =
-    $('physicsResult');
-
-
-  if(
-    selected===q.answer
-  ){
+  if(selected===q.answer){
 
     physicsScore++;
 
-    result.className =
-      'result correctResult';
+    result.className="result correctResult";
 
     result.innerHTML =
-      '✅ ڕاستە! ' +
+      "✅ ڕاستە! " +
       esc(q.explanation) +
-      '<br>⭐ +5 XP';
+      "<br>⭐ +5 XP";
 
   }else{
 
-    if(clickedButton){
-
-      clickedButton
-        .classList.add(
-          'wrong'
-        );
-
+    if(clicked){
+      clicked.classList.add("wrong");
     }
 
-    result.className =
-      'result wrongResult';
+    result.className="result wrongResult";
 
     result.innerHTML =
-      '❌ هەڵەیە. ' +
+      "❌ هەڵەیە. " +
       esc(q.explanation);
-
   }
 
+  $("physicsScore").textContent=physicsScore;
 
-  $('physicsScore')
-    .textContent =
-      physicsScore;
-
-
-  $('physicsNext')
-    .classList.remove(
-      'hidden'
-    );
-
+  $("physicsNext").classList.remove("hidden");
 }
-
-
-/* =========================
-   NEXT PHYSICS
-========================= */
 
 function nextPhysics(){
 
   physicsIndex++;
 
-  if(
-    physicsIndex >=
-    physicsDeck.length
-  ){
-
+  if(physicsIndex>=physicsDeck.length){
     finishPhysics();
-
     return;
-
   }
 
   showPhysicsQuestion();
-
 }
-
-
-/* =========================
-   FINISH PHYSICS
-========================= */
 
 function finishPhysics(){
 
-  clearInterval(
-    physicsTimer
+  clearInterval(physicsTimer);
+
+  const xp=physicsScore*5;
+
+  const xpKey="physicsXP_"+me.id;
+  const correctKey="physicsCorrect_"+me.id;
+
+  const oldXP=Number(
+    localStorage.getItem(xpKey)||0
   );
 
-  const xp =
-    physicsScore * 5;
-
-
-  const xpKey =
-    'physicsXP_' +
-    me.id;
-
-
-  const correctKey =
-    'physicsCorrect_' +
-    me.id;
-
-
-  const oldXP =
-    Number(
-      localStorage.getItem(
-        xpKey
-      ) || 0
-    );
-
-
-  const oldCorrect =
-    Number(
-      localStorage.getItem(
-        correctKey
-      ) || 0
-    );
-
+  const oldCorrect=Number(
+    localStorage.getItem(correctKey)||0
+  );
 
   localStorage.setItem(
     xpKey,
-    String(oldXP + xp)
+    String(oldXP+xp)
   );
-
 
   localStorage.setItem(
     correctKey,
-    String(
-      oldCorrect +
-      physicsScore
-    )
+    String(oldCorrect+physicsScore)
   );
 
+  $("physicsQuestion").innerHTML=
+    "🎉 تاقیکردنەوەکە تەواو بوو!";
 
-  $('physicsQuestion')
-    .innerHTML =
-      '🎉 تاقیکردنەوەکە تەواو بوو!';
+  $("physicsOptions").innerHTML=`
+    <div style="
+      grid-column:1/-1;
+      text-align:center;
+      padding:25px">
 
+      <div style="
+        font-size:58px;
+        filter:drop-shadow(0 0 20px #8b5cff)">
+        🏆
+      </div>
 
-  $('physicsOptions')
-    .innerHTML =
-      '<div style="grid-column:1/-1;text-align:center;padding:20px">' +
-      '<div style="font-size:45px">🏆</div>' +
-      '<h2>' +
-      physicsScore +
-      ' / ' +
-      physicsDeck.length +
-      '</h2>' +
-      '<p class="muted">' +
-      'بەدەستت هێنا: ' +
-      xp +
-      ' XP' +
-      '</p>' +
-      '</div>';
+      <h2>
+        ${physicsScore} / ${physicsDeck.length}
+      </h2>
 
+      <p class="muted">
+        بەدەستت هێنا:
+        <b style="color:#fff">${xp} XP</b>
+      </p>
 
-  $('physicsResult')
-    .className =
-      'result correctResult';
+    </div>
+  `;
 
+  $("physicsResult").className=
+    "result correctResult";
 
-  $('physicsResult')
-    .innerHTML =
-      '⭐ نمرەکەت: ' +
-      physicsScore +
-      ' ـە';
+  $("physicsResult").innerHTML=
+    "⭐ نمرەکەت: " + physicsScore;
 
+  $("physicsNext").textContent=
+    "دووبارە یاری کردن 🔄";
 
-  $('physicsNext')
-    .textContent =
-      'دووبارە یاری کردن 🔄';
+  $("physicsNext").classList.remove("hidden");
 
+  $("physicsNext").onclick=startPhysics;
 
-  $('physicsNext')
-    .classList.remove(
-      'hidden'
-    );
-
-
-  $('physicsNext')
-    .onclick =
-      startPhysics;
-
-
-  $('physicsProgress')
-    .style.width='100%';
-
+  $("physicsProgress").style.width="100%";
 
   load();
-
 }
-
-
-/* =========================
-   CLOSE PHYSICS
-========================= */
 
 function closePhysics(){
 
-  clearInterval(
-    physicsTimer
-  );
+  clearInterval(physicsTimer);
 
-  $('physicsBox')
-    .classList.add(
-      'hidden'
-    );
-
+  $("physicsBox").classList.add("hidden");
 }
 
-
 /* =========================
-   LOAD DATA
+ LOAD
 ========================= */
 
 async function load(){
 
-  if(!me){
-    return;
-  }
+  if(!me || !token) return;
 
   try{
 
-    const r =
-      await fetch(
-        '/api/data'
-      );
+    const r=await api("/api/data");
 
-    const d =
-      await r.json();
+    const d=await r.json();
 
+    if(!r.ok){
+      return;
+    }
 
-    const myQuestions =
-      d.questions.filter(
-        q =>
-          q.userId===me.id
-      );
+    const questions=d.questions || [];
+    const answers=d.answers || [];
+    const users=d.users || [];
 
+    const mineQ=questions.filter(
+      q=>q.userId===me.id
+    );
 
-    const myAnswers =
-      d.answers.filter(
-        a =>
-          a.userId===me.id
-      );
+    const mineA=answers.filter(
+      a=>a.userId===me.id
+    );
 
+    const likes=mineQ.reduce(
+      (sum,q)=>sum+(q.likes||0),
+      0
+    );
 
-    const likes =
-      myQuestions.reduce(
-        (sum,q)=>
-          sum+(q.likes||0),
-        0
-      );
+    const physicsXP=Number(
+      localStorage.getItem(
+        "physicsXP_"+me.id
+      )||0
+    );
 
+    const physicsCorrect=Number(
+      localStorage.getItem(
+        "physicsCorrect_"+me.id
+      )||0
+    );
 
-    const physicsXP =
-      Number(
-        localStorage.getItem(
-          'physicsXP_' +
-          me.id
-        ) || 0
-      );
+    $("questionCount").textContent=
+      mineQ.length;
 
+    $("answerCount").textContent=
+      mineA.length;
 
-    const physicsCorrect =
-      Number(
-        localStorage.getItem(
-          'physicsCorrect_' +
-          me.id
-        ) || 0
-      );
+    $("likeCount").textContent=
+      likes;
 
+    $("physicsCount").textContent=
+      physicsCorrect;
 
-    $('questionCount')
-      .textContent =
-        myQuestions.length;
-
-
-    $('answerCount')
-      .textContent =
-        myAnswers.length;
-
-
-    $('likeCount')
-      .textContent =
-        likes;
-
-
-    $('physicsCount')
-      .textContent =
-        physicsCorrect;
-
-
-    /*
-      XP:
-      پرسیار = 10
-      وەڵام = 15
-      Like = 2
-      Physics = 5 بۆ هەر وەڵامی ڕاست
-    */
-
-    const xp =
-      myQuestions.length * 10 +
-      myAnswers.length * 15 +
-      likes * 2 +
+    const xp=
+      mineQ.length*10+
+      mineA.length*15+
+      likes*2+
       physicsXP;
 
-
-    const level =
+    const level=
       Math.max(
         1,
-        Math.floor(
-          xp / 100
-        ) + 1
+        Math.floor(xp/100)+1
       );
 
+    const current=xp%100;
 
-    const currentXP =
-      xp % 100;
+    $("level").textContent=level;
 
+    $("xpText").textContent=
+      current+" / 100 XP";
 
-    $('level')
-      .textContent =
-        level;
+    $("xpFill").style.width=
+      current+"%";
 
+    let rank="🌱 Newbie";
 
-    $('xpText')
-      .textContent =
-        currentXP +
-        ' / 100 XP';
+    if(level>=3) rank="⚡ Active";
+    if(level>=5) rank="💎 Expert";
+    if(level>=10) rank="👑 SHALAW Legend";
 
+    $("rank").textContent=rank;
 
-    $('xpFill')
-      .style.width =
-        currentXP + '%';
+    if(!questions.length){
 
-
-    let rank =
-      '🌱 Newbie';
-
-
-    if(level>=3){
-      rank='⚡ Active';
-    }
-
-    if(level>=5){
-      rank='💎 Expert';
-    }
-
-    if(level>=10){
-      rank='👑 SHALAW Legend';
-    }
-
-
-    $('rank')
-      .textContent =
-        rank;
-
-
-    /* QUESTIONS */
-
-    if(
-      !d.questions ||
-      d.questions.length===0
-    ){
-
-      $('list').innerHTML =
-        '<p class="muted">' +
-        'هێشتا پرسیارێک نییە.' +
-        '</p>';
+      $("list").innerHTML=`
+        <div class="card" style="text-align:center">
+          <div style="font-size:40px">💬</div>
+          <p class="muted">
+            هێشتا پرسیارێک نییە.
+          </p>
+        </div>
+      `;
 
       return;
-
     }
 
+    $("list").innerHTML=
+      questions.map(q=>{
 
-    $('list').innerHTML =
-      d.questions
-        .map(q=>{
+        const u=users.find(
+          x=>x.id===q.userId
+        );
 
-          const u =
-            d.users.find(
-              x =>
-                x.id===q.userId
-            );
+        const aa=answers.filter(
+          a=>a.questionId===q.id
+        );
 
-
-          const aa =
-            d.answers.filter(
-              a =>
-                a.questionId===q.id
-            );
-
-
-          return `
-
+        return `
           <div class="questionCard">
 
             <div class="questionText">
@@ -2804,90 +2477,112 @@ async function load(){
 
             <div
               class="muted"
-              style="margin-top:7px">
+              style="margin-top:8px">
 
-              👤
-              ${esc(
-                u?.name ||
-                'بەکارهێنەر'
+              👤 ${esc(
+                u?.name || "بەکارهێنەر"
               )}
 
             </div>
 
-
             <div class="actions">
 
               <button
-                onclick="like('${q.id}')">
+                onclick="like('${esc(q.id)}')">
 
-                ❤️
-                ${q.likes || 0}
+                ❤️ ${q.likes||0}
 
               </button>
 
-
               <button
-                onclick="answer('${q.id}')">
+                onclick="answer('${esc(q.id)}')">
 
-                💬
-                وەڵام
+                💬 وەڵام
 
               </button>
 
             </div>
 
-
             ${
               aa.map(a=>{
 
-                const au =
-                  d.users.find(
-                    x =>
-                      x.id===a.userId
-                  );
-
+                const au=users.find(
+                  x=>x.id===a.userId
+                );
 
                 return `
+                  <div class="ans">
 
-                <div class="ans">
+                    <b>
+                      ${esc(
+                        au?.name ||
+                        "بەکارهێنەر"
+                      )}:
+                    </b>
 
-                  <b>
-                    ${esc(
-                      au?.name ||
-                      'بەکارهێنەر'
-                    )}:
-                  </b>
+                    ${esc(a.text)}
 
-                  ${esc(a.text)}
-
-                </div>
-
+                  </div>
                 `;
 
-              }).join('')
+              }).join("")
             }
 
           </div>
+        `;
 
-          `;
-
-        })
-        .join('');
+      }).join("");
 
   }catch(e){
 
-    console.error(e);
+    if(e.message!=="UNAUTHORIZED"){
+      console.error(e);
+    }
 
   }
-
 }
 
-
 /* =========================
-   START
+ AUTO LOGIN
 ========================= */
 
-boot();
+async function checkSession(){
+
+  if(!token){
+    boot();
+    return;
+  }
+
+  try{
+
+    const r=await api("/api/me");
+
+    if(!r.ok){
+      throw new Error("session");
+    }
+
+    const x=await r.json();
+
+    me=x.user || x;
+
+    localStorage.setItem(
+      "me",
+      JSON.stringify(me)
+    );
+
+  }catch{
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("me");
+
+    token="";
+    me=null;
+  }
+
+  boot();
+}
+
+checkSession();
 
 </script>
 
