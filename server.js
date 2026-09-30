@@ -7,6 +7,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 const HOST = "0.0.0.0";
 
@@ -24,12 +25,18 @@ function readDB() {
       questions: []
     };
 
-    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+    fs.writeFileSync(
+      DB_FILE,
+      JSON.stringify(db, null, 2)
+    );
+
     return db;
   }
 
   try {
-    return JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
+    return JSON.parse(
+      fs.readFileSync(DB_FILE, "utf8")
+    );
   } catch {
     return {
       users: [],
@@ -39,7 +46,10 @@ function readDB() {
 }
 
 function writeDB(db) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2));
+  fs.writeFileSync(
+    DB_FILE,
+    JSON.stringify(db, null, 2)
+  );
 }
 
 const sessions = new Map();
@@ -50,7 +60,11 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "100kb" }));
+app.use(
+  express.json({
+    limit: "100kb"
+  })
+);
 
 app.use(
   "/api/",
@@ -61,25 +75,34 @@ app.use(
 );
 
 function createSession(userId) {
-  const token = crypto.randomBytes(32).toString("hex");
+  const token =
+    crypto.randomBytes(32).toString("hex");
 
   sessions.set(token, {
     userId,
-    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000
+    expiresAt:
+      Date.now() +
+      7 * 24 * 60 * 60 * 1000
   });
 
   return token;
 }
 
 function getUser(req) {
-  const auth = req.headers.authorization || "";
+  const authHeader =
+    req.headers.authorization || "";
 
-  if (!auth.startsWith("Bearer ")) return null;
+  if (!authHeader.startsWith("Bearer ")) {
+    return null;
+  }
 
-  const token = auth.slice(7);
+  const token = authHeader.slice(7);
+
   const session = sessions.get(token);
 
-  if (!session) return null;
+  if (!session) {
+    return null;
+  }
 
   if (Date.now() > session.expiresAt) {
     sessions.delete(token);
@@ -103,6 +126,7 @@ function auth(req, res, next) {
   }
 
   req.user = user;
+
   next();
 }
 
@@ -112,32 +136,43 @@ function auth(req, res, next) {
 
 app.post("/api/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const {
+      name,
+      email,
+      password
+    } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
-        error: "تکایە هەموو خانەکان پڕ بکەرەوە."
+        error:
+          "تکایە هەموو خانەکان پڕ بکەرەوە."
       });
     }
 
     if (password.length < 6) {
       return res.status(400).json({
-        error: "Password دەبێت لانیکەم ٦ پیت بێت."
+        error:
+          "Password دەبێت لانیکەم ٦ پیت بێت."
       });
     }
 
     const db = readDB();
 
     const normalizedEmail =
-      String(email).trim().toLowerCase();
+      String(email)
+        .trim()
+        .toLowerCase();
 
-    if (
+    const existingUser =
       db.users.some(
-        user => user.email === normalizedEmail
-      )
-    ) {
+        user =>
+          user.email === normalizedEmail
+      );
+
+    if (existingUser) {
       return res.status(409).json({
-        error: "ئەم Email ـە پێشتر بەکارهاتووە."
+        error:
+          "ئەم Email ـە پێشتر بەکارهاتووە."
       });
     }
 
@@ -151,13 +186,16 @@ app.post("/api/signup", async (req, res) => {
       passwordHash,
       xp: 0,
       level: 1,
-      createdAt: new Date().toISOString()
+      createdAt:
+        new Date().toISOString()
     };
 
     db.users.push(user);
+
     writeDB(db);
 
-    const token = createSession(user.id);
+    const token =
+      createSession(user.id);
 
     res.status(201).json({
       token,
@@ -184,35 +222,46 @@ app.post("/api/signup", async (req, res) => {
 
 app.post("/api/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {
+      email,
+      password
+    } = req.body;
 
     const db = readDB();
 
     const normalizedEmail =
-      String(email || "").trim().toLowerCase();
+      String(email || "")
+        .trim()
+        .toLowerCase();
 
-    const user = db.users.find(
-      u => u.email === normalizedEmail
-    );
+    const user =
+      db.users.find(
+        u =>
+          u.email === normalizedEmail
+      );
 
     if (!user) {
       return res.status(401).json({
-        error: "Email یان Password هەڵەیە."
+        error:
+          "Email یان Password هەڵەیە."
       });
     }
 
-    const valid = await bcrypt.compare(
-      password || "",
-      user.passwordHash
-    );
+    const valid =
+      await bcrypt.compare(
+        password || "",
+        user.passwordHash
+      );
 
     if (!valid) {
       return res.status(401).json({
-        error: "Email یان Password هەڵەیە."
+        error:
+          "Email یان Password هەڵەیە."
       });
     }
 
-    const token = createSession(user.id);
+    const token =
+      createSession(user.id);
 
     res.json({
       token,
@@ -256,66 +305,84 @@ app.get("/api/me", auth, (req, res) => {
 app.get("/api/questions", (req, res) => {
   const db = readDB();
 
-  const questions = db.questions
-    .slice()
-    .reverse()
-    .map(q => {
-      const user = db.users.find(
-        u => u.id === q.userId
-      );
+  const questions =
+    db.questions
+      .slice()
+      .reverse()
+      .map(q => {
+        const user =
+          db.users.find(
+            u => u.id === q.userId
+          );
 
-      return {
-        id: q.id,
-        text: q.text,
-        likes: q.likes || 0,
-        answersCount: q.answersCount || 0,
-        createdAt: q.createdAt,
-        user: {
-          name: user?.name || "Member"
-        }
-      };
-    });
+        return {
+          id: q.id,
+          text: q.text,
+          likes: q.likes || 0,
+          answersCount:
+            q.answersCount || 0,
+          createdAt: q.createdAt,
+          user: {
+            name:
+              user?.name ||
+              "Member"
+          }
+        };
+      });
 
   res.json(questions);
 });
 
-app.post("/api/questions", auth, (req, res) => {
-  const { text } = req.body;
+app.post(
+  "/api/questions",
+  auth,
+  (req, res) => {
+    const { text } = req.body;
 
-  if (!text || !String(text).trim()) {
-    return res.status(400).json({
-      error: "پرسیارەکەت بنووسە."
+    if (
+      !text ||
+      !String(text).trim()
+    ) {
+      return res.status(400).json({
+        error:
+          "پرسیارەکەت بنووسە."
+      });
+    }
+
+    const db = readDB();
+
+    const question = {
+      id: crypto.randomUUID(),
+      userId: req.user.id,
+      text: String(text).trim(),
+      likes: 0,
+      answersCount: 0,
+      createdAt:
+        new Date().toISOString()
+    };
+
+    db.questions.push(question);
+
+    const user =
+      db.users.find(
+        u => u.id === req.user.id
+      );
+
+    if (user) {
+      user.xp =
+        (user.xp || 0) + 10;
+
+      user.level =
+        Math.floor(user.xp / 100) + 1;
+    }
+
+    writeDB(db);
+
+    res.status(201).json({
+      question
     });
   }
-
-  const db = readDB();
-
-  const question = {
-    id: crypto.randomUUID(),
-    userId: req.user.id,
-    text: String(text).trim(),
-    likes: 0,
-    answersCount: 0,
-    createdAt: new Date().toISOString()
-  };
-
-  db.questions.push(question);
-
-  const user = db.users.find(
-    u => u.id === req.user.id
-  );
-
-  if (user) {
-    user.xp = (user.xp || 0) + 10;
-    user.level = Math.floor(user.xp / 100) + 1;
-  }
-
-  writeDB(db);
-
-  res.status(201).json({
-    question
-  });
-});
+);
 
 /* =========================
    LIKE
@@ -327,13 +394,16 @@ app.post(
   (req, res) => {
     const db = readDB();
 
-    const question = db.questions.find(
-      q => q.id === req.params.id
-    );
+    const question =
+      db.questions.find(
+        q =>
+          q.id === req.params.id
+      );
 
     if (!question) {
       return res.status(404).json({
-        error: "پرسیار نەدۆزرایەوە."
+        error:
+          "پرسیار نەدۆزرایەوە."
       });
     }
 
@@ -354,12 +424,20 @@ app.post(
 
 const HTML = `<!DOCTYPE html>
 <html lang="ku">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0"
+>
+
 <title>SHALAW — Community</title>
 
 <style>
+
 *{
   box-sizing:border-box;
   margin:0;
@@ -455,7 +533,8 @@ h1{
   margin-bottom:30px;
 }
 
-.primary,.secondary{
+.primary,
+.secondary{
   padding:15px 24px;
   border-radius:14px;
   font-weight:bold;
@@ -533,7 +612,10 @@ h1{
   gap:15px;
 }
 
-.stat,.question,.action,.leaderboard{
+.stat,
+.question,
+.action,
+.leaderboard{
   background:#111219;
   border:1px solid #242630;
   border-radius:20px;
@@ -648,7 +730,8 @@ footer{
   margin-bottom:20px;
 }
 
-input,textarea{
+input,
+textarea{
   width:100%;
   padding:14px;
   margin-bottom:12px;
@@ -680,6 +763,7 @@ textarea{
 }
 
 @media(max-width:900px){
+
   .hero{
     flex-direction:column;
     text-align:center;
@@ -701,79 +785,134 @@ textarea{
   nav div:nth-child(2){
     display:none;
   }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <nav>
-  <div class="logo">SHALAW</div>
 
-  <div>
-    <a href="#home">Home</a>
-    <a href="#community">Community</a>
-    <a href="#leaderboard">Leaderboard</a>
-  </div>
+<div class="logo">
+SHALAW
+</div>
 
-  <button class="login" onclick="openLogin()">Login</button>
+<div>
+
+<a href="#home">
+Home
+</a>
+
+<a href="#community">
+Community
+</a>
+
+<a href="#leaderboard">
+Leaderboard
+</a>
+
+</div>
+
+<button
+  class="login"
+  onclick="openLogin()"
+>
+Login
+</button>
+
 </nav>
 
-<section class="hero" id="home">
+<section
+  class="hero"
+  id="home"
+>
 
-  <div class="hero-text">
+<div class="hero-text">
 
-    <div class="badge">✦ Welcome to SHALAW</div>
+<div class="badge">
+✦ Welcome to SHALAW
+</div>
 
-    <h1>
-      Your place.<br>
-      Your <span class="gradient">community.</span>
-    </h1>
+<h1>
+Your place.<br>
+Your
+<span class="gradient">
+community.
+</span>
+</h1>
 
-    <p>
-      SHALAW ـە شوێنێکی نوێ بۆ پرسیارکردن،
-      فێربوون، هاوبەشکردنی بیرۆکە و پەیوەندی
-      لەگەڵ کۆمەڵگە.
-    </p>
+<p>
+SHALAW ـە شوێنێکی نوێ بۆ پرسیارکردن،
+فێربوون، هاوبەشکردنی بیرۆکە و پەیوەندی
+لەگەڵ کۆمەڵگە.
+</p>
 
-    <button class="primary" onclick="openSignup()">
-      دروستکردنی ئەکاونت
-    </button>
+<button
+  class="primary"
+  onclick="openSignup()"
+>
+دروستکردنی ئەکاونت
+</button>
 
-    <button class="secondary" onclick="openQuestion()">
-      + پرسیارێک بکە
-    </button>
+<button
+  class="secondary"
+  onclick="openQuestion()"
+>
++ پرسیارێک بکە
+</button>
 
-  </div>
+</div>
 
-  <div class="card">
+<div class="card">
 
-    <div class="avatar">S</div>
+<div class="avatar">
+S
+</div>
 
-    <h2>SHALAW User</h2>
+<h2>
+SHALAW User
+</h2>
 
-    <p style="color:#888;margin-top:7px">
-      Community Member
-    </p>
+<p
+  style="color:#888;margin-top:7px"
+>
+Community Member
+</p>
 
-    <div class="level">
-      <div style="display:flex;justify-content:space-between;color:#aaa">
-        <span>Level 12</span>
-        <span>7,240 XP</span>
-      </div>
+<div class="level">
 
-      <div class="bar">
-        <div></div>
-      </div>
-    </div>
+<div
+  style="display:flex;justify-content:space-between;color:#aaa"
+>
 
-  </div>
+<span>
+Level 12
+</span>
+
+<span>
+7,240 XP
+</span>
+
+</div>
+
+<div class="bar">
+<div></div>
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 <main class="container">
 
-<h2 class="title">Overview</h2>
+<h2 class="title">
+Overview
+</h2>
 
 <div class="stats">
 
@@ -799,55 +938,119 @@ textarea{
 
 </div>
 
-<h2 class="title">Quick Actions</h2>
+<h2 class="title">
+Quick Actions
+</h2>
 
 <div class="actions">
 
-<div class="action" onclick="openQuestion()">
-<div class="action-icon">💬</div>
-<h3>Ask a Question</h3>
-<p>پرسیارێکت هەیە؟ لە کۆمەڵگەکە بپرسە.</p>
+<div
+  class="action"
+  onclick="openQuestion()"
+>
+
+<div class="action-icon">
+💬
+</div>
+
+<h3>
+Ask a Question
+</h3>
+
+<p>
+پرسیارێکت هەیە؟
+لە کۆمەڵگەکە بپرسە.
+</p>
+
 </div>
 
 <div class="action">
-<div class="action-icon">⚡</div>
-<h3>Physics Challenge</h3>
-<p>خۆت لە تاقیکردنەوەی فیزیا تاقی بکەرەوە.</p>
+
+<div class="action-icon">
+⚡
+</div>
+
+<h3>
+Physics Challenge
+</h3>
+
+<p>
+خۆت لە تاقیکردنەوەی فیزیا
+تاقی بکەرەوە.
+</p>
+
 </div>
 
 <div class="action">
-<div class="action-icon">🏆</div>
-<h3>Leaderboard</h3>
-<p>شوێنی خۆت ببینە.</p>
+
+<div class="action-icon">
+🏆
 </div>
+
+<h3>
+Leaderboard
+</h3>
+
+<p>
+شوێنی خۆت ببینە.
+</p>
 
 </div>
 
-<h2 class="title" id="community">
+</div>
+
+<h2
+  class="title"
+  id="community"
+>
 Community Questions
 </h2>
 
 <div id="questions"></div>
 
-<h2 class="title" id="leaderboard">
+<h2
+  class="title"
+  id="leaderboard"
+>
 🏆 Leaderboard
 </h2>
 
 <div class="leaderboard">
 
 <div class="player">
-<strong>🥇 Shalaw</strong>
-<span class="xp">9,820 XP</span>
+
+<strong>
+🥇 Shalaw
+</strong>
+
+<span class="xp">
+9,820 XP
+</span>
+
 </div>
 
 <div class="player">
-<strong>🥈 Member Two</strong>
-<span class="xp">8,540 XP</span>
+
+<strong>
+🥈 Member Two
+</strong>
+
+<span class="xp">
+8,540 XP
+</span>
+
 </div>
 
 <div class="player">
-<strong>🥉 Member Three</strong>
-<span class="xp">7,920 XP</span>
+
+<strong>
+🥉 Member Three
+</strong>
+
+<span class="xp">
+7,920 XP
+</span>
+
 </div>
 
 </div>
@@ -855,24 +1058,45 @@ Community Questions
 </main>
 
 <footer>
+
 © 2026 SHALAW — Built for the community.
+
 </footer>
 
-<div class="modal" id="loginModal">
+<div
+  class="modal"
+  id="loginModal"
+>
 
 <div class="box">
 
-<button class="close" onclick="closeModal('loginModal')">
+<button
+  class="close"
+  onclick="closeModal('loginModal')"
+>
 ×
 </button>
 
-<h2>Login</h2>
+<h2>
+Login
+</h2>
 
-<input id="loginEmail" type="email" placeholder="Email">
+<input
+  id="loginEmail"
+  type="email"
+  placeholder="Email"
+>
 
-<input id="loginPassword" type="password" placeholder="Password">
+<input
+  id="loginPassword"
+  type="password"
+  placeholder="Password"
+>
 
-<button class="form" onclick="login()">
+<button
+  class="form"
+  onclick="login()"
+>
 Login
 </button>
 
@@ -880,23 +1104,45 @@ Login
 
 </div>
 
-<div class="modal" id="signupModal">
+<div
+  class="modal"
+  id="signupModal"
+>
 
 <div class="box">
 
-<button class="close" onclick="closeModal('signupModal')">
+<button
+  class="close"
+  onclick="closeModal('signupModal')"
+>
 ×
 </button>
 
-<h2>Create Account</h2>
+<h2>
+Create Account
+</h2>
 
-<input id="signupName" placeholder="Name">
+<input
+  id="signupName"
+  placeholder="Name"
+>
 
-<input id="signupEmail" type="email" placeholder="Email">
+<input
+  id="signupEmail"
+  type="email"
+  placeholder="Email"
+>
 
-<input id="signupPassword" type="password" placeholder="Password">
+<input
+  id="signupPassword"
+  type="password"
+  placeholder="Password"
+>
 
-<button class="form" onclick="signup()">
+<button
+  class="form"
+  onclick="signup()"
+>
 Create Account
 </button>
 
@@ -904,20 +1150,33 @@ Create Account
 
 </div>
 
-<div class="modal" id="questionModal">
+<div
+  class="modal"
+  id="questionModal"
+>
 
 <div class="box">
 
-<button class="close" onclick="closeModal('questionModal')">
+<button
+  class="close"
+  onclick="closeModal('questionModal')"
+>
 ×
 </button>
 
-<h2>Ask a Question</h2>
+<h2>
+Ask a Question
+</h2>
 
-<textarea id="questionText"
-placeholder="پرسیارەکەت لێرە بنووسە..."></textarea>
+<textarea
+  id="questionText"
+  placeholder="پرسیارەکەت لێرە بنووسە..."
+></textarea>
 
-<button class="form" onclick="sendQuestion()">
+<button
+  class="form"
+  onclick="sendQuestion()"
+>
 Publish Question
 </button>
 
@@ -928,206 +1187,480 @@ Publish Question
 <script>
 
 function openLogin(){
-  document.getElementById("loginModal").style.display="flex";
+
+  document.getElementById(
+    "loginModal"
+  ).style.display = "flex";
+
 }
 
 function openSignup(){
-  document.getElementById("signupModal").style.display="flex";
+
+  document.getElementById(
+    "signupModal"
+  ).style.display = "flex";
+
 }
 
 function openQuestion(){
-  document.getElementById("questionModal").style.display="flex";
+
+  document.getElementById(
+    "questionModal"
+  ).style.display = "flex";
+
 }
 
 function closeModal(id){
-  document.getElementById(id).style.display="none";
+
+  document.getElementById(
+    id
+  ).style.display = "none";
+
 }
+
+/* =========================
+   LOGIN
+========================= */
 
 async function login(){
 
   const email =
-    document.getElementById("loginEmail").value;
+    document.getElementById(
+      "loginEmail"
+    ).value;
 
   const password =
-    document.getElementById("loginPassword").value;
+    document.getElementById(
+      "loginPassword"
+    ).value;
 
   const response =
-    await fetch("/api/login",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email,
-        password
-      })
-    });
+    await fetch(
+      "/api/login",
+      {
+        method: "POST",
 
-  const data = await response.json();
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+  const data =
+    await response.json();
 
   if(!response.ok){
-    alert(data.error || "Login failed");
+
+    alert(
+      data.error ||
+      "Login failed"
+    );
+
     return;
   }
 
-  localStorage.setItem("token",data.token);
+  localStorage.setItem(
+    "token",
+    data.token
+  );
 
-  alert("بە سەرکەوتوویی چوویتە ژوورەوە ✅");
+  alert(
+    "بە سەرکەوتوویی چوویتە ژوورەوە ✅"
+  );
 
-  closeModal("loginModal");
+  closeModal(
+    "loginModal"
+  );
+
 }
+
+/* =========================
+   SIGNUP
+========================= */
 
 async function signup(){
 
   const name =
-    document.getElementById("signupName").value;
+    document.getElementById(
+      "signupName"
+    ).value;
 
   const email =
-    document.getElementById("signupEmail").value;
+    document.getElementById(
+      "signupEmail"
+    ).value;
 
   const password =
-    document.getElementById("signupPassword").value;
+    document.getElementById(
+      "signupPassword"
+    ).value;
 
   const response =
-    await fetch("/api/signup",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        name,
-        email,
-        password
-      })
-    });
+    await fetch(
+      "/api/signup",
+      {
+        method: "POST",
 
-  const data = await response.json();
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      }
+    );
+
+  const data =
+    await response.json();
 
   if(!response.ok){
-    alert(data.error || "Signup failed");
+
+    alert(
+      data.error ||
+      "Signup failed"
+    );
+
     return;
   }
 
-  localStorage.setItem("token",data.token);
+  localStorage.setItem(
+    "token",
+    data.token
+  );
 
-  alert("ئەکاونتەکەت دروستکرا ✅");
+  alert(
+    "ئەکاونتەکەت دروستکرا ✅"
+  );
 
-  closeModal("signupModal");
+  closeModal(
+    "signupModal"
+  );
+
 }
+
+/* =========================
+   SEND QUESTION
+========================= */
 
 async function sendQuestion(){
 
   const text =
-    document.getElementById("questionText").value;
+    document.getElementById(
+      "questionText"
+    ).value;
 
   const token =
-    localStorage.getItem("token");
+    localStorage.getItem(
+      "token"
+    );
 
   if(!token){
-    alert("تکایە سەرەتا Login بکە.");
-    closeModal("questionModal");
+
+    alert(
+      "تکایە سەرەتا Login بکە."
+    );
+
+    closeModal(
+      "questionModal"
+    );
+
     openLogin();
+
     return;
   }
 
   const response =
-    await fetch("/api/questions",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization":"Bearer "+token
-      },
-      body:JSON.stringify({text})
-    });
+    await fetch(
+      "/api/questions",
+      {
+        method: "POST",
 
-  const data = await response.json();
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          "Authorization":
+            "Bearer " + token
+        },
+
+        body: JSON.stringify({
+          text
+        })
+      }
+    );
+
+  const data =
+    await response.json();
 
   if(!response.ok){
-    alert(data.error || "Failed");
+
+    alert(
+      data.error ||
+      "Failed"
+    );
+
     return;
   }
 
-  alert("پرسیارەکەت بڵاوکرایەوە ✅");
+  alert(
+    "پرسیارەکەت بڵاوکرایەوە ✅"
+  );
 
-  document.getElementById("questionText").value="";
+  document.getElementById(
+    "questionText"
+  ).value = "";
 
-  closeModal("questionModal");
+  closeModal(
+    "questionModal"
+  );
 
   loadQuestions();
+
 }
+
+/* =========================
+   LOAD QUESTIONS
+========================= */
 
 async function loadQuestions(){
 
-  const response =
-    await fetch("/api/questions");
+  try{
 
-  if(!response.ok)return;
+    const response =
+      await fetch(
+        "/api/questions"
+      );
 
-  const questions =
-    await response.json();
+    if(!response.ok){
+      return;
+    }
 
-  const container =
-    document.getElementById("questions");
+    const questions =
+      await response.json();
 
-  container.innerHTML="";
+    const container =
+      document.getElementById(
+        "questions"
+      );
 
-  questions.forEach(q=>{
+    container.innerHTML = "";
 
-    const div =
-      document.createElement("div");
+    questions.forEach(
+      function(q){
 
-    div.className="question";
+        const div =
+          document.createElement(
+            "div"
+          );
 
-    div.innerHTML=`
-      <div class="question-user">
-        👤 ${escapeHTML(q.user?.name || "Member")}
-      </div>
+        div.className =
+          "question";
 
-      <p>${escapeHTML(q.text || "")}</p>
+        const userDiv =
+          document.createElement(
+            "div"
+          );
 
-      <button class="small">
-        ❤️ ${q.likes || 0}
-      </button>
+        userDiv.className =
+          "question-user";
 
-      <button class="small">
-        💬 ${q.answersCount || 0}
-      </button>
-    `;
+        userDiv.textContent =
+          "👤 " +
+          (
+            q.user &&
+            q.user.name
+              ? q.user.name
+              : "Member"
+          );
 
-    container.appendChild(div);
-  });
+        const textP =
+          document.createElement(
+            "p"
+          );
+
+        textP.textContent =
+          q.text || "";
+
+        const likeButton =
+          document.createElement(
+            "button"
+          );
+
+        likeButton.className =
+          "small";
+
+        likeButton.textContent =
+          "❤️ " +
+          (q.likes || 0);
+
+        likeButton.onclick =
+          function(){
+
+            likeQuestion(q.id);
+
+          };
+
+        const answerButton =
+          document.createElement(
+            "button"
+          );
+
+        answerButton.className =
+          "small";
+
+        answerButton.textContent =
+          "💬 " +
+          (q.answersCount || 0);
+
+        div.appendChild(
+          userDiv
+        );
+
+        div.appendChild(
+          textP
+        );
+
+        div.appendChild(
+          likeButton
+        );
+
+        div.appendChild(
+          answerButton
+        );
+
+        container.appendChild(
+          div
+        );
+
+      }
+    );
+
+  } catch(error){
+
+    console.error(
+      "Questions error:",
+      error
+    );
+
+  }
+
 }
 
-function escapeHTML(text){
+/* =========================
+   LIKE QUESTION
+========================= */
 
-  const div =
-    document.createElement("div");
+async function likeQuestion(id){
 
-  div.textContent=text;
+  const token =
+    localStorage.getItem(
+      "token"
+    );
 
-  return div.innerHTML;
+  if(!token){
+
+    alert(
+      "تکایە سەرەتا Login بکە."
+    );
+
+    openLogin();
+
+    return;
+  }
+
+  try{
+
+    const response =
+      await fetch(
+        "/api/questions/" +
+        id +
+        "/like",
+        {
+          method: "POST",
+
+          headers: {
+            "Authorization":
+              "Bearer " + token
+          }
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+
+      alert(
+        data.error ||
+        "Like failed"
+      );
+
+      return;
+    }
+
+    loadQuestions();
+
+  } catch(error){
+
+    console.error(
+      "Like error:",
+      error
+    );
+
+  }
+
 }
+
+/* =========================
+   START
+========================= */
 
 loadQuestions();
 
 </script>
 
 </body>
+
 </html>`;
 
 app.get("/", (req, res) => {
-  res.type("html").send(HTML);
+
+  res
+    .type("html")
+    .send(HTML);
+
 });
 
 app.get("/health", (req, res) => {
+
   res.json({
     status: "ok",
     app: "SHALAW"
   });
+
 });
 
-app.listen(PORT, HOST, () => {
-  console.log(
-    `SHALAW running on ${HOST}:${PORT}`
-  );
-});
+app.listen(
+  PORT,
+  HOST,
+  () => {
+
+    console.log(
+      "SHALAW running on " +
+      HOST +
+      ":" +
+      PORT
+    );
+
+  }
+);
