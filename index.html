@@ -1,1017 +1,753 @@
 <!DOCTYPE html>
-<html lang="ku">
+<html lang="ku" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#070711" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SHALAW — Future Community</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#080914">
 
   <style>
-    :root{
-      --bg:#05050b;
-      --bg2:#090914;
-      --card:rgba(255,255,255,.055);
-      --card2:rgba(255,255,255,.08);
-      --line:rgba(255,255,255,.10);
-      --text:#f8f7ff;
-      --muted:#9897aa;
-      --purple:#8b5cf6;
-      --violet:#a855f7;
-      --blue:#4f8cff;
-      --cyan:#22d3ee;
-      --pink:#ec4899;
-      --green:#22c55e;
-      --danger:#ef4444;
-      --radius:26px;
-      --shadow:0 25px 80px rgba(0,0,0,.42);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
+    :root {
+      --bg: #070811;
+      --card: rgba(18, 20, 38, .72);
+      --card2: rgba(25, 28, 50, .82);
+      --text: #fff;
+      --muted: #9da3bd;
+      --purple: #8b5cf6;
+      --blue: #3b82f6;
+      --cyan: #22d3ee;
+      --pink: #ec4899;
+      --border: rgba(255,255,255,.09);
     }
 
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      min-height:100vh;
-      color:var(--text);
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       background:
-        radial-gradient(circle at 15% 10%,rgba(139,92,246,.16),transparent 28%),
-        radial-gradient(circle at 85% 15%,rgba(34,211,238,.10),transparent 25%),
-        radial-gradient(circle at 50% 90%,rgba(168,85,247,.10),transparent 30%),
+        radial-gradient(circle at 15% 10%, rgba(139,92,246,.18), transparent 30%),
+        radial-gradient(circle at 85% 20%, rgba(34,211,238,.13), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(236,72,153,.10), transparent 35%),
         var(--bg);
-      font-family:"Noto Sans Arabic","Inter",sans-serif;
-      overflow-x:hidden;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.25;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-      background-size:55px 55px;
-      mask-image:linear-gradient(to bottom,black,transparent 85%);
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 45px 45px;
+      mask-image: linear-gradient(to bottom, black, transparent);
     }
 
-    ::selection{
-      background:rgba(139,92,246,.35);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    button,input,textarea{
-      font:inherit;
+    button,
+    input,
+    textarea {
+      font: inherit;
     }
 
-    button{
-      cursor:pointer;
+    button {
+      cursor: pointer;
+      border: 0;
     }
 
-    .hidden{
-      display:none!important;
+    .orb {
+      position: fixed;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      opacity: .18;
+      z-index: -1;
     }
 
-    .app{
-      width:min(1450px,100%);
-      margin:auto;
-      padding:18px;
+    .orb.one {
+      background: var(--purple);
+      top: 80px;
+      right: -100px;
     }
 
-    /* TOP NAV */
-
-    .topbar{
-      position:sticky;
-      top:12px;
-      z-index:100;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:13px 15px;
-      border:1px solid var(--line);
-      border-radius:24px;
-      background:rgba(7,7,17,.72);
-      backdrop-filter:blur(25px);
-      -webkit-backdrop-filter:blur(25px);
-      box-shadow:0 15px 50px rgba(0,0,0,.25);
+    .orb.two {
+      background: var(--cyan);
+      bottom: 80px;
+      left: -120px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:max-content;
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
     }
 
-    .brand-logo{
-      position:relative;
-      width:45px;
-      height:45px;
-      display:grid;
-      place-items:center;
-      border-radius:15px;
-      background:linear-gradient(135deg,#8b5cf6,#4f8cff);
-      box-shadow:
-        0 0 35px rgba(139,92,246,.4),
-        inset 0 1px rgba(255,255,255,.4);
-      font-size:20px;
-      font-weight:900;
+    /* NAVBAR */
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(7,8,17,.72);
+      border-bottom: 1px solid var(--border);
     }
 
-    .brand-logo::after{
-      content:"";
-      position:absolute;
-      inset:-5px;
-      border-radius:18px;
-      border:1px solid rgba(139,92,246,.25);
-      animation:pulse 2.5s infinite;
+    .nav-inner {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
 
-    .brand-text strong{
-      display:block;
-      font-size:17px;
-      letter-spacing:2px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 23px;
+      font-weight: 900;
+      letter-spacing: 1px;
     }
 
-    .brand-text span{
-      color:var(--muted);
-      font-size:10px;
-      letter-spacing:1px;
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--purple), var(--blue), var(--cyan));
+      box-shadow: 0 0 30px rgba(139,92,246,.4);
     }
 
-    .nav{
-      display:flex;
-      align-items:center;
-      gap:5px;
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
-    .nav button{
-      border:0;
-      color:var(--muted);
-      background:transparent;
-      padding:10px 13px;
-      border-radius:13px;
-      transition:.25s;
+    .nav-links a {
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: .2s;
     }
 
-    .nav button:hover,
-    .nav button.active{
-      color:white;
-      background:rgba(255,255,255,.075);
+    .nav-links a:hover {
+      color: white;
+      background: rgba(255,255,255,.06);
     }
 
-    .user-mini{
-      display:flex;
-      align-items:center;
-      gap:9px;
+    .nav-actions {
+      display: flex;
+      gap: 8px;
     }
 
-    .avatar{
-      width:38px;
-      height:38px;
-      border-radius:50%;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,#8b5cf6,#ec4899);
-      font-weight:800;
-      box-shadow:0 0 25px rgba(139,92,246,.3);
+    .btn {
+      padding: 11px 17px;
+      border-radius: 13px;
+      color: white;
+      font-weight: 700;
+      transition: .2s;
     }
 
-    .login-btn{
-      border:1px solid rgba(255,255,255,.13);
-      color:white;
-      background:rgba(255,255,255,.06);
-      border-radius:13px;
-      padding:10px 16px;
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      box-shadow: 0 10px 30px rgba(99,102,241,.25);
+    }
+
+    .btn-dark {
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
     }
 
     /* HERO */
 
-    .hero{
-      position:relative;
-      min-height:650px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      padding:90px 20px 60px;
-      overflow:hidden;
+    .hero {
+      padding: 90px 0 55px;
+      text-align: center;
     }
 
-    .orb{
-      position:absolute;
-      border-radius:50%;
-      filter:blur(1px);
-      pointer-events:none;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(139,92,246,.3);
+      background: rgba(139,92,246,.08);
+      border-radius: 999px;
+      color: #c4b5fd;
+      font-size: 13px;
+      margin-bottom: 22px;
     }
 
-    .orb.one{
-      width:420px;
-      height:420px;
-      background:radial-gradient(circle,rgba(139,92,246,.25),transparent 70%);
-      top:0;
-      left:-100px;
-      animation:float 8s ease-in-out infinite;
+    .badge span {
+      width: 7px;
+      height: 7px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 12px #22c55e;
     }
 
-    .orb.two{
-      width:500px;
-      height:500px;
-      background:radial-gradient(circle,rgba(34,211,238,.12),transparent 70%);
-      right:-160px;
-      top:80px;
-      animation:float 10s ease-in-out infinite reverse;
+    .hero h1 {
+      font-size: clamp(42px, 8vw, 82px);
+      line-height: .98;
+      font-weight: 950;
+      letter-spacing: -4px;
+      max-width: 900px;
+      margin: auto;
     }
 
-    .hero-content{
-      position:relative;
-      z-index:2;
-      max-width:950px;
+    .gradient-text {
+      background: linear-gradient(90deg, #a78bfa, #60a5fa, #22d3ee, #f472b6);
+      -webkit-background-clip: text;
+      color: transparent;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 13px;
-      border:1px solid rgba(139,92,246,.25);
-      border-radius:999px;
-      color:#c9b8ff;
-      background:rgba(139,92,246,.08);
-      font-size:12px;
-      margin-bottom:24px;
+    .hero p {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 25px auto 30px;
+      line-height: 1.9;
+      font-size: 17px;
     }
 
-    .eyebrow i{
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:#8b5cf6;
-      box-shadow:0 0 15px #8b5cf6;
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .hero h1{
-      font-size:clamp(55px,10vw,125px);
-      line-height:.9;
-      letter-spacing:-6px;
-      font-weight:900;
-      background:linear-gradient(
-        110deg,
-        #fff 0%,
-        #fff 28%,
-        #b99cff 48%,
-        #68a0ff 72%,
-        #fff 100%
-      );
-      background-size:200%;
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      animation:shine 7s linear infinite;
+    /* CARDS */
+
+    .glass {
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      border-radius: 24px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.22);
     }
 
-    .hero h1 small{
-      display:block;
-      font-size:clamp(15px,2vw,22px);
-      letter-spacing:7px;
-      color:#858395;
-      margin-top:22px;
-      font-weight:500;
+    .section {
+      padding: 35px 0;
     }
 
-    .hero p{
-      max-width:650px;
-      margin:28px auto;
-      color:#aaa8ba;
-      line-height:2;
-      font-size:16px;
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
     }
 
-    .hero-actions{
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
+    .section-title h2 {
+      font-size: 25px;
     }
 
-    .primary{
-      border:0;
-      color:white;
-      padding:14px 23px;
-      border-radius:15px;
-      background:linear-gradient(135deg,#8b5cf6,#5b7cff);
-      box-shadow:
-        0 12px 35px rgba(104,84,246,.3),
-        inset 0 1px rgba(255,255,255,.35);
-      transition:.25s;
-      font-weight:700;
+    .section-title p {
+      color: var(--muted);
+      font-size: 14px;
     }
 
-    .primary:hover{
-      transform:translateY(-3px);
-      box-shadow:0 18px 45px rgba(104,84,246,.42);
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
-    .secondary{
-      border:1px solid var(--line);
-      color:white;
-      padding:14px 23px;
-      border-radius:15px;
-      background:rgba(255,255,255,.045);
-      transition:.25s;
+    .stat {
+      padding: 22px;
     }
 
-    .secondary:hover{
-      background:rgba(255,255,255,.09);
-      transform:translateY(-2px);
+    .stat-icon {
+      width: 45px;
+      height: 45px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(139,92,246,.12);
+      margin-bottom: 15px;
+      font-size: 20px;
     }
 
-    /* SECTIONS */
-
-    section{
-      scroll-margin-top:110px;
-      margin-top:30px;
+    .stat strong {
+      font-size: 28px;
+      display: block;
     }
 
-    .section-head{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:20px;
-      margin-bottom:18px;
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .section-head h2{
-      font-size:27px;
-      letter-spacing:-.7px;
+    /* PROFILE */
+
+    .profile-card {
+      padding: 25px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 20px;
+      align-items: center;
     }
 
-    .section-head p{
-      color:var(--muted);
-      font-size:13px;
-      margin-top:5px;
+    .avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      box-shadow: 0 0 35px rgba(139,92,246,.28);
     }
 
-    /* DASHBOARD */
-
-    .dashboard{
-      display:grid;
-      grid-template-columns:1.7fr 1fr;
-      gap:18px;
+    .profile-info h3 {
+      font-size: 21px;
     }
 
-    .premium-card{
-      position:relative;
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:
-        linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025)),
-        rgba(8,8,18,.8);
-      box-shadow:var(--shadow);
+    .profile-info p {
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 13px;
     }
 
-    .premium-card::before{
-      content:"";
-      position:absolute;
-      width:250px;
-      height:250px;
-      top:-130px;
-      right:-100px;
-      border-radius:50%;
-      background:rgba(139,92,246,.13);
-      filter:blur(35px);
+    .level {
+      min-width: 240px;
     }
 
-    .profile-card{
-      padding:27px;
+    .level-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
     }
 
-    .profile-top{
-      display:flex;
-      justify-content:space-between;
-      gap:15px;
-      align-items:flex-start;
+    .progress {
+      height: 9px;
+      background: rgba(255,255,255,.08);
+      border-radius: 99px;
+      overflow: hidden;
     }
 
-    .profile-main{
-      display:flex;
-      align-items:center;
-      gap:15px;
+    .progress div {
+      height: 100%;
+      width: 72%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      box-shadow: 0 0 15px rgba(34,211,238,.4);
     }
 
-    .big-avatar{
-      width:72px;
-      height:72px;
-      border-radius:23px;
-      display:grid;
-      place-items:center;
-      font-size:25px;
-      font-weight:900;
-      background:linear-gradient(135deg,#8b5cf6,#ec4899);
-      box-shadow:0 15px 40px rgba(139,92,246,.3);
-    }
+    /* GRID */
 
-    .profile-main h3{
-      font-size:21px;
-    }
-
-    .profile-main p{
-      color:var(--muted);
-      font-size:12px;
-      margin-top:4px;
-    }
-
-    .level-pill{
-      border:1px solid rgba(139,92,246,.25);
-      background:rgba(139,92,246,.1);
-      color:#c7b4ff;
-      padding:8px 12px;
-      border-radius:12px;
-      font-size:12px;
-    }
-
-    .xp-area{
-      margin-top:28px;
-    }
-
-    .xp-row{
-      display:flex;
-      justify-content:space-between;
-      color:#aaa8ba;
-      font-size:12px;
-      margin-bottom:9px;
-    }
-
-    .progress{
-      height:9px;
-      border-radius:99px;
-      overflow:hidden;
-      background:rgba(255,255,255,.07);
-    }
-
-    .progress span{
-      display:block;
-      height:100%;
-      width:64%;
-      border-radius:inherit;
-      background:linear-gradient(90deg,#8b5cf6,#4f8cff,#22d3ee);
-      box-shadow:0 0 20px rgba(79,140,255,.35);
-      transition:width .7s;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:23px;
-    }
-
-    .stat{
-      padding:15px;
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:17px;
-      background:rgba(255,255,255,.035);
-    }
-
-    .stat strong{
-      display:block;
-      font-size:22px;
-    }
-
-    .stat span{
-      color:var(--muted);
-      font-size:11px;
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.6fr .8fr;
+      gap: 18px;
     }
 
     /* QUICK */
 
-    .quick{
-      padding:24px;
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
     }
 
-    .quick h3{
-      margin-bottom:16px;
+    .quick {
+      padding: 20px;
+      min-height: 130px;
+      transition: .2s;
     }
 
-    .quick-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
+    .quick:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139,92,246,.35);
     }
 
-    .quick-btn{
-      min-height:110px;
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:18px;
-      background:rgba(255,255,255,.035);
-      color:white;
-      text-align:right;
-      padding:16px;
-      transition:.25s;
+    .quick-icon {
+      font-size: 25px;
+      margin-bottom: 18px;
     }
 
-    .quick-btn:hover{
-      transform:translateY(-4px);
-      background:rgba(255,255,255,.075);
-      border-color:rgba(139,92,246,.28);
+    .quick h3 {
+      font-size: 16px;
+      margin-bottom: 5px;
     }
 
-    .quick-icon{
-      width:37px;
-      height:37px;
-      display:grid;
-      place-items:center;
-      border-radius:12px;
-      margin-bottom:12px;
-      background:rgba(139,92,246,.12);
-      color:#bca5ff;
-      font-size:18px;
-    }
-
-    .quick-btn b{
-      display:block;
-      font-size:13px;
-    }
-
-    .quick-btn span{
-      display:block;
-      color:var(--muted);
-      font-size:10px;
-      margin-top:3px;
+    .quick p {
+      color: var(--muted);
+      font-size: 12px;
     }
 
     /* PHYSICS */
 
-    .challenge{
-      display:grid;
-      grid-template-columns:1.4fr .8fr;
-      gap:18px;
+    .challenge {
+      padding: 25px;
     }
 
-    .physics-card{
-      padding:28px;
+    .challenge-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
     }
 
-    .challenge-label{
-      display:inline-flex;
-      padding:6px 10px;
-      border-radius:8px;
-      background:rgba(34,211,238,.08);
-      color:#72e5f5;
-      font-size:11px;
-      margin-bottom:15px;
+    .challenge-head .tag {
+      color: #67e8f9;
+      background: rgba(34,211,238,.08);
+      padding: 7px 10px;
+      border-radius: 9px;
+      font-size: 12px;
     }
 
-    .physics-card h2{
-      font-size:29px;
-      line-height:1.4;
-      margin-bottom:20px;
+    .question {
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.7;
+      margin-bottom: 18px;
     }
 
-    .answers{
-      display:grid;
-      gap:10px;
+    .answers {
+      display: grid;
+      gap: 10px;
     }
 
-    .answer{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.035);
-      color:#dddbea;
-      padding:14px 16px;
-      border-radius:15px;
-      text-align:right;
-      transition:.2s;
+    .answer {
+      text-align: right;
+      color: white;
+      background: rgba(255,255,255,.045);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border-radius: 13px;
+      transition: .2s;
     }
 
-    .answer:hover{
-      border-color:rgba(139,92,246,.45);
-      background:rgba(139,92,246,.08);
+    .answer:hover {
+      background: rgba(139,92,246,.12);
+      border-color: rgba(139,92,246,.35);
     }
 
-    .answer.correct{
-      border-color:rgba(34,197,94,.6);
-      background:rgba(34,197,94,.1);
+    .answer.correct {
+      background: rgba(34,197,94,.14);
+      border-color: rgba(34,197,94,.5);
     }
 
-    .answer.wrong{
-      border-color:rgba(239,68,68,.6);
-      background:rgba(239,68,68,.1);
+    .answer.wrong {
+      background: rgba(239,68,68,.14);
+      border-color: rgba(239,68,68,.5);
     }
 
-    .challenge-side{
-      padding:28px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
+    /* QUESTIONS */
+
+    .questions {
+      display: grid;
+      gap: 13px;
     }
 
-    .challenge-score{
-      font-size:65px;
-      font-weight:900;
-      line-height:1;
-      background:linear-gradient(135deg,#fff,#9d86ff);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+    .question-card {
+      padding: 20px;
     }
 
-    .challenge-side p{
-      color:var(--muted);
-      font-size:12px;
-      margin-top:7px;
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 12px;
     }
 
-    /* COMMUNITY */
-
-    .community-layout{
-      display:grid;
-      grid-template-columns:1.35fr .65fr;
-      gap:18px;
+    .question-card h3 {
+      font-size: 17px;
+      line-height: 1.6;
+      margin-bottom: 15px;
     }
 
-    .questions{
-      display:grid;
-      gap:12px;
+    .question-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .question{
-      padding:21px;
-      transition:.25s;
+    .like {
+      color: #c4b5fd;
+      background: rgba(139,92,246,.08);
+      padding: 8px 12px;
+      border-radius: 10px;
     }
 
-    .question:hover{
-      transform:translateY(-3px);
-      border-color:rgba(139,92,246,.22);
+    /* LEADERBOARD */
+
+    .leaderboard {
+      padding: 23px;
     }
 
-    .question-user{
-      display:flex;
-      align-items:center;
-      gap:10px;
+    .leader {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
 
-    .question-user .avatar{
-      width:34px;
-      height:34px;
-      font-size:12px;
+    .leader:last-child {
+      border-bottom: 0;
     }
 
-    .question-user b{
-      font-size:13px;
+    .rank {
+      width: 30px;
+      text-align: center;
+      color: #fbbf24;
+      font-weight: 900;
     }
 
-    .question-user span{
-      display:block;
-      color:var(--muted);
-      font-size:9px;
+    .leader-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg,#312e81,#164e63);
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    .question-text{
-      margin:17px 0;
-      font-size:15px;
-      line-height:1.9;
-      color:#efedf7;
+    .leader-info {
+      flex: 1;
     }
 
-    .question-actions{
-      display:flex;
-      gap:8px;
+    .leader-info strong {
+      font-size: 14px;
+      display: block;
     }
 
-    .action{
-      border:1px solid rgba(255,255,255,.07);
-      color:#aaa8ba;
-      background:rgba(255,255,255,.035);
-      border-radius:11px;
-      padding:8px 12px;
-      font-size:11px;
+    .leader-info span {
+      color: var(--muted);
+      font-size: 11px;
     }
 
-    .action:hover{
-      color:white;
-      background:rgba(255,255,255,.08);
-    }
+    /* EMPTY */
 
-    .side-card{
-      padding:24px;
-    }
-
-    .side-card h3{
-      margin-bottom:16px;
-    }
-
-    .leader{
-      display:flex;
-      align-items:center;
-      gap:11px;
-      padding:12px 0;
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .leader:last-child{
-      border-bottom:0;
-    }
-
-    .rank{
-      width:27px;
-      color:#7e7b8d;
-      font-size:12px;
-    }
-
-    .leader .avatar{
-      width:37px;
-      height:37px;
-      font-size:11px;
-    }
-
-    .leader-info{
-      flex:1;
-    }
-
-    .leader-info b{
-      display:block;
-      font-size:12px;
-    }
-
-    .leader-info span{
-      color:var(--muted);
-      font-size:9px;
-    }
-
-    .leader-xp{
-      color:#b99cff;
-      font-size:11px;
-      font-weight:700;
+    .empty {
+      padding: 35px;
+      text-align: center;
+      color: var(--muted);
     }
 
     /* MODAL */
 
-    .modal{
-      position:fixed;
-      inset:0;
-      z-index:500;
-      display:none;
-      place-items:center;
-      padding:18px;
-      background:rgba(0,0,0,.72);
-      backdrop-filter:blur(15px);
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.72);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
     }
 
-    .modal.show{
-      display:grid;
-      animation:fade .25s;
+    .modal.active {
+      display: flex;
     }
 
-    .modal-box{
-      width:min(470px,100%);
-      border:1px solid var(--line);
-      border-radius:28px;
-      padding:28px;
-      background:
-        radial-gradient(circle at top right,rgba(139,92,246,.16),transparent 35%),
-        #0b0b16;
-      box-shadow:0 30px 100px rgba(0,0,0,.7);
-      animation:pop .3s;
+    .modal-box {
+      width: min(470px,100%);
+      background: #111326;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 25px;
+      box-shadow: 0 30px 100px rgba(0,0,0,.5);
     }
 
-    .modal-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:22px;
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
     }
 
-    .close{
-      width:35px;
-      height:35px;
-      border:1px solid var(--line);
-      border-radius:11px;
-      background:rgba(255,255,255,.05);
-      color:white;
+    .close {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      color: white;
+      font-size: 20px;
     }
 
-    .field{
-      margin-bottom:14px;
+    .field {
+      margin-bottom: 14px;
     }
 
-    .field label{
-      display:block;
-      color:#aaa8ba;
-      font-size:11px;
-      margin-bottom:7px;
+    .field label {
+      display: block;
+      color: #c7cbe0;
+      font-size: 13px;
+      margin-bottom: 7px;
     }
 
     .field input,
-    .field textarea{
-      width:100%;
-      border:1px solid rgba(255,255,255,.09);
-      outline:none;
-      border-radius:14px;
-      padding:13px 14px;
-      color:white;
-      background:rgba(255,255,255,.045);
-      transition:.2s;
+    .field textarea {
+      width: 100%;
+      background: rgba(255,255,255,.05);
+      color: white;
+      border: 1px solid var(--border);
+      outline: none;
+      border-radius: 13px;
+      padding: 13px;
     }
 
-    .field textarea{
-      min-height:120px;
-      resize:vertical;
+    .field textarea {
+      min-height: 130px;
+      resize: vertical;
     }
 
     .field input:focus,
-    .field textarea:focus{
-      border-color:rgba(139,92,246,.6);
-      box-shadow:0 0 0 3px rgba(139,92,246,.08);
+    .field textarea:focus {
+      border-color: rgba(139,92,246,.55);
     }
 
-    .modal-tabs{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      padding:4px;
-      border-radius:14px;
-      background:rgba(255,255,255,.04);
-      margin-bottom:20px;
+    .modal-submit {
+      width: 100%;
+      margin-top: 5px;
     }
 
-    .modal-tabs button{
-      border:0;
-      color:var(--muted);
-      padding:10px;
-      border-radius:10px;
-      background:transparent;
+    .switch {
+      color: var(--muted);
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
     }
 
-    .modal-tabs button.active{
-      color:white;
-      background:rgba(255,255,255,.08);
+    .switch button {
+      background: none;
+      color: #a78bfa;
     }
 
     /* TOAST */
 
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:25px;
-      z-index:1000;
-      transform:translate(-50%,20px);
-      opacity:0;
-      pointer-events:none;
-      padding:13px 18px;
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:15px;
-      background:rgba(15,15,28,.9);
-      backdrop-filter:blur(20px);
-      box-shadow:0 15px 50px rgba(0,0,0,.4);
-      transition:.3s;
-      font-size:12px;
+    #toast {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      background: #15182d;
+      border: 1px solid var(--border);
+      padding: 13px 17px;
+      border-radius: 13px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: .3s;
+      z-index: 2000;
     }
 
-    .toast.show{
-      opacity:1;
-      transform:translate(-50%,0);
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
 
-    /* FOOTER */
-
-    footer{
-      text-align:center;
-      padding:70px 20px 35px;
-      color:#666477;
-      font-size:11px;
-    }
-
-    footer strong{
-      color:#a99aff;
-      letter-spacing:2px;
-    }
-
-    /* ANIMATIONS */
-
-    @keyframes pulse{
-      0%,100%{transform:scale(1);opacity:.5}
-      50%{transform:scale(1.08);opacity:1}
-    }
-
-    @keyframes float{
-      0%,100%{transform:translate(0,0)}
-      50%{transform:translate(25px,25px)}
-    }
-
-    @keyframes shine{
-      from{background-position:0%}
-      to{background-position:200%}
-    }
-
-    @keyframes fade{
-      from{opacity:0}
-      to{opacity:1}
-    }
-
-    @keyframes pop{
-      from{opacity:0;transform:scale(.94) translateY(15px)}
-      to{opacity:1;transform:scale(1) translateY(0)}
+    footer {
+      padding: 50px 0 30px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
     }
 
     /* MOBILE */
 
-    @media(max-width:900px){
-      .dashboard,
-      .challenge,
-      .community-layout{
-        grid-template-columns:1fr;
+    @media(max-width:900px) {
+      .stats {
+        grid-template-columns: repeat(2,1fr);
       }
 
-      .nav{
-        display:none;
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
       }
     }
 
-    @media(max-width:600px){
-      .app{
-        padding:10px;
+    @media(max-width:600px) {
+      .container {
+        width: min(100% - 22px,1180px);
       }
 
-      .topbar{
-        top:7px;
-        padding:10px;
+      .hero {
+        padding: 65px 0 35px;
       }
 
-      .brand-text span{
-        display:none;
+      .hero h1 {
+        letter-spacing: -2px;
       }
 
-      .brand-text strong{
-        font-size:15px;
+      .hero p {
+        font-size: 14px;
       }
 
-      .hero{
-        min-height:570px;
-        padding-top:60px;
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
       }
 
-      .hero h1{
-        letter-spacing:-4px;
+      .stat {
+        padding: 16px;
       }
 
-      .hero p{
-        font-size:13px;
-        line-height:1.9;
+      .stat strong {
+        font-size: 23px;
       }
 
-      .section-head h2{
-        font-size:22px;
+      .profile-card {
+        grid-template-columns: auto 1fr;
       }
 
-      .stats{
-        grid-template-columns:1fr 1fr 1fr;
+      .level {
+        grid-column: 1 / -1;
+        min-width: 0;
       }
 
-      .stat{
-        padding:12px 8px;
+      .quick-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
-      .stat strong{
-        font-size:18px;
+      .quick {
+        min-height: 115px;
       }
 
-      .stat span{
-        font-size:9px;
+      .nav-actions .btn-dark {
+        display: none;
       }
 
-      .quick-grid{
-        grid-template-columns:1fr 1fr;
+      .logo {
+        font-size: 18px;
       }
 
-      .profile-top{
-        align-items:flex-start;
-      }
-
-      .level-pill{
-        font-size:9px;
-      }
-
-      .big-avatar{
-        width:58px;
-        height:58px;
-        border-radius:18px;
-      }
-
-      .profile-main h3{
-        font-size:17px;
-      }
-
-      .physics-card h2{
-        font-size:22px;
+      .logo-mark {
+        width: 37px;
+        height: 37px;
       }
     }
   </style>
@@ -1019,1086 +755,995 @@
 
 <body>
 
-<div class="app">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
 
-  <!-- NAVBAR -->
-  <header class="topbar">
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-inner">
 
-    <div class="brand">
-      <div class="brand-logo">S</div>
-      <div class="brand-text">
-        <strong>SHALAW</strong>
-        <span>FUTURE COMMUNITY</span>
+      <a class="logo" href="/">
+        <div class="logo-mark">S</div>
+        SHALAW
+      </a>
+
+      <div class="nav-links">
+        <a href="#home">سەرەتا</a>
+        <a href="#challenge">چالاکی</a>
+        <a href="#community">کۆمەڵگا</a>
+        <a href="#leaderboard">ڕیزبەندی</a>
       </div>
+
+      <div class="nav-actions">
+        <button class="btn btn-dark" onclick="openAuth('login')">چوونەژوورەوە</button>
+        <button class="btn btn-primary" onclick="openAuth('signup')">دروستکردنی هەژمار</button>
+      </div>
+
     </div>
-
-    <nav class="nav">
-      <button class="active" onclick="scrollToId('home')">سەرەتا</button>
-      <button onclick="scrollToId('challenge')">چالاکی</button>
-      <button onclick="scrollToId('community')">کۆمەڵگا</button>
-      <button onclick="scrollToId('profile')">پرۆفایل</button>
-    </nav>
-
-    <div id="userArea">
-      <button class="login-btn" onclick="openAuth()">چوونەژوورەوە</button>
-    </div>
-
-  </header>
+  </nav>
 
   <!-- HERO -->
-  <main id="home">
+  <header class="hero" id="home">
+    <div class="container">
 
-    <section class="hero">
+      <div class="badge">
+        <span></span>
+        SHALAW ـ کۆمەڵگای داهاتوو
+      </div>
 
-      <div class="orb one"></div>
-      <div class="orb two"></div>
+      <h1>
+        بیرۆکەکانت بکە بە
+        <span class="gradient-text">توانا</span>
+      </h1>
 
-      <div class="hero-content">
+      <p>
+        شوێنێکی نوێ بۆ فێربوون، پرسیارکردن،
+        هاوبەشکردنی زانیاری و پێشبڕکێ لەگەڵ کۆمەڵگای SHALAW.
+      </p>
 
-        <div class="eyebrow">
-          <i></i>
-          بەخێربێیت بۆ SHALAW
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="openQuestion()">
+          ✨ پرسیارێک بنووسە
+        </button>
+
+        <a class="btn btn-dark" href="#challenge">
+          ⚡ تاقیکردنەوە بکە
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- PROFILE -->
+    <section class="section">
+      <div class="glass profile-card">
+
+        <div class="avatar" id="avatar">S</div>
+
+        <div class="profile-info">
+          <h3 id="userName">میوانی SHALAW</h3>
+          <p id="userStatus">بۆ دەستپێکردن هەژمارێک دروست بکە</p>
         </div>
 
-        <h1>
-          SHALAW
-          <small>LEARN • CONNECT • CREATE</small>
-        </h1>
+        <div class="level">
+          <div class="level-top">
+            <span id="levelText">Level 1</span>
+            <span id="xpText">0 / 100 XP</span>
+          </div>
 
-        <p>
-          شوێنێکی نوێ بۆ فێربوون، تاقیکردنەوە،
-          هاوبەشکردنی زانیاری و پەیوەندی لەگەڵ کۆمەڵگایەکی بەهێز.
-        </p>
-
-        <div class="hero-actions">
-          <button class="primary" onclick="openAuth()">
-            دەست پێ بکە ✦
-          </button>
-
-          <button class="secondary" onclick="scrollToId('challenge')">
-            تاقیکردنەوەی ئێستا →
-          </button>
+          <div class="progress">
+            <div id="xpBar" style="width:0%"></div>
+          </div>
         </div>
 
       </div>
     </section>
 
-    <!-- PROFILE / DASHBOARD -->
-    <section id="profile">
+    <!-- STATS -->
+    <section class="section">
+      <div class="stats">
 
-      <div class="section-head">
-        <div>
-          <h2>داشبۆردی تۆ</h2>
-          <p>پێشکەوتن و چالاکییەکانت لە یەک شوێن</p>
+        <div class="glass stat">
+          <div class="stat-icon">⚡</div>
+          <strong id="statXP">0</strong>
+          <span>کۆی XP</span>
         </div>
+
+        <div class="glass stat">
+          <div class="stat-icon">🔥</div>
+          <strong id="statStreak">0</strong>
+          <span>ڕۆژ بەردەوام</span>
+        </div>
+
+        <div class="glass stat">
+          <div class="stat-icon">💬</div>
+          <strong id="statQuestions">0</strong>
+          <span>پرسیار</span>
+        </div>
+
+        <div class="glass stat">
+          <div class="stat-icon">🏆</div>
+          <strong id="statLevel">1</strong>
+          <span>ئاست</span>
+        </div>
+
       </div>
+    </section>
 
-      <div class="dashboard">
+    <!-- MAIN GRID -->
+    <div class="main-grid">
 
-        <div class="premium-card profile-card">
+      <div>
 
-          <div class="profile-top">
-
-            <div class="profile-main">
-              <div class="big-avatar" id="bigAvatar">S</div>
-
-              <div>
-                <h3 id="profileName">میوان</h3>
-                <p id="profileEmail">بۆ بینینی پێشکەوتنت بچۆ ژوورەوە</p>
-              </div>
+        <!-- QUICK -->
+        <section class="section">
+          <div class="section-title">
+            <div>
+              <h2>⚡ کردارە خێراکان</h2>
+              <p>هەنگاوی داهاتووت هەڵبژێرە</p>
             </div>
-
-            <div class="level-pill">
-              LEVEL <span id="level">1</span>
-            </div>
-
           </div>
-
-          <div class="xp-area">
-
-            <div class="xp-row">
-              <span>XP Progress</span>
-              <span><b id="xp">0</b> / 1000</span>
-            </div>
-
-            <div class="progress">
-              <span id="xpBar" style="width:0%"></span>
-            </div>
-
-          </div>
-
-          <div class="stats">
-
-            <div class="stat">
-              <strong id="questionCount">0</strong>
-              <span>پرسیار</span>
-            </div>
-
-            <div class="stat">
-              <strong id="answerCount">0</strong>
-              <span>وەڵام</span>
-            </div>
-
-            <div class="stat">
-              <strong id="likeCount">0</strong>
-              <span>لایک</span>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="premium-card quick">
-
-          <h3>دەستگەیشتنی خێرا</h3>
 
           <div class="quick-grid">
 
-            <button class="quick-btn" onclick="openQuestion()">
-              <div class="quick-icon">＋</div>
-              <b>پرسیار بکە</b>
-              <span>پرسیارێکی نوێ دابنێ</span>
+            <button class="glass quick" onclick="openQuestion()">
+              <div class="quick-icon">📝</div>
+              <h3>پرسیار بنووسە</h3>
+              <p>پرسیارێک لەگەڵ کۆمەڵگا هاوبەش بکە</p>
             </button>
 
-            <button class="quick-btn" onclick="scrollToId('challenge')">
-              <div class="quick-icon">⚡</div>
-              <b>Challenge</b>
-              <span>XP بەدەست بهێنە</span>
+            <button class="glass quick" onclick="scrollToCommunity()">
+              <div class="quick-icon">👥</div>
+              <h3>کۆمەڵگا</h3>
+              <p>پرسیار و وەڵامەکانی خەڵک ببینە</p>
             </button>
 
-            <button class="quick-btn" onclick="scrollToId('community')">
-              <div class="quick-icon">◉</div>
-              <b>کۆمەڵگا</b>
-              <span>پرسیارەکان ببینە</span>
-            </button>
-
-            <button class="quick-btn" onclick="logout()">
-              <div class="quick-icon">↪</div>
-              <b>دەرچوون</b>
-              <span>لە هەژمارەکەت دەرچۆ</span>
+            <button class="glass quick" onclick="scrollToChallenge()">
+              <div class="quick-icon">🧠</div>
+              <h3>تاقیکردنەوە</h3>
+              <p>تواناکانت تاقی بکەرەوە</p>
             </button>
 
           </div>
+        </section>
 
-        </div>
+        <!-- PHYSICS -->
+        <section class="section" id="challenge">
 
-      </div>
-    </section>
-
-    <!-- PHYSICS -->
-    <section id="challenge">
-
-      <div class="section-head">
-        <div>
-          <h2>Physics Challenge ⚡</h2>
-          <p>زانیاریت تاقی بکەرەوە و XP کۆبکەرەوە</p>
-        </div>
-      </div>
-
-      <div class="challenge">
-
-        <div class="premium-card physics-card">
-
-          <div class="challenge-label">DAILY CHALLENGE</div>
-
-          <h2 id="physicsQuestion">
-            کام یەکە بۆ پێوانەکردنی هێز بەکاردێت؟
-          </h2>
-
-          <div class="answers" id="answers">
-
-            <button class="answer" onclick="answerPhysics(this,0)">
-              A — Joule
-            </button>
-
-            <button class="answer" onclick="answerPhysics(this,1)">
-              B — Newton
-            </button>
-
-            <button class="answer" onclick="answerPhysics(this,2)">
-              C — Watt
-            </button>
-
-            <button class="answer" onclick="answerPhysics(this,3)">
-              D — Pascal
-            </button>
-
-          </div>
-
-          <div style="margin-top:18px">
-            <button class="primary" onclick="resetPhysics()">
-              پرسیارێکی نوێ
-            </button>
-          </div>
-
-        </div>
-
-        <div class="premium-card challenge-side">
-
-          <div>
-            <div class="challenge-score" id="physicsScore">0</div>
-            <p>XP لە Physics</p>
-          </div>
-
-          <div style="margin-top:35px">
-            <div class="xp-row">
-              <span>ئاستی چالاکی</span>
-              <span id="physicsPercent">0%</span>
-            </div>
-
-            <div class="progress">
-              <span id="physicsBar" style="width:0%"></span>
+          <div class="section-title">
+            <div>
+              <h2>🧠 Physics Challenge</h2>
+              <p>پرسیارێک هەڵبژێرە و XP بەدەست بهێنە</p>
             </div>
           </div>
 
-        </div>
+          <div class="glass challenge">
+
+            <div class="challenge-head">
+              <strong>Daily Challenge</strong>
+              <span class="tag">+100 XP</span>
+            </div>
+
+            <div class="question" id="physicsQuestion">
+              خێرایی تیشک لە بۆشایی چەندە؟
+            </div>
+
+            <div class="answers" id="physicsAnswers">
+
+              <button class="answer" onclick="answerPhysics(this,false)">
+                300,000 km/s
+              </button>
+
+              <button class="answer" onclick="answerPhysics(this,false)">
+                30,000 km/s
+              </button>
+
+              <button class="answer" onclick="answerPhysics(this,true)">
+                299,792 km/s
+              </button>
+
+              <button class="answer" onclick="answerPhysics(this,false)">
+                3,000 km/s
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- COMMUNITY -->
+        <section class="section" id="community">
+
+          <div class="section-title">
+            <div>
+              <h2>💬 پرسیارەکانی کۆمەڵگا</h2>
+              <p>نوێترین گفتوگۆکان</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="openQuestion()">
+              + پرسیار
+            </button>
+          </div>
+
+          <div class="questions" id="questionsList">
+
+            <div class="glass empty">
+              چاوەڕێی بارکردنی پرسیارەکان...
+            </div>
+
+          </div>
+
+        </section>
 
       </div>
-    </section>
 
-    <!-- COMMUNITY -->
-    <section id="community">
+      <!-- SIDEBAR -->
+      <aside id="leaderboard">
 
-      <div class="section-head">
-        <div>
-          <h2>کۆمەڵگای SHALAW 💬</h2>
-          <p>پرسیارە نوێکان و گفتوگۆکان</p>
-        </div>
+        <section class="section">
 
-        <button class="primary" onclick="openQuestion()">
-          + پرسیار
-        </button>
-      </div>
+          <div class="section-title">
+            <div>
+              <h2>🏆 ڕیزبەندی</h2>
+              <p>باشترین بەشداربووان</p>
+            </div>
+          </div>
 
-      <div class="community-layout">
+          <div class="glass leaderboard">
 
-        <div class="questions" id="questions">
-
-          <div class="premium-card question">
-            <div class="question-user">
-              <div class="avatar">S</div>
-              <div>
-                <b>SHALAW</b>
-                <span>ئێستا</span>
+            <div class="leader">
+              <div class="rank">1</div>
+              <div class="leader-avatar">A</div>
+              <div class="leader-info">
+                <strong>Aram</strong>
+                <span>2,450 XP</span>
               </div>
             </div>
 
-            <div class="question-text">
-              بەخێربێیت بۆ کۆمەڵگای SHALAW 🚀
+            <div class="leader">
+              <div class="rank">2</div>
+              <div class="leader-avatar">K</div>
+              <div class="leader-info">
+                <strong>Kawa</strong>
+                <span>2,180 XP</span>
+              </div>
             </div>
 
-            <div class="question-actions">
-              <button class="action">♡ لایک</button>
-              <button class="action">💬 وەڵام</button>
+            <div class="leader">
+              <div class="rank">3</div>
+              <div class="leader-avatar">S</div>
+              <div class="leader-info">
+                <strong>Shalaw</strong>
+                <span>1,920 XP</span>
+              </div>
             </div>
+
+            <div class="leader">
+              <div class="rank">4</div>
+              <div class="leader-avatar">D</div>
+              <div class="leader-info">
+                <strong>Dilan</strong>
+                <span>1,750 XP</span>
+              </div>
+            </div>
+
+            <div class="leader">
+              <div class="rank">5</div>
+              <div class="leader-avatar">R</div>
+              <div class="leader-info">
+                <strong>Renas</strong>
+                <span>1,420 XP</span>
+              </div>
+            </div>
+
           </div>
 
-        </div>
+        </section>
 
-        <aside class="premium-card side-card">
+      </aside>
 
-          <h3>🏆 بەشداربووان</h3>
-
-          <div class="leader">
-            <span class="rank">01</span>
-            <div class="avatar">S</div>
-            <div class="leader-info">
-              <b>SHALAW</b>
-              <span>Level 12</span>
-            </div>
-            <div class="leader-xp">9.8K XP</div>
-          </div>
-
-          <div class="leader">
-            <span class="rank">02</span>
-            <div class="avatar">A</div>
-            <div class="leader-info">
-              <b>Member</b>
-              <span>Level 9</span>
-            </div>
-            <div class="leader-xp">7.2K XP</div>
-          </div>
-
-          <div class="leader">
-            <span class="rank">03</span>
-            <div class="avatar">K</div>
-            <div class="leader-info">
-              <b>Member</b>
-              <span>Level 7</span>
-            </div>
-            <div class="leader-xp">5.4K XP</div>
-          </div>
-
-        </aside>
-
-      </div>
-    </section>
+    </div>
 
   </main>
 
   <footer>
-    Crafted for the future · <strong>SHALAW</strong> · © 2026
+    <div class="container">
+      © 2026 SHALAW — Future Community
+    </div>
   </footer>
 
-</div>
 
-<!-- AUTH MODAL -->
-<div class="modal" id="authModal">
+  <!-- AUTH MODAL -->
+  <div class="modal" id="authModal">
 
-  <div class="modal-box">
+    <div class="modal-box">
 
-    <div class="modal-head">
-      <div>
-        <h2 id="authTitle">بەخێربێیت 👋</h2>
-        <p style="color:var(--muted);font-size:11px;margin-top:4px">
-          هەژمارێک دروست بکە یان بچۆ ژوورەوە
-        </p>
+      <div class="modal-head">
+        <h2 id="authTitle">چوونەژوورەوە</h2>
+        <button class="close" onclick="closeModal('authModal')">×</button>
       </div>
 
-      <button class="close" onclick="closeModal('authModal')">×</button>
+      <form onsubmit="submitAuth(event)">
+
+        <div class="field" id="nameField" style="display:none">
+          <label>ناو</label>
+          <input id="authName" type="text" placeholder="ناوی تۆ">
+        </div>
+
+        <div class="field">
+          <label>ئیمەیڵ</label>
+          <input id="authEmail" type="email" placeholder="example@email.com" required>
+        </div>
+
+        <div class="field">
+          <label>وشەی نهێنی</label>
+          <input id="authPassword" type="password" placeholder="••••••••" required>
+        </div>
+
+        <button class="btn btn-primary modal-submit" id="authSubmit">
+          چوونەژوورەوە
+        </button>
+
+      </form>
+
+      <div class="switch">
+        <span id="switchText">هەژمارت نییە؟</span>
+        <button onclick="toggleAuth()">دروستی بکە</button>
+      </div>
+
     </div>
-
-    <div class="modal-tabs">
-      <button class="active" id="loginTab" onclick="switchAuth('login')">
-        چوونەژوورەوە
-      </button>
-
-      <button id="signupTab" onclick="switchAuth('signup')">
-        تۆمارکردن
-      </button>
-    </div>
-
-    <form id="authForm" onsubmit="submitAuth(event)">
-
-      <div class="field hidden" id="nameField">
-        <label>ناو</label>
-        <input id="nameInput" type="text" placeholder="ناوت بنووسە">
-      </div>
-
-      <div class="field">
-        <label>ئیمەیڵ</label>
-        <input id="emailInput" type="email" required placeholder="example@email.com">
-      </div>
-
-      <div class="field">
-        <label>پاسۆرد</label>
-        <input id="passwordInput" type="password" required placeholder="••••••••">
-      </div>
-
-      <button class="primary" style="width:100%" id="authSubmit">
-        چوونەژوورەوە
-      </button>
-
-    </form>
 
   </div>
-</div>
 
-<!-- QUESTION MODAL -->
-<div class="modal" id="questionModal">
 
-  <div class="modal-box">
+  <!-- QUESTION MODAL -->
+  <div class="modal" id="questionModal">
 
-    <div class="modal-head">
-      <div>
-        <h2>پرسیارێکی نوێ 💭</h2>
-        <p style="color:var(--muted);font-size:11px;margin-top:4px">
-          پرسیارەکەت لەگەڵ کۆمەڵگا هاوبەش بکە
-        </p>
+    <div class="modal-box">
+
+      <div class="modal-head">
+        <h2>📝 پرسیارێک بنووسە</h2>
+        <button class="close" onclick="closeModal('questionModal')">×</button>
       </div>
 
-      <button class="close" onclick="closeModal('questionModal')">×</button>
+      <form onsubmit="submitQuestion(event)">
+
+        <div class="field">
+          <label>ناونیشانی پرسیار</label>
+          <input
+            id="questionTitle"
+            type="text"
+            placeholder="پرسیارەکەت چییە؟"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>وردەکاری</label>
+          <textarea
+            id="questionBody"
+            placeholder="زیاتر ڕوونی بکەرەوە..."
+          ></textarea>
+        </div>
+
+        <button class="btn btn-primary modal-submit">
+          🚀 بڵاوی بکەرەوە
+        </button>
+
+      </form>
+
     </div>
 
-    <form onsubmit="submitQuestion(event)">
-
-      <div class="field">
-        <label>پرسیار</label>
-        <textarea id="questionInput" required placeholder="پرسیارەکەت لێرە بنووسە..."></textarea>
-      </div>
-
-      <button class="primary" style="width:100%">
-        بڵاوی بکەرەوە 🚀
-      </button>
-
-    </form>
-
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
+
+  <div id="toast"></div>
+
 
 <script>
-  /* =========================
-     SHALAW FRONTEND
-  ========================= */
 
-  let token = localStorage.getItem("shalaw_token") || "";
-  let currentUser = null;
   let authMode = "login";
 
-  let physicsXP = Number(localStorage.getItem("shalaw_physics_xp") || 0);
-  let physicsAnswered = false;
+  const API = "/api";
 
-  const physicsQuestions = [
-    {
-      q:"کام یەکە بۆ پێوانەکردنی هێز بەکاردێت؟",
-      a:["Joule","Newton","Watt","Pascal"],
-      correct:1
-    },
-    {
-      q:"خێرایی لە چی پێوانە دەکرێت؟",
-      a:["m/s","Newton","Joule","Pascal"],
-      correct:0
-    },
-    {
-      q:"کام یەکە بۆ وزە بەکاردێت؟",
-      a:["Watt","Newton","Joule","Tesla"],
-      correct:2
-    },
-    {
-      q:"گۆڕینی شوێن بە تێپەڕینی کات چییە؟",
-      a:["Mass","Velocity","Force","Energy"],
-      correct:1
-    }
-  ];
+  /* -------------------------
+     HELPERS
+  ------------------------- */
 
-  let currentPhysics = 0;
-
-  /* HELPERS */
-
-  function $(id){
-    return document.getElementById(id);
+  function getToken() {
+    return localStorage.getItem("shalaw_token");
   }
 
-  function escapeHtml(value){
-    return String(value ?? "")
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
+  function authHeaders() {
+    const token = getToken();
+
+    return token
+      ? {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        }
+      : {
+          "Content-Type": "application/json"
+        };
   }
 
-  function initials(name){
-    if(!name) return "S";
-    return name.trim().charAt(0).toUpperCase();
-  }
+  async function api(url, options = {}) {
 
-  function showToast(message){
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(()=>{
-      toast.classList.remove("show");
-    },2800);
-  }
-
-  function scrollToId(id){
-    const el = $(id);
-    if(el){
-      el.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-    }
-  }
-
-  function closeModal(id){
-    $(id).classList.remove("show");
-  }
-
-  /* API */
-
-  async function api(url, options = {}){
-    const headers = {
-      ...(options.headers || {})
-    };
-
-    if(!headers["Content-Type"] && options.body){
-      headers["Content-Type"] = "application/json";
-    }
-
-    if(token){
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    const response = await fetch(url,{
+    const response = await fetch(API + url, {
       ...options,
-      headers
+      headers: {
+        ...authHeaders(),
+        ...(options.headers || {})
+      }
     });
 
     let data = {};
 
-    try{
+    try {
       data = await response.json();
-    }catch{
-      data = {};
-    }
+    } catch {}
 
-    if(!response.ok){
-      throw new Error(data.message || data.error || "هەڵەیەک ڕوویدا");
+    if (!response.ok) {
+      throw new Error(data.error || "هەڵەیەک ڕوویدا");
     }
 
     return data;
   }
 
-  /* AUTH */
+  function escapeHtml(value) {
 
-  function openAuth(mode="login"){
-    switchAuth(mode);
-    $("authModal").classList.add("show");
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
-  function switchAuth(mode){
+  function toast(message) {
+
+    const el = document.getElementById("toast");
+
+    el.textContent = message;
+    el.classList.add("show");
+
+    setTimeout(() => {
+      el.classList.remove("show");
+    }, 2800);
+  }
+
+
+  /* -------------------------
+     MODALS
+  ------------------------- */
+
+  function openAuth(mode) {
+
     authMode = mode;
 
-    $("loginTab").classList.toggle("active",mode === "login");
-    $("signupTab").classList.toggle("active",mode === "signup");
+    document.getElementById("authModal").classList.add("active");
 
-    $("nameField").classList.toggle("hidden",mode !== "signup");
-
-    $("authSubmit").textContent =
-      mode === "login"
-      ? "چوونەژوورەوە"
-      : "دروستکردنی هەژمار";
-
-    $("authTitle").textContent =
-      mode === "login"
-      ? "بەخێربێیت 👋"
-      : "بەخێربێیت بۆ SHALAW ✦";
+    updateAuthUI();
   }
 
-  async function submitAuth(event){
-    event.preventDefault();
+  function updateAuthUI() {
 
-    const email = $("emailInput").value.trim();
-    const password = $("passwordInput").value;
-    const name = $("nameInput").value.trim();
+    const signup = authMode === "signup";
 
-    try{
+    document.getElementById("authTitle").textContent =
+      signup ? "دروستکردنی هەژمار" : "چوونەژوورەوە";
 
-      $("authSubmit").disabled = true;
-      $("authSubmit").textContent = "چاوەڕێ بکە...";
+    document.getElementById("authSubmit").textContent =
+      signup ? "دروستکردنی هەژمار" : "چوونەژوورەوە";
 
-      const endpoint =
-        authMode === "login"
-        ? "/api/login"
-        : "/api/signup";
+    document.getElementById("nameField").style.display =
+      signup ? "block" : "none";
 
-      const body =
-        authMode === "login"
-        ? {email,password}
-        : {name,email,password};
+    document.getElementById("switchText").textContent =
+      signup ? "هەژمارت هەیە؟" : "هەژمارت نییە؟";
 
-      const data = await api(endpoint,{
-        method:"POST",
-        body:JSON.stringify(body)
-      });
-
-      token = data.token || "";
-
-      if(token){
-        localStorage.setItem("shalaw_token",token);
-      }
-
-      currentUser = data.user || null;
-
-      closeModal("authModal");
-
-      showToast(
-        authMode === "login"
-        ? "بە سەرکەوتوویی چوویتە ژوورەوە ✓"
-        : "هەژمارەکەت بە سەرکەوتوویی دروست کرا ✓"
-      );
-
-      updateUserUI();
-      loadStats();
-      loadQuestions();
-
-    }catch(error){
-
-      showToast(error.message || "هەڵەیەک ڕوویدا");
-
-    }finally{
-
-      $("authSubmit").disabled = false;
-      $("authSubmit").textContent =
-        authMode === "login"
-        ? "چوونەژوورەوە"
-        : "دروستکردنی هەژمار";
-
-    }
+    document.querySelector(".switch button").textContent =
+      signup ? "بچۆ ژوورەوە" : "دروستی بکە";
   }
 
-  async function loadMe(){
+  function toggleAuth() {
 
-    if(!token){
-      updateUserUI();
+    authMode = authMode === "login"
+      ? "signup"
+      : "login";
+
+    updateAuthUI();
+  }
+
+  function openQuestion() {
+
+    if (!getToken()) {
+      toast("تکایە سەرەتا بچۆ ژوورەوە");
+      openAuth("login");
       return;
     }
 
-    try{
-
-      const data = await api("/api/me");
-
-      currentUser = data.user || data;
-
-      updateUserUI();
-
-    }catch{
-
-      token = "";
-      currentUser = null;
-
-      localStorage.removeItem("shalaw_token");
-
-      updateUserUI();
-    }
+    document.getElementById("questionModal")
+      .classList.add("active");
   }
 
-  async function logout(){
+  function closeModal(id) {
 
-    try{
-      if(token){
-        await api("/api/logout",{
-          method:"POST"
-        });
-      }
-    }catch{}
-
-    token = "";
-    currentUser = null;
-
-    localStorage.removeItem("shalaw_token");
-
-    updateUserUI();
-    showToast("بە سەرکەوتوویی دەرچوویت");
+    document.getElementById(id)
+      .classList.remove("active");
   }
 
-  function updateUserUI(){
+  document.querySelectorAll(".modal").forEach(modal => {
 
-    const area = $("userArea");
+    modal.addEventListener("click", e => {
 
-    if(currentUser){
-
-      const name =
-        currentUser.name ||
-        currentUser.username ||
-        "SHALAW";
-
-      area.innerHTML = `
-        <div class="user-mini">
-          <div class="avatar">${escapeHtml(initials(name))}</div>
-        </div>
-      `;
-
-      $("profileName").textContent = name;
-      $("profileEmail").textContent =
-        currentUser.email || "SHALAW member";
-
-      $("bigAvatar").textContent = initials(name);
-
-    }else{
-
-      area.innerHTML = `
-        <button class="login-btn" onclick="openAuth()">
-          چوونەژوورەوە
-        </button>
-      `;
-
-      $("profileName").textContent = "میوان";
-      $("profileEmail").textContent =
-        "بۆ بینینی پێشکەوتنت بچۆ ژوورەوە";
-
-      $("bigAvatar").textContent = "S";
-    }
-  }
-
-  /* STATS */
-
-  async function loadStats(){
-
-    try{
-
-      const data = await api("/api/data");
-
-      const questions = Array.isArray(data.questions)
-        ? data.questions
-        : [];
-
-      const answers = Array.isArray(data.answers)
-        ? data.answers
-        : [];
-
-      let myQuestions = 0;
-      let myAnswers = 0;
-      let likes = 0;
-
-      if(currentUser){
-
-        const uid =
-          currentUser.id ||
-          currentUser._id;
-
-        myQuestions = questions.filter(q =>
-          q.userId === uid ||
-          q.authorId === uid ||
-          q.user?.id === uid
-        ).length;
-
-        myAnswers = answers.filter(a =>
-          a.userId === uid ||
-          a.authorId === uid ||
-          a.user?.id === uid
-        ).length;
-
-        questions.forEach(q=>{
-          if(Array.isArray(q.likedBy) &&
-             q.likedBy.includes(uid)){
-            likes++;
-          }
-        });
-      }
-
-      $("questionCount").textContent = myQuestions;
-      $("answerCount").textContent = myAnswers;
-      $("likeCount").textContent = likes;
-
-      updateXP();
-
-    }catch{
-
-      updateXP();
-    }
-  }
-
-  function updateXP(){
-
-    const baseXP =
-      currentUser
-      ? (Number(currentUser.xp) || 0)
-      : 0;
-
-    const totalXP = baseXP + physicsXP;
-
-    const level =
-      Math.floor(totalXP / 1000) + 1;
-
-    const progress =
-      Math.min(100,totalXP % 1000 / 10);
-
-    $("xp").textContent = totalXP;
-    $("level").textContent = level;
-    $("xpBar").style.width = progress + "%";
-
-    $("physicsScore").textContent = physicsXP;
-
-    const physicsPercent =
-      Math.min(100,physicsXP);
-
-    $("physicsBar").style.width =
-      physicsPercent + "%";
-
-    $("physicsPercent").textContent =
-      physicsPercent + "%";
-  }
-
-  /* QUESTIONS */
-
-  function openQuestion(){
-
-    if(!currentUser){
-      showToast("تکایە سەرەتا بچۆ ژوورەوە");
-      openAuth();
-      return;
-    }
-
-    $("questionModal").classList.add("show");
-  }
-
-  async function submitQuestion(event){
-
-    event.preventDefault();
-
-    const text = $("questionInput").value.trim();
-
-    if(!text) return;
-
-    try{
-
-      await api("/api/questions",{
-        method:"POST",
-        body:JSON.stringify({
-          text,
-          question:text
-        })
-      });
-
-      $("questionInput").value = "";
-
-      closeModal("questionModal");
-
-      showToast("پرسیارەکەت بڵاوکرایەوە 🚀");
-
-      await loadQuestions();
-      await loadStats();
-
-    }catch(error){
-
-      showToast(error.message || "نەتوانرا پرسیارەکە بڵاو بکرێتەوە");
-    }
-  }
-
-  async function loadQuestions(){
-
-    try{
-
-      const data = await api("/api/questions");
-
-      const questions =
-        Array.isArray(data)
-        ? data
-        : (data.questions || []);
-
-      renderQuestions(questions);
-
-    }catch(error){
-
-      console.log(error);
-
-    }
-  }
-
-  function renderQuestions(questions){
-
-    const container = $("questions");
-
-    if(!questions.length){
-
-      container.innerHTML = `
-        <div class="premium-card question">
-          <div class="question-text">
-            هێشتا هیچ پرسیارێک نییە. یەکەم کەس بە وێنەی پرسیارەکەت دەست پێ بکە 🚀
-          </div>
-        </div>
-      `;
-
-      return;
-    }
-
-    container.innerHTML =
-      questions
-      .slice()
-      .reverse()
-      .map(q => {
-
-        const userName =
-          q.user?.name ||
-          q.userName ||
-          q.authorName ||
-          "Member";
-
-        const text =
-          q.text ||
-          q.question ||
-          q.content ||
-          "";
-
-        const likes =
-          Array.isArray(q.likedBy)
-          ? q.likedBy.length
-          : Number(q.likes) || 0;
-
-        const id = q.id || q._id;
-
-        return `
-          <article class="premium-card question">
-
-            <div class="question-user">
-
-              <div class="avatar">
-                ${escapeHtml(initials(userName))}
-              </div>
-
-              <div>
-                <b>${escapeHtml(userName)}</b>
-                <span>SHALAW member</span>
-              </div>
-
-            </div>
-
-            <div class="question-text">
-              ${escapeHtml(text)}
-            </div>
-
-            <div class="question-actions">
-
-              <button
-                class="action"
-                onclick="likeQuestion('${escapeHtml(id)}')">
-                ♡ ${likes}
-              </button>
-
-              <button
-                class="action"
-                onclick="showToast('بەشی وەڵامدان بە زوویی زیاد دەکرێت')">
-                💬 وەڵام
-              </button>
-
-            </div>
-
-          </article>
-        `;
-
-      })
-      .join("");
-  }
-
-  async function likeQuestion(id){
-
-    if(!currentUser){
-      openAuth();
-      showToast("بۆ لایککردن بچۆ ژوورەوە");
-      return;
-    }
-
-    try{
-
-      await api(`/api/questions/${id}/like`,{
-        method:"POST"
-      });
-
-      await loadQuestions();
-      await loadStats();
-
-    }catch(error){
-
-      showToast(error.message || "هەڵەیەک ڕوویدا");
-    }
-  }
-
-  /* PHYSICS */
-
-  function renderPhysics(){
-
-    const item =
-      physicsQuestions[currentPhysics];
-
-    $("physicsQuestion").textContent =
-      item.q;
-
-    $("answers").innerHTML =
-      item.a.map((answer,index)=>`
-        <button
-          class="answer"
-          onclick="answerPhysics(this,${index})">
-          ${String.fromCharCode(65+index)} — ${escapeHtml(answer)}
-        </button>
-      `).join("");
-
-    physicsAnswered = false;
-  }
-
-  async function answerPhysics(button,index){
-
-    if(physicsAnswered) return;
-
-    physicsAnswered = true;
-
-    const item =
-      physicsQuestions[currentPhysics];
-
-    const buttons =
-      document.querySelectorAll(".answer");
-
-    buttons.forEach((b,i)=>{
-      b.disabled = true;
-
-      if(i === item.correct){
-        b.classList.add("correct");
-      }
-    });
-
-    if(index === item.correct){
-
-      button.classList.add("correct");
-
-      physicsXP += 100;
-
-      localStorage.setItem(
-        "shalaw_physics_xp",
-        physicsXP
-      );
-
-      updateXP();
-
-      showToast("دروستە! +100 XP ⚡");
-
-      if(token){
-
-        try{
-
-          await api("/api/physics/result",{
-            method:"POST",
-            body:JSON.stringify({
-              score:100,
-              total:100
-            })
-          });
-
-        }catch{}
-      }
-
-    }else{
-
-      button.classList.add("wrong");
-
-      showToast("هەڵەیە. جارێکی تر تاقی بکەرەوە 💜");
-    }
-  }
-
-  function resetPhysics(){
-
-    currentPhysics =
-      (currentPhysics + 1) %
-      physicsQuestions.length;
-
-    renderPhysics();
-  }
-
-  /* CLOSE MODALS */
-
-  document.querySelectorAll(".modal").forEach(modal=>{
-
-    modal.addEventListener("click",(event)=>{
-
-      if(event.target === modal){
-        modal.classList.remove("show");
+      if (e.target === modal) {
+        modal.classList.remove("active");
       }
 
     });
 
   });
 
-  /* INIT */
 
-  async function init(){
+  /* -------------------------
+     AUTH
+  ------------------------- */
 
-    renderPhysics();
+  async function submitAuth(event) {
 
-    updateUserUI();
+    event.preventDefault();
 
-    updateXP();
+    const name =
+      document.getElementById("authName").value.trim();
+
+    const email =
+      document.getElementById("authEmail").value.trim();
+
+    const password =
+      document.getElementById("authPassword").value;
+
+    try {
+
+      const endpoint =
+        authMode === "signup"
+          ? "/signup"
+          : "/login";
+
+      const body =
+        authMode === "signup"
+          ? { name, email, password }
+          : { email, password };
+
+      const result = await api(endpoint, {
+        method: "POST",
+        body: JSON.stringify(body)
+      });
+
+      if (result.token) {
+        localStorage.setItem(
+          "shalaw_token",
+          result.token
+        );
+      }
+
+      closeModal("authModal");
+
+      toast(
+        authMode === "signup"
+          ? "🎉 هەژمارەکەت دروستکرا!"
+          : "👋 بەخێربێیتەوە!"
+      );
+
+      await loadMe();
+      await loadStats();
+
+    } catch (error) {
+
+      toast(error.message);
+
+    }
+
+  }
+
+
+  /* -------------------------
+     USER
+  ------------------------- */
+
+  async function loadMe() {
+
+    if (!getToken()) return;
+
+    try {
+
+      const result = await api("/me");
+
+      const user =
+        result.user || result;
+
+      if (!user) return;
+
+      const name =
+        user.name ||
+        user.username ||
+        "بەکارهێنەر";
+
+      document.getElementById("userName")
+        .textContent = name;
+
+      document.getElementById("userStatus")
+        .textContent = "بەخێربێیت بۆ SHALAW 🚀";
+
+      document.getElementById("avatar")
+        .textContent =
+          name.charAt(0).toUpperCase();
+
+    } catch {}
+
+  }
+
+
+  /* -------------------------
+     STATS
+  ------------------------- */
+
+  async function loadStats() {
+
+    if (!getToken()) return;
+
+    try {
+
+      const result = await api("/me");
+
+      const user =
+        result.user || result;
+
+      if (!user) return;
+
+      const xp =
+        Number(user.xp || 0);
+
+      const level =
+        Number(user.level || Math.floor(xp / 100) + 1);
+
+      const currentXP =
+        xp % 100;
+
+      document.getElementById("statXP")
+        .textContent = xp;
+
+      document.getElementById("statLevel")
+        .textContent = level;
+
+      document.getElementById("levelText")
+        .textContent = "Level " + level;
+
+      document.getElementById("xpText")
+        .textContent =
+          currentXP + " / 100 XP";
+
+      document.getElementById("xpBar")
+        .style.width =
+          currentXP + "%";
+
+      document.getElementById("statStreak")
+        .textContent =
+          user.streak || 0;
+
+      document.getElementById("statQuestions")
+        .textContent =
+          user.questionsCount ||
+          user.questionCount ||
+          0;
+
+    } catch {}
+
+  }
+
+
+  /* -------------------------
+     QUESTIONS
+  ------------------------- */
+
+  async function loadQuestions() {
+
+    const container =
+      document.getElementById("questionsList");
+
+    try {
+
+      const result =
+        await api("/questions");
+
+      const questions =
+        Array.isArray(result)
+          ? result
+          : result.questions || [];
+
+      if (!questions.length) {
+
+        container.innerHTML = `
+          <div class="glass empty">
+            هێشتا هیچ پرسیارێک نییە 🌱
+          </div>
+        `;
+
+        return;
+      }
+
+      container.innerHTML =
+        questions.map(question => {
+
+          const title =
+            question.title ||
+            question.question ||
+            "پرسیار";
+
+          const body =
+            question.body ||
+            question.description ||
+            "";
+
+          const author =
+            question.author?.name ||
+            question.authorName ||
+            question.username ||
+            "بەکارهێنەر";
+
+          const likes =
+            question.likes ||
+            question.likeCount ||
+            0;
+
+          return `
+            <article class="glass question-card">
+
+              <div class="question-meta">
+                <span>👤 ${escapeHtml(author)}</span>
+                <span>${escapeHtml(
+                  question.createdAt
+                    ? new Date(question.createdAt)
+                        .toLocaleDateString("ku-IQ")
+                    : "ئێستا"
+                )}</span>
+              </div>
+
+              <h3>
+                ${escapeHtml(title)}
+              </h3>
+
+              ${
+                body
+                  ? `<p style="color:#9da3bd;line-height:1.8;margin-bottom:15px">
+                      ${escapeHtml(body)}
+                    </p>`
+                  : ""
+              }
+
+              <div class="question-footer">
+
+                <button
+                  class="like"
+                  onclick="likeQuestion('${question.id}')"
+                >
+                  ❤️ ${likes}
+                </button>
+
+                <span style="color:#9da3bd;font-size:12px">
+                  💬 وەڵام بدەرەوە
+                </span>
+
+              </div>
+
+            </article>
+          `;
+
+        }).join("");
+
+    } catch (error) {
+
+      container.innerHTML = `
+        <div class="glass empty">
+          نەتوانرا پرسیارەکان باربکرێن.
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  async function likeQuestion(id) {
+
+    if (!getToken()) {
+      toast("تکایە سەرەتا بچۆ ژوورەوە");
+      return;
+    }
+
+    try {
+
+      await api(`/questions/${id}/like`, {
+        method: "POST"
+      });
+
+      toast("❤️ Like زیادکرا");
+
+      loadQuestions();
+
+    } catch (error) {
+
+      toast(error.message);
+
+    }
+
+  }
+
+
+  async function submitQuestion(event) {
+
+    event.preventDefault();
+
+    const title =
+      document.getElementById("questionTitle")
+        .value.trim();
+
+    const body =
+      document.getElementById("questionBody")
+        .value.trim();
+
+    if (!title) {
+      toast("ناونیشانی پرسیار بنووسە");
+      return;
+    }
+
+    try {
+
+      await api("/questions", {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          body
+        })
+      });
+
+      document.getElementById("questionTitle")
+        .value = "";
+
+      document.getElementById("questionBody")
+        .value = "";
+
+      closeModal("questionModal");
+
+      toast("🚀 پرسیارەکەت بڵاوکرایەوە!");
+
+      loadQuestions();
+      loadStats();
+
+    } catch (error) {
+
+      toast(error.message);
+
+    }
+
+  }
+
+
+  /* -------------------------
+     PHYSICS
+  ------------------------- */
+
+  function answerPhysics(button, correct) {
+
+    const buttons =
+      document.querySelectorAll(".answer");
+
+    buttons.forEach(btn => {
+      btn.disabled = true;
+    });
+
+    if (correct) {
+
+      button.classList.add("correct");
+
+      toast("🎉 دروستە! +100 XP");
+
+      localStorage.setItem(
+        "physics_xp",
+        String(
+          Number(localStorage.getItem("physics_xp") || 0)
+          + 100
+        )
+      );
+
+      sendPhysicsResult();
+
+    } else {
+
+      button.classList.add("wrong");
+
+      toast("❌ هەڵەیە");
+
+      buttons.forEach(btn => {
+
+        if (
+          btn.textContent.includes("299,792")
+        ) {
+          btn.classList.add("correct");
+        }
+
+      });
+
+    }
+
+    setTimeout(() => {
+
+      buttons.forEach(btn => {
+        btn.disabled = false;
+      });
+
+    }, 1800);
+
+  }
+
+
+  async function sendPhysicsResult() {
+
+    if (!getToken()) return;
+
+    try {
+
+      await api("/physics/result", {
+        method: "POST",
+        body: JSON.stringify({
+          score: 100,
+          total: 100
+        })
+      });
+
+      loadStats();
+
+    } catch {}
+
+  }
+
+
+  /* -------------------------
+     NAVIGATION
+  ------------------------- */
+
+  function scrollToCommunity() {
+
+    document.getElementById("community")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+  function scrollToChallenge() {
+
+    document.getElementById("challenge")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  }
+
+
+  /* -------------------------
+     START
+  ------------------------- */
+
+  async function init() {
 
     await loadMe();
-
+    await loadStats();
     await loadQuestions();
 
-    await loadStats();
   }
 
   init();
