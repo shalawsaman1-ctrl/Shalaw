@@ -3,67 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SHALAW</title>
+<title>SHALAW • Learn & Level Up</title>
 
 <style>
 *{box-sizing:border-box}
 
+:root{
+  --bg:#050711;
+  --card:#0d1222cc;
+  --card2:#11182bdd;
+  --border:#263252;
+  --purple:#8b5cf6;
+  --blue:#22d3ee;
+  --pink:#ec4899;
+  --green:#22c55e;
+  --red:#ef4444;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+}
+
 body{
   margin:0;
-  background:
-    radial-gradient(circle at top right,#21135c 0,#0b1020 38%,#060914 100%);
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   min-height:100vh;
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%,#312e8155,transparent 32%),
+    radial-gradient(circle at 100% 10%,#0e749055,transparent 30%),
+    radial-gradient(circle at 50% 100%,#701a7550,transparent 35%),
+    var(--bg);
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(#ffffff12 1px,transparent 1px);
+  background-size:28px 28px;
+  opacity:.25;
 }
 
 .wrap{
-  max-width:760px;
+  width:min(780px,100%);
   margin:auto;
-  padding:18px 15px 70px;
+  padding:16px 14px 70px;
 }
 
 .top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:18px;
+  padding:7px 2px 18px;
 }
 
 .logo{
-  font-size:31px;
-  font-weight:900;
-  letter-spacing:1px;
-  background:linear-gradient(90deg,#9d7cff,#21e6ff,#ff63d8);
+  font-size:30px;
+  font-weight:1000;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,#a78bfa,#22d3ee,#f472b6);
   -webkit-background-clip:text;
   color:transparent;
 }
 
+.top button{
+  padding:9px 13px;
+  font-size:12px;
+}
+
 button{
   border:0;
-  border-radius:14px;
-  padding:11px 16px;
-  background:linear-gradient(135deg,#7657ff,#a34dff);
   color:#fff;
-  font-weight:800;
+  font-weight:850;
   cursor:pointer;
-  box-shadow:0 8px 25px #7657ff33;
+  border-radius:15px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  box-shadow:0 10px 30px #7c3aed30;
+  transition:.18s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 35px #7c3aed45;
 }
 
 button:active{
-  transform:scale(.96);
+  transform:scale(.97);
 }
 
 input,textarea{
   width:100%;
-  background:#11182b;
-  border:1px solid #2c3655;
   color:#fff;
+  background:#080d1b;
+  border:1px solid #273452;
+  outline:none;
   border-radius:16px;
   padding:14px;
-  margin:7px 0;
+  margin:6px 0;
   font-size:16px;
-  outline:none;
 }
 
 textarea{
@@ -72,13 +111,30 @@ textarea{
 }
 
 .card{
-  background:linear-gradient(145deg,#151c31dd,#0e1426dd);
-  border:1px solid #303b60;
-  border-radius:22px;
-  padding:18px;
+  position:relative;
+  overflow:hidden;
   margin:14px 0;
-  box-shadow:0 15px 45px #0005;
-  backdrop-filter:blur(15px);
+  padding:18px;
+  border:1px solid var(--border);
+  border-radius:24px;
+  background:
+    linear-gradient(145deg,#11182bdd,#080d19dd);
+  box-shadow:
+    0 20px 60px #0008,
+    inset 0 1px #ffffff09;
+  backdrop-filter:blur(20px);
+}
+
+.card:after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  right:-100px;
+  top:-100px;
+  background:#8b5cf622;
+  filter:blur(50px);
+  pointer-events:none;
 }
 
 .hidden{
@@ -86,330 +142,432 @@ textarea{
 }
 
 .muted{
-  color:#9ba7c7;
+  color:var(--muted);
   font-size:13px;
+}
+
+/* LOGIN */
+
+.auth{
+  text-align:center;
+  margin-top:8vh;
+  padding:30px 20px;
+}
+
+.rocket{
+  width:85px;
+  height:85px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:43px;
+  border-radius:27px;
+  background:linear-gradient(135deg,#7c3aed55,#06b6d455);
+  border:1px solid #ffffff15;
+  box-shadow:0 0 60px #8b5cf633;
+}
+
+.auth h1{
+  font-size:30px;
+  margin:20px 0 8px;
+}
+
+.auth p{
+  color:var(--muted);
+  line-height:1.9;
+}
+
+.auth button{
+  width:100%;
+  margin-top:8px;
 }
 
 /* PROFILE */
 
 .profile{
-  position:relative;
-  overflow:hidden;
-  padding:22px;
+  padding:20px;
 }
 
-.profile:before{
-  content:"";
+.profileGlow{
   position:absolute;
-  width:180px;
-  height:180px;
-  background:#7657ff55;
-  filter:blur(65px);
-  top:-80px;
-  right:-50px;
+  width:230px;
+  height:230px;
+  right:-100px;
+  top:-100px;
+  background:#8b5cf633;
+  filter:blur(60px);
 }
 
 .profileHead{
   position:relative;
   display:flex;
   align-items:center;
-  gap:16px;
+  gap:15px;
 }
 
 .avatar{
-  width:82px;
-  height:82px;
-  border-radius:50%;
+  width:78px;
+  height:78px;
+  flex:none;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:35px;
-  font-weight:900;
-  background:linear-gradient(135deg,#7c5cff,#21d9ff);
-  border:3px solid #ffffff44;
-  box-shadow:
-    0 0 0 6px #7657ff15,
-    0 0 35px #7657ff88;
-  animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-5px)}
+  border-radius:25px;
+  font-size:32px;
+  font-weight:1000;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  box-shadow:0 0 35px #06b6d455;
 }
 
 .name{
   font-size:23px;
-  font-weight:900;
+  font-weight:950;
 }
 
 .rank{
   display:inline-block;
-  margin-top:5px;
-  padding:5px 10px;
+  margin-top:6px;
+  padding:5px 11px;
   border-radius:20px;
-  background:#7657ff22;
-  color:#bbaaff;
+  color:#c4b5fd;
+  background:#8b5cf622;
+  border:1px solid #8b5cf633;
   font-size:12px;
   font-weight:800;
 }
 
-.xpBox{
+.xp{
   margin-top:20px;
 }
 
 .xpTop{
   display:flex;
   justify-content:space-between;
+  color:#b8c2d9;
   font-size:13px;
-  color:#aeb8d4;
 }
 
 .xpBar{
-  height:10px;
+  height:11px;
+  overflow:hidden;
   margin-top:8px;
   border-radius:20px;
-  background:#090e1d;
-  overflow:hidden;
+  background:#050914;
+  border:1px solid #ffffff09;
 }
 
 .xpFill{
-  height:100%;
   width:0%;
+  height:100%;
   border-radius:20px;
-  background:linear-gradient(90deg,#7657ff,#20d9ff);
-  box-shadow:0 0 18px #20d9ff88;
-  transition:.4s;
+  background:linear-gradient(90deg,#8b5cf6,#06b6d4,#ec4899);
+  box-shadow:0 0 20px #22d3ee88;
+  transition:.5s;
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin-top:18px;
+  gap:8px;
+  margin-top:17px;
 }
 
 .stat{
+  padding:13px 5px;
   text-align:center;
-  padding:14px 7px;
   border-radius:17px;
-  background:#ffffff06;
-  border:1px solid #ffffff0d;
+  background:#ffffff05;
+  border:1px solid #ffffff09;
 }
 
 .stat b{
   display:block;
-  font-size:22px;
+  font-size:21px;
 }
 
 .stat span{
-  color:#929dbb;
-  font-size:12px;
+  color:#8290ad;
+  font-size:11px;
+}
+
+/* SECTION */
+
+.sectionTitle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:25px 3px 10px;
+  font-size:18px;
+  font-weight:950;
 }
 
 /* BADGES */
 
-.sectionTitle{
-  font-size:18px;
-  font-weight:900;
-  margin:24px 4px 10px;
-}
-
 .badges{
   display:flex;
-  gap:10px;
+  gap:9px;
   overflow-x:auto;
-  padding:3px 1px 8px;
+  padding:2px 1px 8px;
+  scrollbar-width:none;
 }
 
 .badge{
-  min-width:105px;
-  padding:14px 10px;
+  min-width:108px;
+  padding:13px 9px;
   text-align:center;
-  border-radius:18px;
-  background:#151c31;
-  border:1px solid #303b60;
+  border-radius:19px;
+  background:#0c1221dd;
+  border:1px solid #273452;
 }
 
-.badge .icon{
-  font-size:28px;
+.badgeIcon{
   display:block;
-  margin-bottom:5px;
-}
-
-.badge span{
-  font-size:11px;
-  color:#a8b2cc;
-}
-
-/* QUESTIONS */
-
-.questionCard{
-  background:#12192c;
-  border:1px solid #293452;
-  border-radius:20px;
-  padding:17px;
-  margin:12px 0;
-}
-
-.questionText{
-  font-size:16px;
-  font-weight:750;
-  line-height:1.7;
-}
-
-.actions{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.actions button{
-  padding:9px 12px;
-  font-size:13px;
-  background:#202943;
-  box-shadow:none;
-}
-
-.actions button:hover{
-  background:#2c3758;
-}
-
-.ans{
-  padding:10px 0 0;
-  margin-top:10px;
-  border-top:1px solid #293452;
-  line-height:1.7;
-}
-
-.authBox{
-  margin-top:35px;
-  text-align:center;
-}
-
-.authBox h2{
   font-size:27px;
+  margin-bottom:6px;
 }
 
-.welcome{
-  color:#9ca8c7;
-  line-height:1.8;
+.badgeText{
+  color:#aab5cd;
+  font-size:10px;
 }
 
-/* PHYSICS */
+/* PHYSICS HERO */
 
-.physicsCard{
+.physicsHero{
+  padding:0;
+  overflow:hidden;
   background:
-    radial-gradient(circle at top left,#35218a55,transparent 45%),
-    linear-gradient(145deg,#151c31,#0e1426);
-  border:1px solid #3b4b79;
+    linear-gradient(135deg,#111827ee,#080b18ee);
 }
 
-.physicsHeader{
+.physicsHeroTop{
+  padding:21px;
+  background:
+    radial-gradient(circle at 0% 0%,#8b5cf655,transparent 45%),
+    radial-gradient(circle at 100% 100%,#06b6d444,transparent 45%);
+}
+
+.physicsIcon{
+  width:62px;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:20px;
+  font-size:32px;
+  background:#ffffff0b;
+  border:1px solid #ffffff13;
+  box-shadow:0 0 35px #8b5cf633;
+}
+
+.physicsHero h2{
+  margin:13px 0 4px;
+  font-size:25px;
+}
+
+.physicsHero p{
+  margin:0;
+  color:#9eabc5;
+  line-height:1.8;
+  font-size:13px;
+}
+
+.physicsStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid #ffffff0a;
+}
+
+.physicsMini{
+  padding:14px 5px;
+  text-align:center;
+  border-left:1px solid #ffffff0a;
+}
+
+.physicsMini:last-child{
+  border-left:0;
+}
+
+.physicsMini b{
+  display:block;
+  font-size:18px;
+}
+
+.physicsMini span{
+  color:#7785a3;
+  font-size:10px;
+}
+
+.startPhysics{
+  width:calc(100% - 36px);
+  margin:18px;
+}
+
+/* QUIZ */
+
+.quizTop{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
 }
 
-.physicsTitle{
-  font-size:22px;
+.quizNumber{
+  color:#c4b5fd;
   font-weight:900;
 }
 
-.physicsInfo{
-  color:#9da9c7;
-  font-size:13px;
-  margin-top:5px;
+.timer{
+  min-width:67px;
+  text-align:center;
+  padding:8px 10px;
+  border-radius:13px;
+  background:#ffffff08;
+  border:1px solid #ffffff0b;
+  font-weight:950;
 }
 
-.physicsQuestion{
-  font-size:20px;
-  line-height:1.8;
-  margin:22px 0 16px;
+.timer.warning{
+  color:#fbbf24;
 }
 
-.physicsOption{
+.timer.danger{
+  color:#fb7185;
+  animation:pulse .7s infinite;
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.06)}
+}
+
+.quizProgress{
+  margin:17px 0;
+}
+
+.quizQuestion{
+  margin:20px 0 16px;
+  font-size:21px;
+  line-height:1.85;
+}
+
+.option{
   width:100%;
+  display:block;
   text-align:right;
-  margin:7px 0;
-  background:#171f35;
-  border:1px solid #303d61;
+  margin:8px 0;
+  background:#10182b;
+  border:1px solid #283653;
   box-shadow:none;
-  transition:.2s;
 }
 
-.physicsOption:hover{
-  background:#242f4c;
-  border-color:#7657ff;
+.option:hover{
+  background:#18233b;
+  border-color:#8b5cf6;
 }
 
-.physicsOption.correct{
-  background:#123d31;
-  border-color:#20d99b;
+.option.correct{
+  background:#073b2a;
+  border-color:#22c55e;
 }
 
-.physicsOption.wrong{
-  background:#461d2a;
-  border-color:#ff5577;
+.option.wrong{
+  background:#431b2a;
+  border-color:#ef4444;
 }
 
-.physicsResult{
-  margin-top:15px;
+.result{
   padding:13px;
+  margin-top:13px;
   border-radius:15px;
-  line-height:1.7;
+  line-height:1.8;
+  font-weight:850;
+}
+
+.result.good{
+  color:#86efac;
+  background:#052e20;
+  border:1px solid #22c55e55;
+}
+
+.result.bad{
+  color:#fda4af;
+  background:#3b101c;
+  border:1px solid #ef444455;
+}
+
+.next{
+  width:100%;
+  margin-top:13px;
+}
+
+.final{
+  text-align:center;
+}
+
+.finalIcon{
+  font-size:58px;
+}
+
+.finalScore{
+  margin:15px 0;
+  padding:17px;
+  border-radius:18px;
+  background:#ffffff06;
+  border:1px solid #ffffff0b;
+}
+
+.finalScore strong{
+  display:block;
+  font-size:34px;
+}
+
+.finalXP{
+  color:#67e8f9;
+  font-weight:900;
+  margin-top:7px;
+}
+
+/* QUESTIONS */
+
+.questionCard{
+  padding:16px;
+  margin:11px 0;
+  border-radius:20px;
+  background:#0d1424dd;
+  border:1px solid #25324e;
+}
+
+.questionText{
+  line-height:1.8;
   font-weight:800;
 }
 
-.physicsResult.good{
-  background:#103b30;
-  color:#69f0bd;
-  border:1px solid #20d99b55;
+.actions{
+  display:flex;
+  gap:7px;
+  margin-top:12px;
 }
 
-.physicsResult.bad{
-  background:#421c29;
-  color:#ff8ca5;
-  border:1px solid #ff557755;
+.actions button{
+  padding:8px 12px;
+  font-size:12px;
+  background:#19243a;
+  box-shadow:none;
 }
 
-.physicsTimer{
-  padding:7px 11px;
-  border-radius:12px;
-  background:#ffffff08;
-  color:#fff;
-  font-weight:900;
+.ans{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid #26324c;
+  line-height:1.8;
 }
-
-.physicsTimer.warning{
-  color:#ffce5c;
-}
-
-.physicsTimer.danger{
-  color:#ff5e7d;
-}
-
-.physicsScore{
-  text-align:center;
-  padding:12px;
-  border-radius:15px;
-  background:#ffffff07;
-  margin-top:14px;
-}
-
-.physicsProgress{
-  margin-top:15px;
-}
-
-/* FOOTER */
 
 .footer{
   text-align:center;
-  color:#687594;
-  font-size:12px;
-  margin-top:30px;
+  margin-top:35px;
+  color:#56627b;
+  font-size:11px;
 }
 </style>
 </head>
@@ -423,19 +581,24 @@ textarea{
     <button onclick="logout()">دەرچوون</button>
   </div>
 
-  <!-- LOGIN -->
 
-  <section id="auth" class="card authBox">
+  <!-- AUTH -->
 
-    <div style="font-size:55px">🚀</div>
+  <section id="auth" class="card auth">
 
-    <h2>بەخێربێیت بۆ SHALAW</h2>
+    <div class="rocket">🚀</div>
 
-    <p class="welcome">
-      پرسیار بکە، وەڵام بدە، XP بەدەست بهێنە و Level ـەکەت بەرز بکەرەوە.
+    <h1>بەخێربێیت بۆ SHALAW</h1>
+
+    <p>
+      فێربە، پرسیار بکە، وەڵام بدە،
+      XP کۆبکەرەوە و Level ـەکەت بەرز بکەرەوە.
     </p>
 
-    <input id="name" placeholder="ناوت">
+    <input
+      id="name"
+      placeholder="ناوت"
+    >
 
     <input
       id="email"
@@ -444,7 +607,7 @@ textarea{
     >
 
     <button onclick="signup()">
-      دروستکردنی هەژمار ✨
+      چوونەژوورەوە و دەستپێکردن ✨
     </button>
 
   </section>
@@ -454,28 +617,43 @@ textarea{
 
   <section id="app" class="hidden">
 
+
     <!-- PROFILE -->
 
     <div class="card profile">
 
+      <div class="profileGlow"></div>
+
       <div class="profileHead">
 
-        <div class="avatar" id="avatar">
+        <div
+          class="avatar"
+          id="avatar"
+        >
           S
         </div>
 
         <div>
 
-          <div class="name" id="profileName">
+          <div
+            class="name"
+            id="profileName"
+          >
             SHALAW
           </div>
 
-          <div class="rank" id="rank">
+          <div
+            class="rank"
+            id="rank"
+          >
             🌱 Newbie
           </div>
 
-          <div class="muted" style="margin-top:5px">
-            بەردەوام بە! 🚀
+          <div
+            class="muted"
+            style="margin-top:6px"
+          >
+            بەردەوام بە 🚀
           </div>
 
         </div>
@@ -483,7 +661,7 @@ textarea{
       </div>
 
 
-      <div class="xpBox">
+      <div class="xp">
 
         <div class="xpTop">
 
@@ -512,41 +690,18 @@ textarea{
       <div class="stats">
 
         <div class="stat">
-
-          <b id="questionCount">
-            0
-          </b>
-
-          <span>
-            ❓ پرسیار
-          </span>
-
+          <b id="questionCount">0</b>
+          <span>❓ پرسیار</span>
         </div>
 
-
         <div class="stat">
-
-          <b id="answerCount">
-            0
-          </b>
-
-          <span>
-            💬 وەڵام
-          </span>
-
+          <b id="answerCount">0</b>
+          <span>💬 وەڵام</span>
         </div>
 
-
         <div class="stat">
-
-          <b id="likeCount">
-            0
-          </b>
-
-          <span>
-            ❤️ Like
-          </span>
-
+          <b id="likeCount">0</b>
+          <span>❤️ Like</span>
         </div>
 
       </div>
@@ -563,56 +718,74 @@ textarea{
     <div class="badges">
 
       <div class="badge">
-        <span class="icon">🌱</span>
-        <span>یەکەم هەنگاو</span>
+        <span class="badgeIcon">🌱</span>
+        <span class="badgeText">یەکەم هەنگاو</span>
       </div>
 
       <div class="badge">
-        <span class="icon">🔥</span>
-        <span>Active User</span>
+        <span class="badgeIcon">🔥</span>
+        <span class="badgeText">Active User</span>
       </div>
 
       <div class="badge">
-        <span class="icon">💡</span>
-        <span>Question Master</span>
+        <span class="badgeIcon">💡</span>
+        <span class="badgeText">Question Master</span>
       </div>
 
       <div class="badge">
-        <span class="icon">❤️</span>
-        <span>Popular</span>
+        <span class="badgeIcon">❤️</span>
+        <span class="badgeText">Popular</span>
       </div>
 
       <div class="badge">
-        <span class="icon">⚡</span>
-        <span>Physics</span>
+        <span class="badgeIcon">⚡</span>
+        <span class="badgeText">Physics</span>
       </div>
 
     </div>
 
 
-    <!-- PHYSICS -->
+    <!-- PHYSICS HERO -->
 
-    <div class="card physicsCard">
+    <div class="sectionTitle">
+      ⚡ فێربوونی فیزیا
+    </div>
 
-      <div class="physicsHeader">
+    <div class="card physicsHero">
 
-        <div>
+      <div class="physicsHeroTop">
 
-          <div class="physicsTitle">
-            ⚡ فیزیای بنەڕەتی
-          </div>
-
-          <div class="physicsInfo">
-            10 پرسیار • هەر وەڵامێکی ڕاست XP دەدات
-          </div>
-
+        <div class="physicsIcon">
+          ⚛️
         </div>
 
-        <div
-          class="physicsTimer"
-          id="physicsTimer"
-        >
-          ⏱️ 30
+        <h2>
+          Physics Challenge
+        </h2>
+
+        <p>
+          100 پرسیاری فیزیا بۆ تاقیکردنەوەی زانیاریت.
+          پرسیارەکان هەڕەمەکی دەبن و لە یەک Session ـدا دووبارە نابنەوە.
+        </p>
+
+      </div>
+
+
+      <div class="physicsStats">
+
+        <div class="physicsMini">
+          <b>100</b>
+          <span>پرسیار</span>
+        </div>
+
+        <div class="physicsMini">
+          <b>30s</b>
+          <span>کات</span>
+        </div>
+
+        <div class="physicsMini">
+          <b>+10</b>
+          <span>XP</span>
         </div>
 
       </div>
@@ -620,30 +793,33 @@ textarea{
 
       <button
         id="physicsStartBtn"
+        class="startPhysics"
         onclick="startPhysics()"
-        style="margin-top:16px;width:100%"
       >
-        دەستپێکردنی تاقیکردنەوە 🚀
+        دەستپێکردنی Challenge 🚀
       </button>
 
     </div>
 
 
-    <!-- PHYSICS QUIZ BOX -->
+    <!-- QUIZ -->
 
     <div
       id="physicsBox"
       class="card hidden"
     >
 
-      <div class="physicsHeader">
-
-        <b id="physicsNumber">
-          پرسیار 1 / 10
-        </b>
+      <div class="quizTop">
 
         <div
-          class="physicsTimer"
+          class="quizNumber"
+          id="physicsNumber"
+        >
+          پرسیار 1 / 10
+        </div>
+
+        <div
+          class="timer"
           id="physicsTime"
         >
           ⏱️ 30
@@ -652,12 +828,11 @@ textarea{
       </div>
 
 
-      <div class="xpBar physicsProgress">
+      <div class="xpBar quizProgress">
 
         <div
           class="xpFill"
           id="physicsProgress"
-          style="width:0%"
         ></div>
 
       </div>
@@ -665,7 +840,7 @@ textarea{
 
       <h2
         id="physicsQuestion"
-        class="physicsQuestion"
+        class="quizQuestion"
       ></h2>
 
 
@@ -674,15 +849,14 @@ textarea{
 
       <div
         id="physicsResult"
-        class="physicsResult hidden"
+        class="result hidden"
       ></div>
 
 
       <button
         id="physicsNext"
-        class="hidden"
+        class="next hidden"
         onclick="nextPhysics()"
-        style="margin-top:15px;width:100%"
       >
         پرسیاری داهاتوو →
       </button>
@@ -690,47 +864,42 @@ textarea{
     </div>
 
 
-    <!-- PHYSICS SCORE -->
+    <!-- FINAL -->
 
     <div
       id="physicsScoreBox"
-      class="card hidden"
+      class="card final hidden"
     >
 
-      <div style="text-align:center">
-
-        <div style="font-size:55px">
-          🏆
-        </div>
-
-        <h2>
-          تاقیکردنەوە تەواو بوو!
-        </h2>
-
-        <div
-          id="physicsFinalScore"
-          class="physicsScore"
-        ></div>
-
-        <button
-          onclick="restartPhysics()"
-          style="margin-top:15px"
-        >
-          دووبارە تاقیکردنەوە 🔄
-        </button>
-
+      <div class="finalIcon">
+        🏆
       </div>
+
+      <h2>
+        Challenge تەواو بوو!
+      </h2>
+
+      <div
+        id="physicsFinalScore"
+        class="finalScore"
+      ></div>
+
+      <button
+        onclick="restartPhysics()"
+      >
+        دووبارەکردنەوە 🔄
+      </button>
 
     </div>
 
 
     <!-- ASK -->
 
-    <div class="card">
+    <div class="sectionTitle">
+      🤔 پرسیارێکت هەیە؟
+    </div>
 
-      <h2 style="margin-top:0">
-        پرسیارێکت هەیە؟ 🤔
-      </h2>
+    <div class="card">
 
       <textarea
         id="q"
@@ -744,7 +913,7 @@ textarea{
     </div>
 
 
-    <!-- QUESTIONS -->
+    <!-- COMMUNITY -->
 
     <div class="sectionTitle">
       🔥 نوێترین پرسیارەکان
@@ -754,7 +923,7 @@ textarea{
 
 
     <div class="footer">
-      SHALAW © 2026
+      SHALAW • Learn • Ask • Level Up
     </div>
 
   </section>
@@ -789,7 +958,7 @@ function esc(s){
 
 
 /* =========================
-   SIGN UP
+   AUTH
 ========================= */
 
 async function signup(){
@@ -851,17 +1020,9 @@ async function signup(){
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
-
 function logout(){
 
   localStorage.removeItem('me');
-
-  localStorage.removeItem(
-    'physicsXP'
-  );
 
   me = null;
 
@@ -870,28 +1031,30 @@ function logout(){
 }
 
 
-/* =========================
-   BOOT
-========================= */
-
 function boot(){
 
-  $('auth').classList.toggle(
-    'hidden',
-    !!me
-  );
+  $('auth')
+    .classList
+    .toggle(
+      'hidden',
+      !!me
+    );
 
-  $('app').classList.toggle(
-    'hidden',
-    !me
-  );
+  $('app')
+    .classList
+    .toggle(
+      'hidden',
+      !me
+    );
 
   if(me){
 
-    $('profileName').textContent =
+    $('profileName')
+      .textContent =
       me.name || 'SHALAW';
 
-    $('avatar').textContent =
+    $('avatar')
+      .textContent =
       (me.name || 'S')
       .charAt(0)
       .toUpperCase();
@@ -904,7 +1067,7 @@ function boot(){
 
 
 /* =========================
-   ASK
+   COMMUNITY
 ========================= */
 
 async function ask(){
@@ -949,17 +1112,13 @@ async function ask(){
   }catch(e){
 
     alert(
-      'نەتوانرا پرسیارەکە بڵاو بکرێتەوە'
+      'کێشە لە پەیوەندی بە سێرڤەر هەیە'
     );
 
   }
 
 }
 
-
-/* =========================
-   LIKE
-========================= */
 
 async function like(id){
 
@@ -975,14 +1134,12 @@ async function like(id){
 }
 
 
-/* =========================
-   ANSWER
-========================= */
-
 async function answer(id){
 
   const t =
-    prompt('وەڵامەکەت بنووسە');
+    prompt(
+      'وەڵامەکەت بنووسە'
+    );
 
   if(!t || !t.trim())
     return;
@@ -1006,124 +1163,641 @@ async function answer(id){
 }
 
 
-/* ==================================================
-   PHYSICS QUIZ
-================================================== */
+/* =====================================================
+   PHYSICS DATABASE
+   100 UNIQUE QUESTIONS
+===================================================== */
 
 const physicsQuestions = [
 
-  {
-    q:'یەکەی هێز لە سیستەمی SI چییە؟',
-    options:[
-      'Joule',
-      'Newton',
-      'Watt',
-      'Pascal'
-    ],
-    answer:1
-  },
+/* 1-10 */
 
-  {
-    q:'خێرایی گرانش لە نزیک زەوی نزیکەی چەندە؟',
-    options:[
-      '9.8 m/s²',
-      '3 m/s²',
-      '20 m/s²',
-      '100 m/s²'
-    ],
-    answer:0
-  },
+{
+ q:'یەکەی هێز لە SI چییە؟',
+ o:['Joule','Newton','Watt','Pascal'],
+ a:1
+},
 
-  {
-    q:'یەکەی توان لە SI چییە؟',
-    options:[
-      'Volt',
-      'Watt',
-      'Newton',
-      'Ampere'
-    ],
-    answer:1
-  },
+{
+ q:'یەکەی وزە چییە؟',
+ o:['Newton','Joule','Ampere','Volt'],
+ a:1
+},
 
-  {
-    q:'ئەگەر ئۆتۆمبێلێک بە خێرایی 20 m/s بڕوات و بۆ 5 چرکە بەردەوام بێت، چەند مەتر دەڕوات؟',
-    options:[
-      '25 m',
-      '50 m',
-      '100 m',
-      '200 m'
-    ],
-    answer:2
-  },
+{
+ q:'یەکەی توان چییە؟',
+ o:['Watt','Joule','Ohm','Tesla'],
+ a:0
+},
 
-  {
-    q:'لە یاسای دووەمی نیوتن F = ؟',
-    options:[
-      'm / a',
-      'm × a',
-      'm + a',
-      'a / m'
-    ],
-    answer:1
-  },
+{
+ q:'یەکەی کارەبا چییە؟',
+ o:['Ampere','Newton','Meter','Kelvin'],
+ a:0
+},
 
-  {
-    q:'یەکەی کار و وزە چییە؟',
-    options:[
-      'Joule',
-      'Newton',
-      'Watt',
-      'Ohm'
-    ],
-    answer:0
-  },
+{
+ q:'یەکەی پەستان چییە؟',
+ o:['Pascal','Watt','Joule','Volt'],
+ a:0
+},
 
-  {
-    q:'یەکەی کارەبا لە SI چییە؟',
-    options:[
-      'Volt',
-      'Ohm',
-      'Ampere',
-      'Watt'
-    ],
-    answer:2
-  },
+{
+ q:'یەکەی پلەی گەرما چییە؟',
+ o:['Kelvin','Newton','Watt','Ohm'],
+ a:0
+},
 
-  {
-    q:'لە یاسای ئۆهم V = ؟',
-    options:[
-      'I / R',
-      'I × R',
-      'R / I',
-      'I + R'
-    ],
-    answer:1
-  },
+{
+ q:'یەکەی فریکوێنسی چییە؟',
+ o:['Hertz','Joule','Volt','Watt'],
+ a:0
+},
 
-  {
-    q:'خێرایی ڕووناکی لە بۆشایی نزیکەی چەندە؟',
-    options:[
-      '3 × 10⁸ m/s',
-      '3 × 10⁶ m/s',
-      '3 × 10⁴ m/s',
-      '300 m/s'
-    ],
-    answer:0
-  },
+{
+ q:'یەکەی پەیوەندی کارەبایی resistance چییە؟',
+ o:['Ohm','Ampere','Volt','Watt'],
+ a:0
+},
 
-  {
-    q:'یەکەی فریکوێنسی چییە؟',
-    options:[
-      'Hertz',
-      'Joule',
-      'Newton',
-      'Tesla'
-    ],
-    answer:0
-  }
+{
+ q:'یەکەی جهدی کارەبا چییە؟',
+ o:['Volt','Ohm','Joule','Newton'],
+ a:0
+},
+
+{
+ q:'یەکەی درێژی لە SI چییە؟',
+ o:['Meter','Second','Kilogram','Liter'],
+ a:0
+},
+
+/* 11-20 */
+
+{
+ q:'یەکەی کات لە SI چییە؟',
+ o:['Second','Hour','Minute','Day'],
+ a:0
+},
+
+{
+ q:'یەکەی کێش چییە؟',
+ o:['Kilogram','Meter','Newton','Liter'],
+ a:0
+},
+
+{
+ q:'خێرایی ڕووناکی لە بۆشایی نزیکەی چەندە؟',
+ o:['3×10⁸ m/s','3×10⁶ m/s','300 m/s','30 m/s'],
+ a:0
+},
+
+{
+ q:'خێرایی گرانش لە نزیک زەوی نزیکەی چەندە؟',
+ o:['9.8 m/s²','2 m/s²','20 m/s²','100 m/s²'],
+ a:0
+},
+
+{
+ q:'یاسای دووەمی نیوتن چییە؟',
+ o:['F=m/a','F=m×a','F=a/m','F=m+a'],
+ a:1
+},
+
+{
+ q:'ئەگەر m=5kg و a=2m/s² بێت، هێز چەندە؟',
+ o:['2N','5N','10N','20N'],
+ a:2
+},
+
+{
+ q:'ئەگەر خێرایی 10m/s بێت و کات 5s، دووری چەندە؟',
+ o:['2m','15m','50m','100m'],
+ a:2
+},
+
+{
+ q:'Formula ـی خێرایی چییە؟',
+ o:['v=d/t','v=t/d','v=d×t','v=d+t'],
+ a:0
+},
+
+{
+ q:'ئەگەر 100m لە 20s بڕۆیت، خێرایی چەندە؟',
+ o:['2m/s','5m/s','20m/s','100m/s'],
+ a:1
+},
+
+{
+ q:'Acceleration بریتییە لە گۆڕانی چی؟',
+ o:['کێش','خێرایی','پلەی گەرما','قەبارە'],
+ a:1
+},
+
+/* 21-30 */
+
+{
+ q:'کاتێک شتێک لە جێگای خۆیە، خێراییەکەی چەندە؟',
+ o:['0','1','9.8','100'],
+ a:0
+},
+
+{
+ q:'هێزی کشان لە نێوان جەستەکان چییە؟',
+ o:['Gravity','Friction','Magnetism','Pressure'],
+ a:0
+},
+
+{
+ q:'هێزی دژ بە جوڵە چییە؟',
+ o:['Friction','Gravity','Voltage','Mass'],
+ a:0
+},
+
+{
+ q:'Mass بە چی پێوانە دەکرێت؟',
+ o:['kg','N','J','W'],
+ a:0
+},
+
+{
+ q:'Weight بە چی پێوانە دەکرێت؟',
+ o:['Newton','Kilogram','Meter','Second'],
+ a:0
+},
+
+{
+ q:'ئەگەر mass دوو برابر بێت و acceleration هەمان بێت، force چی دەبێت؟',
+ o:['نێوە','دوو برابر','هەمان','سێ برابر'],
+ a:1
+},
+
+{
+ q:'Momentum بە چی ناسراوە؟',
+ o:['p=mv','p=m/v','p=v/m','p=m+v'],
+ a:0
+},
+
+{
+ q:'ئەگەر mass=2kg و velocity=3m/s بێت، momentum چەندە؟',
+ o:['5','6','9','1.5'],
+ a:1
+},
+
+{
+ q:'لە جوڵەی یەکساندا acceleration چەندە؟',
+ o:['0','1','9.8','10'],
+ a:0
+},
+
+{
+ q:'Energy ی جوڵەیی بە چی پەیوەندیدارە؟',
+ o:['Velocity و mass','تەنها کات','تەنها پلەی گەرما','فریکوێنسی'],
+ a:0
+},
+
+/* 31-40 */
+
+{
+ q:'Kinetic Energy formula چییە؟',
+ o:['½mv²','mgh','F/t','V/I'],
+ a:0
+},
+
+{
+ q:'Potential Energy لە گرانش بە چی پەیوەندیدارە؟',
+ o:['mgh','mv','ma','IR'],
+ a:0
+},
+
+{
+ q:'ئەگەر height زیاد بێت، gravitational potential energy چی دەکات؟',
+ o:['زیاد دەکات','کەم دەکات','هەمان دەبێت','صفر دەبێت'],
+ a:0
+},
+
+{
+ q:'کار لە فیزیا بە گشتی چییە؟',
+ o:['Force × distance','Mass × time','Speed × time','Voltage × current'],
+ a:0
+},
+
+{
+ q:'ئەگەر force=10N و distance=5m بێت، work چەندە؟',
+ o:['2J','15J','50J','100J'],
+ a:2
+},
+
+{
+ q:'Power بریتییە لە work بۆ چی؟',
+ o:['کات','دووری','کێش','خێرایی'],
+ a:0
+},
+
+{
+ q:'ئەگەر 100J کار لە 10s ئەنجام بدرێت، power چەندە؟',
+ o:['10W','20W','100W','1000W'],
+ a:0
+},
+
+{
+ q:'لە سیستەمێکی داخراودا energy چی دەکات؟',
+ o:['نامێنێت','دروست و ون نابێت','هەمووی دەگۆڕێت بۆ mass','هەمیشە زیاد دەکات'],
+ a:1
+},
+
+{
+ q:'Momentum ی سیستەم لە هەندێک سیستەمی داخراودا چی دەکات؟',
+ o:['پارێزراوە','هەمیشە صفرە','هەمیشە زیادە','تەنها لە گەرما کار دەکات'],
+ a:0
+},
+
+{
+ q:'هێزی گرانش لەسەر جەستەیەک بە چی پەیوەندیدارە؟',
+ o:['mass و g','تەنها کات','تەنها volume','فریکوێنسی'],
+ a:0
+},
+
+/* 41-50 */
+
+{
+ q:'یاسای سێیەمی نیوتن دەڵێت هەر action ـێک چی هەیە؟',
+ o:['Reaction یەکسان و پێچەوانە','هیچ شتێک','دوو action','تەنها friction'],
+ a:0
+},
+
+{
+ q:'نمونەی action و reaction چییە؟',
+ o:['پاڵدان بە زەوی و پاڵپشتی زەوی','گەرمی و ڕووناکی','کات و دووری','mass و volume'],
+ a:0
+},
+
+{
+ q:'Pressure چۆن حساب دەکرێت؟',
+ o:['Force/Area','Force×Area','Area/Force','Mass/Time'],
+ a:0
+},
+
+{
+ q:'ئەگەر هێز هەمان بێت و area کەم بکرێت، pressure چی دەکات؟',
+ o:['زیاد دەکات','کەم دەکات','هەمان دەبێت','صفر دەبێت'],
+ a:0
+},
+
+{
+ q:'Density چۆن حساب دەکرێت؟',
+ o:['Mass/Volume','Volume/Mass','Mass×Volume','Mass+Volume'],
+ a:0
+},
+
+{
+ q:'ئەگەر mass=10kg و volume=2m³ بێت، density چەندە؟',
+ o:['2','5','10','20'],
+ a:1
+},
+
+{
+ q:'جەستەیەک کە density ـی کەمتر لە ئاو هەبێت چی دەکات؟',
+ o:['زۆرجار دەخنکێت','زۆرجار دەسەفێت','هەموو کات دەسوتێت','دەبێتە گاز'],
+ a:1
+},
+
+{
+ q:'Temperature چی پێوانە دەکات؟',
+ o:['گەرم و ساردی','کێش','دووری','توان'],
+ a:0
+},
+
+{
+ q:'Heat زۆرجار لە کوێوە بۆ کوێ دەڕوات؟',
+ o:['لە گەرم بۆ سارد','لە سارد بۆ گەرم','تەنها لە سارد','هیچ کاتێک'],
+ a:0
+},
+
+{
+ q:'لە کام دۆخدا particle ـەکان زۆرتر ئازادن؟',
+ o:['Solid','Liquid','Gas','هیچکام'],
+ a:2
+},
+
+/* 51-60 */
+
+{
+ q:'لە solid ـدا particle ـەکان چۆن دەجوڵێن؟',
+ o:['لە شوێنی خۆیان نزیکەوە دەجوڵێن','بە ئازادی زۆر','هیچ جوڵەیەک نییە','تەنها لە ئاسمان'],
+ a:0
+},
+
+{
+ q:'کاتێک ئاو دەجوشێت، چی ڕوودەدات؟',
+ o:['Liquid بۆ Gas','Gas بۆ Liquid','Solid بۆ Gas','Gas بۆ Solid'],
+ a:0
+},
+
+{
+ q:'کاتێک بخار دەبێتە ئاو، ئەمە چییە؟',
+ o:['Condensation','Evaporation','Melting','Freezing'],
+ a:0
+},
+
+{
+ q:'کاتێک یخ دەبێتە ئاو، چییە؟',
+ o:['Melting','Freezing','Condensation','Sublimation'],
+ a:0
+},
+
+{
+ q:'کاتێک ئاو دەبێتە یخ، چییە؟',
+ o:['Freezing','Melting','Boiling','Evaporation'],
+ a:0
+},
+
+{
+ q:'لە evaporation ـدا liquid دەبێتە چی؟',
+ o:['Gas','Solid','Plasma','Metal'],
+ a:0
+},
+
+{
+ q:'Sound پێویستی بە چی هەیە بۆ بڵاوبوونەوە؟',
+ o:['Medium','Vacuum','تەنها ڕووناکی','هیچ'],
+ a:0
+},
+
+{
+ q:'دەنگ لە بۆشایی vacuum ـدا چۆن دەبڵاوێتەوە؟',
+ o:['بە خێرایی','بە هێواشی','ناتوانێت بڵاوبێتەوە','تەنها شەو'],
+ a:2
+},
+
+{
+ q:'فریکوێنسی دەنگ زیاتر بێت، pitch چی دەکات؟',
+ o:['بەرزتر دەبێت','نزمتر دەبێت','نامێنێت','دەبێتە گەرما'],
+ a:0
+},
+
+{
+ q:'Amplitude ـی دەنگ زیاتر بێت، زۆرجار دەنگ چۆن دەبێت؟',
+ o:['بەرزتر','نزمتر','بێدەنگ','ساردتر'],
+ a:0
+},
+
+/* 61-70 */
+
+{
+ q:'ڕووناکی لە کامەیاندا دەتوانێت بڵاوبێتەوە؟',
+ o:['Vacuum','تەنها ئاو','تەنها هەوا','هیچ'],
+ a:0
+},
+
+{
+ q:'Reflection واتە چی؟',
+ o:['گەڕانەوەی ڕووناکی','شکاندنی ڕووناکی','سووتان','گەرمبوون'],
+ a:0
+},
+
+{
+ q:'Refraction واتە چی؟',
+ o:['گۆڕانی ئاراستەی ڕووناکی بەهۆی گۆڕینی medium','گەڕانەوەی دەنگ','گەرما','فشار'],
+ a:0
+},
+
+{
+ q:'لە ئاوەینەی flat mirror ـدا وێنە چۆنە؟',
+ o:['virtual و هەمان قەبارە','هەمیشە گەورەتر','هەمیشە بچووکتر','هیچ وێنەیەک نییە'],
+ a:0
+},
+
+{
+ q:'Lens ـی convex چی دەکات؟',
+ o:['ڕووناکی کۆدەکاتەوە','هەمیشە دەیپەڕێنێت','دەنگ زیاد دەکات','گەرما دروست دەکات'],
+ a:0
+},
+
+{
+ q:'رەنگی سپیی ڕووناکی دەتوانرێت بۆ چەند رەنگی سەرەکی بکرێتەوە؟',
+ o:['7','2','10','20'],
+ a:0
+},
+
+{
+ q:'رەنگی شین wavelength ـی چۆنە بە بەراورد لەگەڵ سوور؟',
+ o:['کورتترە','درێژترە','هەمانە','هیچ wavelength ـی نییە'],
+ a:0
+},
+
+{
+ q:'کارەبا چییە؟',
+ o:['جوڵەی بارە کارەباییەکان','جوڵەی تەنها گاز','گەرما','دەنگ'],
+ a:0
+},
+
+{
+ q:'یەکەی current چییە؟',
+ o:['Ampere','Volt','Ohm','Joule'],
+ a:0
+},
+
+{
+ q:'یەکەی resistance چییە؟',
+ o:['Ohm','Volt','Ampere','Watt'],
+ a:0
+},
+
+/* 71-80 */
+
+{
+ q:'یاسای Ohm چییە؟',
+ o:['V=IR','V=I/R','V=R/I','V=I+R'],
+ a:0
+},
+
+{
+ q:'ئەگەر I=2A و R=5Ω بێت، V چەندە؟',
+ o:['2.5V','7V','10V','20V'],
+ a:2
+},
+
+{
+ q:'ئەگەر V=12V و R=4Ω بێت، I چەندە؟',
+ o:['3A','8A','16A','48A'],
+ a:0
+},
+
+{
+ q:'ئەگەر V=10V و I=2A بێت، R چەندە؟',
+ o:['2Ω','5Ω','10Ω','20Ω'],
+ a:1
+},
+
+{
+ q:'لە circuit ـێکی series ـدا current چۆنە؟',
+ o:['لە بەشەکاندا هەمانە','هەمیشە صفرە','تەنها لە یەک بەشە','هەموو جار زیاد دەبێت'],
+ a:0
+},
+
+{
+ q:'لە circuit ـێکی parallel ـدا voltage لە branch ـەکاندا چۆنە؟',
+ o:['هەمانە','هەمیشە صفرە','هەموو جیاوازن','هیچ voltage نییە'],
+ a:0
+},
+
+{
+ q:'توانی کارەبایی چۆن دەکرێت P=؟',
+ o:['VI','V/I','I/V','V+I'],
+ a:0
+},
+
+{
+ q:'ئەگەر V=10V و I=3A بێت، P چەندە؟',
+ o:['3W','13W','30W','100W'],
+ a:2
+},
+
+{
+ q:'Battery چی دابین دەکات؟',
+ o:['Electrical potential difference','تەنها mass','دەنگ','gravity'],
+ a:0
+},
+
+{
+ q:'Magnet زۆرجار کام ماددە ڕادەکێشێت؟',
+ o:['Iron','Wood','Glass','Paper'],
+ a:0
+},
+
+/* 81-90 */
+
+{
+ q:'دوو قطبی هەمان magnet چی دەکەن؟',
+ o:['یەکتر پاڵدەدەن','یەکتر ڕادەکێشن','دەسوتێن','دەبنە ئاو'],
+ a:0
+},
+
+{
+ q:'دوو قطبی پێچەوانەی magnet چی دەکەن؟',
+ o:['یەکتر ڕادەکێشن','یەکتر پاڵدەدەن','هیچ کاریگەرییەک نییە','دەبنە گاز'],
+ a:0
+},
+
+{
+ q:'زمین مەیدانی چی هەیە؟',
+ o:['Magnetic field','تەنها sound field','هیچ field ـێک نییە','تەنها light field'],
+ a:0
+},
+
+{
+ q:'Electromagnet چی پێویستی پێیە؟',
+ o:['کارەبا','ئاو','یخ','دەنگ'],
+ a:0
+},
+
+{
+ q:'Tesla یەکەی چییە؟',
+ o:['Magnetic field','Mass','Energy','Time'],
+ a:0
+},
+
+{
+ q:'فشار لە مایەکاندا لەگەڵ قووڵایی چی دەکات؟',
+ o:['زیاد دەکات','کەم دەکات','هەمان دەبێت','صفر دەبێت'],
+ a:0
+},
+
+{
+ q:'Archimedes principle پەیوەندی بە چییە؟',
+ o:['Buoyant force','Sound','Electric current','Light speed'],
+ a:0
+},
+
+{
+ q:'کاتێک جەستەیەک لە ئاو دەسەفێت، buoyant force چی دەکات؟',
+ o:['هاوسەنگی لەگەڵ weight دەبێت','صفرە','هەمیشە کەمترە','هیچ پەیوەندی نییە'],
+ a:0
+},
+
+{
+ q:'Simple machine ـێک بۆ چی بەکاردێت؟',
+ o:['ئاسانکردنی کار','دروستکردنی ماددە','دروستکردنی کات','گۆڕینی gravity'],
+ a:0
+},
+
+{
+ q:'Lever لە کام جۆرە machine ـە؟',
+ o:['Simple machine','Electric machine','Heat machine','Light machine'],
+ a:0
+},
+
+/* 91-100 */
+
+{
+ q:'کاتێک force ـێک ئاراستەی جوڵەیەک بێت، work چۆنە؟',
+ o:['مثبت','هەمیشە صفر','هەمیشە منفی','نامۆ'],
+ a:0
+},
+
+{
+ q:'کاتێک force پێچەوانەی جوڵە بێت، work زۆرجار چۆنە؟',
+ o:['منفی','مثبت','صفر هەمیشە','هیچ'],
+ a:0
+},
+
+{
+ q:'ئەگەر force عمودی بێت بە displacement، work چەندە؟',
+ o:['صفر','زۆرترین','هەمیشە 100J','هەموو کات مثبت'],
+ a:0
+},
+
+{
+ q:'Acceleration ـی 2m/s² واتە چی؟',
+ o:['خێرایی هەر چرکە 2m/s زیاد دەکات','دووری 2m هەر چرکە','کات 2s زیاد دەکات','mass زیاد دەکات'],
+ a:0
+},
+
+{
+ q:'ئەگەر جەستەیەک 20m/s خێرایی هەبێت، لە 2s چەند دووری دەڕوات ئەگەر خێرایی یەکسان بێت؟',
+ o:['10m','20m','40m','60m'],
+ a:2
+},
+
+{
+ q:'ئەگەر جەستەیەک 60m لە 3s بڕوات، خێرایی چەندە؟',
+ o:['10m/s','20m/s','30m/s','180m/s'],
+ a:1
+},
+
+{
+ q:'ئەگەر mass=4kg و acceleration=3m/s² بێت، force چەندە؟',
+ o:['7N','12N','1.33N','24N'],
+ a:1
+},
+
+{
+ q:'ئەگەر force=20N و mass=5kg بێت، acceleration چەندە؟',
+ o:['4m/s²','5m/s²','15m/s²','100m/s²'],
+ a:0
+},
+
+{
+ q:'ئەگەر velocity دوو برابر بێت، kinetic energy چەند جار دەگۆڕێت؟',
+ o:['2 جار','4 جار','نێوە','هەمان'],
+ a:1
+},
+
+{
+ q:'کامەیان نموونەی energy ـی کیمیاییە؟',
+ o:['Battery','Stone falling','Moving car','Sound wave'],
+ a:0
+}
 
 ];
 
+
+/* =====================================================
+   QUIZ SYSTEM
+===================================================== */
+
+let physicsPool = [];
 
 let physicsIndex = 0;
 
@@ -1135,20 +1809,156 @@ let physicsTimeLeft = 30;
 
 let physicsAnswered = false;
 
+const QUIZ_LENGTH = 10;
 
-/* START */
 
-function startPhysics(){
+/* shuffle */
+
+function shuffle(array){
+
+  const arr =
+    [...array];
+
+  for(
+    let i=arr.length-1;
+    i>0;
+    i--
+  ){
+
+    const j =
+      Math.floor(
+        Math.random()*(i+1)
+      );
+
+    [
+      arr[i],
+      arr[j]
+    ] =
+    [
+      arr[j],
+      arr[i]
+    ];
+
+  }
+
+  return arr;
+
+}
+
+
+/* get used questions */
+
+function getUsedQuestions(){
+
+  try{
+
+    return JSON.parse(
+      localStorage.getItem(
+        'physicsUsed'
+      ) || '[]'
+    );
+
+  }catch(e){
+
+    return [];
+
+  }
+
+}
+
+
+/* save used */
+
+function saveUsedQuestions(ids){
+
+  localStorage.setItem(
+    'physicsUsed',
+    JSON.stringify(ids)
+  );
+
+}
+
+
+/* make new pool */
+
+function createPhysicsPool(){
+
+  let used =
+    getUsedQuestions();
+
+
+  /*
+    ئەگەر 100 پرسیارەکە
+    هەمووی بەکارهێنران،
+    لیستەکە لە نوێوە دەست پێدەکات.
+  */
+
+  if(
+    used.length >=
+    physicsQuestions.length
+  ){
+
+    used = [];
+
+    saveUsedQuestions([]);
+
+  }
+
+
+  const available =
+    physicsQuestions
+      .map(
+        (_,i)=>i
+      )
+      .filter(
+        i=>!used.includes(i)
+      );
+
+
+  const selected =
+    shuffle(
+      available
+    ).slice(
+      0,
+      Math.min(
+        QUIZ_LENGTH,
+        available.length
+      )
+    );
+
+
+  physicsPool =
+    selected;
+
 
   physicsIndex = 0;
 
   physicsScore = 0;
 
-  physicsAnswered = false;
+
+  const newUsed =
+    [
+      ...used,
+      ...selected
+    ];
+
+
+  saveUsedQuestions(
+    newUsed
+  );
+
+}
+
+
+/* START */
+
+function startPhysics(){
 
   clearInterval(
     physicsTimer
   );
+
+  createPhysicsPool();
 
   $('physicsStartBtn')
     .classList
@@ -1167,7 +1977,7 @@ function startPhysics(){
 }
 
 
-/* SHOW QUESTION */
+/* SHOW */
 
 function showPhysicsQuestion(){
 
@@ -1177,67 +1987,90 @@ function showPhysicsQuestion(){
 
   physicsAnswered = false;
 
-  const item =
-    physicsQuestions[
+  const qIndex =
+    physicsPool[
       physicsIndex
     ];
 
+  const item =
+    physicsQuestions[
+      qIndex
+    ];
+
+
   $('physicsNumber')
     .textContent =
-      `پرسیار ${physicsIndex + 1} / ${physicsQuestions.length}`;
+    `پرسیار ${physicsIndex+1} / ${physicsPool.length}`;
+
 
   $('physicsQuestion')
     .textContent =
-      item.q;
+    item.q;
+
 
   $('physicsProgress')
     .style.width =
-      ((physicsIndex) /
-      physicsQuestions.length * 100) + '%';
+    (
+      physicsIndex /
+      physicsPool.length *
+      100
+    ) + '%';
+
 
   $('physicsResult')
-    .classList
-    .add('hidden');
+    .className =
+    'result hidden';
+
 
   $('physicsNext')
     .classList
     .add('hidden');
 
-  const options =
+
+  const box =
     $('physicsOptions');
 
-  options.innerHTML='';
+  box.innerHTML='';
 
-  item.options.forEach(
+
+  item.o.forEach(
     (option,index)=>{
 
       const btn =
-        document.createElement('button');
+        document.createElement(
+          'button'
+        );
 
       btn.className =
-        'physicsOption';
+        'option';
 
       btn.textContent =
         option;
 
       btn.onclick =
-        ()=>selectPhysicsAnswer(
-          index,
-          btn
-        );
+        ()=>{
+          selectPhysicsAnswer(
+            index,
+            btn
+          );
+        };
 
-      options.appendChild(btn);
+      box.appendChild(
+        btn
+      );
 
     }
   );
 
+
   physicsTimeLeft = 30;
 
-  updatePhysicsTimer();
+  updateTimer();
+
 
   physicsTimer =
     setInterval(
-      physicsCountdown,
+      countdown,
       1000
     );
 
@@ -1246,13 +2079,16 @@ function showPhysicsQuestion(){
 
 /* TIMER */
 
-function physicsCountdown(){
+function countdown(){
 
   physicsTimeLeft--;
 
-  updatePhysicsTimer();
+  updateTimer();
 
-  if(physicsTimeLeft <= 0){
+
+  if(
+    physicsTimeLeft <= 0
+  ){
 
     clearInterval(
       physicsTimer
@@ -1274,55 +2110,61 @@ function physicsCountdown(){
 
 /* UPDATE TIMER */
 
-function updatePhysicsTimer(){
+function updateTimer(){
 
-  const timer =
+  const t =
     $('physicsTime');
 
-  timer.textContent =
-    '⏱️ ' + physicsTimeLeft;
 
-  timer.classList.remove(
+  t.textContent =
+    '⏱️ ' +
+    physicsTimeLeft;
+
+
+  t.classList.remove(
     'warning',
     'danger'
   );
 
-  if(physicsTimeLeft <= 10){
 
-    timer.classList.add(
+  if(
+    physicsTimeLeft <= 10
+  ){
+
+    t.classList.add(
       'warning'
     );
 
   }
 
-  if(physicsTimeLeft <= 5){
 
-    timer.classList.remove(
+  if(
+    physicsTimeLeft <= 5
+  ){
+
+    t.classList.remove(
       'warning'
     );
 
-    timer.classList.add(
+    t.classList.add(
       'danger'
     );
 
   }
 
-  $('physicsTimer')
-    .textContent =
-      '⏱️ ' + physicsTimeLeft;
-
 }
 
 
-/* SELECT ANSWER */
+/* ANSWER */
 
 function selectPhysicsAnswer(
   selected,
-  clickedButton
+  clicked
 ){
 
   if(physicsAnswered)
     return;
+
 
   physicsAnswered = true;
 
@@ -1330,23 +2172,33 @@ function selectPhysicsAnswer(
     physicsTimer
   );
 
-  const item =
-    physicsQuestions[
+
+  const qIndex =
+    physicsPool[
       physicsIndex
     ];
 
+
+  const item =
+    physicsQuestions[
+      qIndex
+    ];
+
+
   const buttons =
     document.querySelectorAll(
-      '#physicsOptions .physicsOption'
+      '#physicsOptions .option'
     );
+
 
   buttons.forEach(
     (btn,index)=>{
 
-      btn.disabled = true;
+      btn.disabled =
+        true;
 
       if(
-        index === item.answer
+        index === item.a
       ){
 
         btn.classList.add(
@@ -1363,39 +2215,46 @@ function selectPhysicsAnswer(
     $('physicsResult');
 
 
-  if(selected === item.answer){
+  if(
+    selected === item.a
+  ){
 
     physicsScore++;
 
-    if(clickedButton){
 
-      clickedButton.classList.add(
+    if(clicked){
+
+      clicked.classList.add(
         'correct'
       );
 
     }
 
+
     result.textContent =
       '✅ ڕاستە! +10 XP';
 
+
     result.className =
-      'physicsResult good';
+      'result good';
 
   }else{
 
-    if(clickedButton){
+    if(clicked){
 
-      clickedButton.classList.add(
+      clicked.classList.add(
         'wrong'
       );
 
     }
 
+
     result.textContent =
-      '❌ هەڵەیە! وەڵامی ڕاست نیشان دراوە.';
+      '❌ هەڵەیە — وەڵامی ڕاست بە سەوز نیشان دراوە.';
+
 
     result.className =
-      'physicsResult bad';
+      'result bad';
 
   }
 
@@ -1403,6 +2262,7 @@ function selectPhysicsAnswer(
   result.classList.remove(
     'hidden'
   );
+
 
   $('physicsNext')
     .classList
@@ -1417,9 +2277,10 @@ function nextPhysics(){
 
   physicsIndex++;
 
+
   if(
     physicsIndex >=
-    physicsQuestions.length
+    physicsPool.length
   ){
 
     finishPhysics();
@@ -1427,6 +2288,7 @@ function nextPhysics(){
     return;
 
   }
+
 
   showPhysicsQuestion();
 
@@ -1441,47 +2303,65 @@ function finishPhysics(){
     physicsTimer
   );
 
+
   $('physicsBox')
     .classList
     .add('hidden');
+
 
   $('physicsScoreBox')
     .classList
     .remove('hidden');
 
+
   const gainedXP =
     physicsScore * 10;
 
-  const oldXP =
+
+  let oldXP =
     Number(
       localStorage.getItem(
         'physicsXP'
       ) || 0
     );
 
+
+  oldXP += gainedXP;
+
+
   localStorage.setItem(
     'physicsXP',
-    oldXP + gainedXP
+    oldXP
   );
 
+
   $('physicsFinalScore')
-    .innerHTML =
-      `
-      <div style="font-size:20px">
-        ${physicsScore} / ${physicsQuestions.length}
+    .innerHTML = `
+
+      <strong>
+        ${physicsScore} / ${physicsPool.length}
+      </strong>
+
+      <div>
+        نمرەی تۆ
       </div>
-      <div style="margin-top:8px;color:#69f0bd">
-        ⭐ ${gainedXP} XP بەدەستهێنرا
+
+      <div class="finalXP">
+        ⭐ +${gainedXP} XP
       </div>
-      `;
+
+    `;
+
 
   $('physicsStartBtn')
     .classList
     .remove('hidden');
 
+
   $('physicsStartBtn')
     .textContent =
-      'دووبارە تاقیکردنەوە 🔄';
+    'Challenge ـێکی نوێ 🔄';
+
 
   load();
 
@@ -1501,16 +2381,19 @@ function restartPhysics(){
 }
 
 
-/* ==================================================
-   LOAD DATA
-================================================== */
+/* =====================================================
+   LOAD
+===================================================== */
 
 async function load(){
 
   try{
 
     const r =
-      await fetch('/api/data');
+      await fetch(
+        '/api/data'
+      );
+
 
     const d =
       await r.json();
@@ -1518,17 +2401,19 @@ async function load(){
 
     const myQuestions =
       d.questions.filter(
-        q => q.userId === me.id
+        q =>
+          q.userId === me.id
       );
 
 
     const myAnswers =
       d.answers.filter(
-        a => a.userId === me.id
+        a =>
+          a.userId === me.id
       );
 
 
-    let likes =
+    const likes =
       myQuestions.reduce(
         (sum,q)=>
           sum+(q.likes||0),
@@ -1551,15 +2436,11 @@ async function load(){
       likes;
 
 
-    /* XP FROM WEBSITE */
-
     const websiteXP =
       myQuestions.length * 10 +
       myAnswers.length * 15 +
       likes * 2;
 
-
-    /* XP FROM PHYSICS */
 
     const physicsXP =
       Number(
@@ -1569,9 +2450,7 @@ async function load(){
       );
 
 
-    /* TOTAL XP */
-
-    const xp =
+    const totalXP =
       websiteXP +
       physicsXP;
 
@@ -1580,13 +2459,13 @@ async function load(){
       Math.max(
         1,
         Math.floor(
-          xp / 100
+          totalXP / 100
         ) + 1
       );
 
 
     const currentXP =
-      xp % 100;
+      totalXP % 100;
 
 
     $('level')
@@ -1605,25 +2484,23 @@ async function load(){
       currentXP + '%';
 
 
-    /* RANK */
-
     let rank =
       '🌱 Newbie';
 
 
     if(level >= 3)
       rank =
-        '⚡ Active';
+      '⚡ Active';
 
 
     if(level >= 5)
       rank =
-        '💎 Expert';
+      '💎 Expert';
 
 
     if(level >= 10)
       rank =
-        '👑 SHALAW Legend';
+      '👑 SHALAW Legend';
 
 
     $('rank')
@@ -1631,95 +2508,98 @@ async function load(){
       rank;
 
 
-    /* QUESTIONS */
+    /* COMMUNITY QUESTIONS */
 
     $('list').innerHTML =
 
-      d.questions.map(q=>{
+      d.questions.map(
+        q=>{
 
-        const u =
-          d.users.find(
-            x=>x.id===q.userId
-          );
-
-
-        const aa =
-          d.answers.filter(
-            a=>a.questionId===q.id
-          );
+          const u =
+            d.users.find(
+              x =>
+                x.id === q.userId
+            );
 
 
-        return `
-
-        <div class="questionCard">
-
-          <div class="questionText">
-            ❓ ${esc(q.text)}
-          </div>
+          const answers =
+            d.answers.filter(
+              a =>
+                a.questionId === q.id
+            );
 
 
-          <div
-            class="muted"
-            style="margin-top:7px"
-          >
-            👤 ${esc(
-              u?.name ||
-              'بەکارهێنەر'
-            )}
-          </div>
+          return `
 
+            <div class="questionCard">
 
-          <div class="actions">
+              <div class="questionText">
+                ❓ ${esc(q.text)}
+              </div>
 
-            <button
-              onclick="like('${q.id}')"
-            >
-              ❤️ ${q.likes || 0}
-            </button>
+              <div
+                class="muted"
+                style="margin-top:7px"
+              >
+                👤 ${esc(
+                  u?.name ||
+                  'بەکارهێنەر'
+                )}
+              </div>
 
+              <div class="actions">
 
-            <button
-              onclick="answer('${q.id}')"
-            >
-              💬 وەڵام
-            </button>
+                <button
+                  onclick="like('${q.id}')"
+                >
+                  ❤️ ${q.likes || 0}
+                </button>
 
-          </div>
-
-
-          ${
-            aa.map(a=>{
-
-              const au =
-                d.users.find(
-                  x=>x.id===a.userId
-                );
-
-              return `
-
-              <div class="ans">
-
-                <b>
-                  ${esc(
-                    au?.name ||
-                    'بەکارهێنەر'
-                  )}:
-                </b>
-
-                ${esc(a.text)}
+                <button
+                  onclick="answer('${q.id}')"
+                >
+                  💬 وەڵام
+                </button>
 
               </div>
 
-              `;
+              ${
+                answers.map(
+                  a=>{
 
-            }).join('')
-          }
+                    const au =
+                      d.users.find(
+                        x =>
+                          x.id === a.userId
+                      );
 
-        </div>
+                    return `
 
-        `;
+                      <div class="ans">
 
-      }).join('')
+                        <b>
+                          ${esc(
+                            au?.name ||
+                            'بەکارهێنەر'
+                          )}:
+                        </b>
+
+                        ${esc(a.text)}
+
+                      </div>
+
+                    `;
+
+                  }
+                ).join('')
+              }
+
+            </div>
+
+          `;
+
+        }
+      ).join('')
 
       ||
 
@@ -1728,14 +2608,15 @@ async function load(){
 
   }catch(e){
 
-    console.error(e);
+    console.error(
+      'LOAD ERROR:',
+      e
+    );
 
   }
 
 }
 
-
-/* START APP */
 
 boot();
 
