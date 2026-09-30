@@ -1,10 +1,567 @@
-<!doctype html><html lang="ku"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SHALAW</title><style>body{margin:0;background:#0b1020;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{max-width:700px;margin:auto;padding:20px 16px 60px}.logo{font-size:32px;font-weight:800;background:linear-gradient(90deg,#7c5cff,#20d9ff);-webkit-background-clip:text;color:transparent}input,textarea{width:100%;box-sizing:border-box;background:#11182b;border:1px solid #293452;color:#fff;border-radius:14px;padding:13px;margin:7px 0;font-size:16px}button{border:0;border-radius:13px;padding:11px 15px;background:#7057ff;color:#fff;font-weight:700;margin:5px 3px}.card{background:#12182b;border:1px solid #26304b;border-radius:19px;padding:16px;margin:12px 0}.muted{color:#9aa5c3;font-size:13px}.ans{padding:10px 0;border-top:1px solid #27304a;margin-top:10px}.top{display:flex;justify-content:space-between;align-items:center}.hidden{display:none}</style></head><body><div class="wrap"><div class="top"><div class="logo">SHALAW</div><button onclick="logout()">دەرچوون</button></div><section id="auth"><h2>بەخێربێیت 👋</h2><input id="name" placeholder="ناوت"><input id="email" placeholder="ئیمەیڵ"><button onclick="signup()">دروستکردنی هەژمار</button></section><section id="app" class="hidden"><h2>پرسیارێکت هەیە؟ 🤔</h2><textarea id="q" placeholder="پرسیارەکەت بنووسە..."></textarea><button onclick="ask()">بڵاوی بکەرەوە</button><div id="list"></div></section></div><script>
-let me=JSON.parse(localStorage.me||'null'); const $=id=>document.getElementById(id); function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-async function signup(){let r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:$('name').value,email:$('email').value})});let x=await r.json();if(!r.ok)return alert(x.error);localStorage.me=JSON.stringify(x);me=x;boot()}
-function logout(){localStorage.removeItem('me');me=null;boot()} function boot(){ $('auth').classList.toggle('hidden',!!me);$('app').classList.toggle('hidden',!me);if(me)load()}
-async function ask(){let text=$('q').value.trim();if(!text)return;await fetch('/api/questions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:me.id,text})});$('q').value='';load()}
-async function like(id){await fetch('/api/questions/'+id+'/like',{method:'POST'});load()}
-async function answer(id){let t=prompt('وەڵامەکەت بنووسە');if(!t)return;await fetch('/api/questions/'+id+'/answers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId:me.id,text:t})});load()}
-async function load(){let d=await (await fetch('/api/data')).json();$('list').innerHTML=d.questions.map(q=>{let u=d.users.find(x=>x.id===q.userId),aa=d.answers.filter(a=>a.questionId===q.id);return `<div class="card"><b>❓ ${esc(q.text)}</b><div class="muted">${esc(u?.name||'بەکارهێنەر')}</div><button onclick="like('${q.id}')">❤️ ${q.likes}</button><button onclick="answer('${q.id}')">💬 وەڵام</button>${aa.map(a=>{let au=d.users.find(x=>x.id===a.userId);return `<div class="ans"><b>${esc(au?.name||'بەکارهێنەر')}:</b> ${esc(a.text)}</div>`}).join('')}</div>`}).join('')||'<p class="muted">هێشتا پرسیارێک نییە.</p>'}
+<!doctype html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SHALAW</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at top right,#21135c 0,#0b1020 38%,#060914 100%);
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  min-height:100vh;
+}
+.wrap{
+  max-width:760px;
+  margin:auto;
+  padding:18px 15px 70px;
+}
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+.logo{
+  font-size:31px;
+  font-weight:900;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,#9d7cff,#21e6ff,#ff63d8);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+button{
+  border:0;
+  border-radius:14px;
+  padding:11px 16px;
+  background:linear-gradient(135deg,#7657ff,#a34dff);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 8px 25px #7657ff33;
+}
+button:active{
+  transform:scale(.96);
+}
+input,textarea{
+  width:100%;
+  background:#11182b;
+  border:1px solid #2c3655;
+  color:#fff;
+  border-radius:16px;
+  padding:14px;
+  margin:7px 0;
+  font-size:16px;
+  outline:none;
+}
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+.card{
+  background:linear-gradient(145deg,#151c31dd,#0e1426dd);
+  border:1px solid #303b60;
+  border-radius:22px;
+  padding:18px;
+  margin:14px 0;
+  box-shadow:0 15px 45px #0005;
+  backdrop-filter:blur(15px);
+}
+.hidden{display:none!important}
+.muted{
+  color:#9ba7c7;
+  font-size:13px;
+}
+/* PROFILE */
+.profile{
+  position:relative;
+  overflow:hidden;
+  padding:22px;
+}
+.profile:before{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  background:#7657ff55;
+  filter:blur(65px);
+  top:-80px;
+  right:-50px;
+}
+.profileHead{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.avatar{
+  width:82px;
+  height:82px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:35px;
+  font-weight:900;
+  background:linear-gradient(135deg,#7c5cff,#21d9ff);
+  border:3px solid #ffffff44;
+  box-shadow:
+    0 0 0 6px #7657ff15,
+    0 0 35px #7657ff88;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+.name{
+  font-size:23px;
+  font-weight:900;
+}
+.rank{
+  display:inline-block;
+  margin-top:5px;
+  padding:5px 10px;
+  border-radius:20px;
+  background:#7657ff22;
+  color:#bbaaff;
+  font-size:12px;
+  font-weight:800;
+}
+.xpBox{
+  margin-top:20px;
+}
+.xpTop{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:#aeb8d4;
+}
+.xpBar{
+  height:10px;
+  margin-top:8px;
+  border-radius:20px;
+  background:#090e1d;
+  overflow:hidden;
+}
+.xpFill{
+  height:100%;
+  width:72%;
+  border-radius:20px;
+  background:linear-gradient(90deg,#7657ff,#20d9ff);
+  box-shadow:0 0 18px #20d9ff88;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:18px;
+}
+.stat{
+  text-align:center;
+  padding:14px 7px;
+  border-radius:17px;
+  background:#ffffff06;
+  border:1px solid #ffffff0d;
+}
+.stat b{
+  display:block;
+  font-size:22px;
+}
+.stat span{
+  color:#929dbb;
+  font-size:12px;
+}
+/* BADGES */
+.sectionTitle{
+  font-size:18px;
+  font-weight:900;
+  margin:24px 4px 10px;
+}
+.badges{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:3px 1px 8px;
+}
+.badge{
+  min-width:105px;
+  padding:14px 10px;
+  text-align:center;
+  border-radius:18px;
+  background:#151c31;
+  border:1px solid #303b60;
+}
+.badge .icon{
+  font-size:28px;
+  display:block;
+  margin-bottom:5px;
+}
+.badge span{
+  font-size:11px;
+  color:#a8b2cc;
+}
+/* QUESTIONS */
+.questionCard{
+  background:#12192c;
+  border:1px solid #293452;
+  border-radius:20px;
+  padding:17px;
+  margin:12px 0;
+}
+.questionText{
+  font-size:16px;
+  font-weight:750;
+  line-height:1.7;
+}
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.actions button{
+  padding:9px 12px;
+  font-size:13px;
+  background:#202943;
+  box-shadow:none;
+}
+.actions button:hover{
+  background:#2c3758;
+}
+.ans{
+  padding:10px 0 0;
+  margin-top:10px;
+  border-top:1px solid #293452;
+  line-height:1.7;
+}
+.authBox{
+  margin-top:35px;
+  text-align:center;
+}
+.authBox h2{
+  font-size:27px;
+}
+.welcome{
+  color:#9ca8c7;
+  line-height:1.8;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="logo">SHALAW</div>
+    <button onclick="logout()">دەرچوون</button>
+  </div>
+  <!-- LOGIN -->
+  <section id="auth" class="card authBox">
+    <div style="font-size:55px">🚀</div>
+    <h2>بەخێربێیت بۆ SHALAW</h2>
+    <p class="welcome">
+      پرسیار بکە، وەڵام بدە، XP بەدەست بهێنە و Level ـەکەت بەرز بکەرەوە.
+    </p>
+    <input id="name" placeholder="ناوت">
+    <input id="email" type="email" placeholder="ئیمەیڵ">
+    <button onclick="signup()">دروستکردنی هەژمار ✨</button>
+  </section>
+  <!-- APP -->
+  <section id="app" class="hidden">
+    <!-- PROFILE -->
+    <div class="card profile">
+      <div class="profileHead">
+        <div class="avatar" id="avatar">S</div>
+        <div>
+          <div class="name" id="profileName">SHALAW</div>
+          <div class="rank" id="rank">🌱 Newbie</div>
+          <div class="muted" style="margin-top:5px">
+            بەردەوام بە! 🚀
+          </div>
+        </div>
+      </div>
+      <div class="xpBox">
+        <div class="xpTop">
+          <span>⭐ Level <b id="level">1</b></span>
+          <span id="xpText">72 / 100 XP</span>
+        </div>
+        <div class="xpBar">
+          <div class="xpFill" id="xpFill"></div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <b id="questionCount">0</b>
+          <span>❓ پرسیار</span>
+        </div>
+        <div class="stat">
+          <b id="answerCount">0</b>
+          <span>💬 وەڵام</span>
+        </div>
+        <div class="stat">
+          <b id="likeCount">0</b>
+          <span>❤️ Like</span>
+        </div>
+      </div>
+    </div>
+    <!-- BADGES -->
+    <div class="sectionTitle">🏆 Badge ـەکانت</div>
+    <div class="badges">
+      <div class="badge">
+        <span class="icon">🌱</span>
+        <span>یەکەم هەنگاو</span>
+      </div>
+      <div class="badge">
+        <span class="icon">🔥</span>
+        <span>Active User</span>
+      </div>
+      <div class="badge">
+        <span class="icon">💡</span>
+        <span>Question Master</span>
+      </div>
+      <div class="badge">
+        <span class="icon">❤️</span>
+        <span>Popular</span>
+      </div>
+    </div>
+    <!-- ASK -->
+    <div class="card">
+      <h2 style="margin-top:0">پرسیارێکت هەیە؟ 🤔</h2>
+      <textarea
+        id="q"
+        placeholder="پرسیارەکەت بنووسە..."
+      ></textarea>
+      <button onclick="ask()">بڵاوی بکەرەوە 🚀</button>
+    </div>
+    <!-- QUESTIONS -->
+    <div class="sectionTitle">🔥 نوێترین پرسیارەکان</div>
+    <div id="list"></div>
+  </section>
+</div>
+<script>
+let me = JSON.parse(localStorage.me || 'null');
+const $ = id => document.getElementById(id);
+function esc(s){
+  return String(s).replace(
+    /[&<>"']/g,
+    m => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#039;'
+    }[m])
+  );
+}
+/* SIGN UP */
+async function signup(){
+  const name = $('name').value.trim();
+  const email = $('email').value.trim();
+  if(!name || !email){
+    return alert('تکایە ناو و ئیمەیڵ بنووسە');
+  }
+  try{
+    const r = await fetch('/api/signup',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        name,
+        email
+      })
+    });
+    const x = await r.json();
+    if(!r.ok){
+      return alert(x.error || 'هەڵەیەک ڕوویدا');
+    }
+    localStorage.me = JSON.stringify(x);
+    me = x;
+    boot();
+  }catch(e){
+    alert('کێشە لە پەیوەندی بە سێرڤەر هەیە');
+  }
+}
+/* LOGOUT */
+function logout(){
+  localStorage.removeItem('me');
+  me = null;
+  boot();
+}
+/* BOOT */
+function boot(){
+  $('auth').classList.toggle(
+    'hidden',
+    !!me
+  );
+  $('app').classList.toggle(
+    'hidden',
+    !me
+  );
+  if(me){
+    $('profileName').textContent =
+      me.name || 'SHALAW';
+    $('avatar').textContent =
+      (me.name || 'S').charAt(0).toUpperCase();
+    load();
+  }
+}
+/* ASK */
+async function ask(){
+  const text = $('q').value.trim();
+  if(!text){
+    return alert('پرسیارەکەت بنووسە');
+  }
+  try{
+    await fetch('/api/questions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        userId:me.id,
+        text
+      })
+    });
+    $('q').value='';
+    load();
+  }catch(e){
+    alert('نەتوانرا پرسیارەکە بڵاو بکرێتەوە');
+  }
+}
+/* LIKE */
+async function like(id){
+  await fetch(
+    '/api/questions/'+id+'/like',
+    {
+      method:'POST'
+    }
+  );
+  load();
+}
+/* ANSWER */
+async function answer(id){
+  const t = prompt('وەڵامەکەت بنووسە');
+  if(!t || !t.trim()) return;
+  await fetch(
+    '/api/questions/'+id+'/answers',
+    {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        userId:me.id,
+        text:t.trim()
+      })
+    }
+  );
+  load();
+}
+/* LOAD DATA */
+async function load(){
+  try{
+    const r = await fetch('/api/data');
+    const d = await r.json();
+    const myQuestions =
+      d.questions.filter(
+        q => q.userId === me.id
+      );
+    const myAnswers =
+      d.answers.filter(
+        a => a.userId === me.id
+      );
+    let likes = myQuestions.reduce(
+      (sum,q)=>sum+(q.likes||0),
+      0
+    );
+    $('questionCount').textContent =
+      myQuestions.length;
+    $('answerCount').textContent =
+      myAnswers.length;
+    $('likeCount').textContent =
+      likes;
+    /* LEVEL */
+    const xp =
+      myQuestions.length * 10 +
+      myAnswers.length * 15 +
+      likes * 2;
+    const level =
+      Math.max(
+        1,
+        Math.floor(xp / 100) + 1
+      );
+    const currentXP =
+      xp % 100;
+    $('level').textContent = level;
+    $('xpText').textContent =
+      currentXP + ' / 100 XP';
+    $('xpFill').style.width =
+      currentXP + '%';
+    /* RANK */
+    let rank = '🌱 Newbie';
+    if(level >= 3)
+      rank = '⚡ Active';
+    if(level >= 5)
+      rank = '💎 Expert';
+    if(level >= 10)
+      rank = '👑 SHALAW Legend';
+    $('rank').textContent = rank;
+    /* QUESTIONS */
+    $('list').innerHTML =
+      d.questions.map(q=>{
+        const u =
+          d.users.find(
+            x=>x.id===q.userId
+          );
+        const aa =
+          d.answers.filter(
+            a=>a.questionId===q.id
+          );
+        return `
+        <div class="questionCard">
+          <div class="questionText">
+            ❓ ${esc(q.text)}
+          </div>
+          <div class="muted" style="margin-top:7px">
+            👤 ${esc(u?.name || 'بەکارهێنەر')}
+          </div>
+          <div class="actions">
+            <button onclick="like('${q.id}')">
+              ❤️ ${q.likes || 0}
+            </button>
+            <button onclick="answer('${q.id}')">
+              💬 وەڵام
+            </button>
+          </div>
+          ${
+            aa.map(a=>{
+              const au =
+                d.users.find(
+                  x=>x.id===a.userId
+                );
+              return `
+              <div class="ans">
+                <b>
+                  ${esc(au?.name || 'بەکارهێنەر')}:
+                </b>
+                ${esc(a.text)}
+              </div>
+              `;
+            }).join('')
+          }
+        </div>
+        `;
+      }).join('')
+      ||
+      '<p class="muted">هێشتا پرسیارێک نییە.</p>';
+  }catch(e){
+    console.error(e);
+  }
+}
 boot();
-</script></body></html>
+</script>
+</body>
+</html>
